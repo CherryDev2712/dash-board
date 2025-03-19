@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dash board | landing</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Estilos personalizados -->
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+      }
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      .hero-section {
+        background-color: #4caf50;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+      }
+      .hero-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+      }
+      .hero-section p {
+        font-size: 1.2rem;
+      }
+      .features-section,
+      .why-section,
+      .cta-section {
+        padding: 60px 0;
+      }
+      .features-section h2,
+      .why-section h2,
+      .cta-section h2 {
+        color: #4caf50;
+        font-weight: bold;
+        margin-bottom: 30px;
+      }
+      .feature-icon {
+        font-size: 2rem;
+        color: #4caf50;
+        margin-bottom: 15px;
+      }
+      .cta-button {
+        background-color: #4caf50;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+      }
+      .cta-button:hover {
+        background-color: #45a049;
+      }
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+      }
+      footer a {
+        color: #4caf50;
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="">MiDashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Características</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#why">¿Por qué elegirnos?</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#cta">Probar ahora</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1>¡Organiza tus recetas e insumos de forma fácil y GRATIS!</h1>
+        <p>
+          Todo lo que necesitas para gestionar tus recetas y controlar tus
+          insumos, en un solo lugar.
+        </p>
+        <a href="#cta" class="btn btn-lg cta-button">Probar ahora</a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+      <div class="container">
+        <h2>¿Qué ofrece nuestra app?</h2>
+        <div class="row">
+          <div class="col-md-3 text-center">
+            <div class="feature-icon">✅</div>
+            <h4>Guarda tus recetas</h4>
+            <p>Accede a tus recetas favoritas en segundos.</p>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="feature-icon">✅</div>
+            <h4>Controla tus insumos</h4>
+            <p>Agrega, actualiza o elimina ingredientes fácilmente.</p>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="feature-icon">✅</div>
+            <h4>Interfaz fácil</h4>
+            <p>Diseñada para que cualquiera pueda usarla.</p>
+          </div>
+          <div class="col-md-3 text-center">
+            <div class="feature-icon">✅</div>
+            <h4>Acceso inmediato</h4>
+            <p>Tus datos siempre están disponibles.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Section -->
+    <section id="why" class="why-section bg-light">
+      <div class="container">
+        <h2>¿Por qué probarla?</h2>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <h4>Totalmente gratis</h4>
+            <p>Sin costos ocultos ni suscripciones.</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <h4>Fácil y rápido</h4>
+            <p>Empieza a usarla en menos de un minuto.</p>
+          </div>
+          <div class="col-md-4 text-center">
+            <h4>Accesible siempre</h4>
+            <p>Tus datos siempre están a tu alcance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section text-center">
+      <div class="container">
+        <h2>¡Es tu momento!</h2>
+        <p>
+          No pierdas más tiempo con métodos complicados. Prueba nuestra web app
+          ahora y descubre lo fácil que puede ser organizar tus recetas e
+          insumos.
+        </p>
+        <a href="/" class="btn btn-lg cta-button">Probar la app GRATIS</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>
+          ¿Preguntas? Contáctanos en
+          <a href="#">Discord - Cherry's</a>
+        </p>
+        <p>© 2025 MiDashboard. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

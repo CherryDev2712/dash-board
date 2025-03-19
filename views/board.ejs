@@ -1,0 +1,35 @@
+<%- include('load/index') %>
+
+
+  <!-- Incluir la barra lateral (load/nav-header.pug) -->
+  <%- include('load/nav-header') %>
+
+  <!-- Contenedor principal (con margen izquierdo para la barra lateral) -->
+  <main style="margin-left: 250px; padding: 20px;">
+    <h2 class="mt-3">Sección Principal</h2>
+    <p>
+      Este es el contenido principal del dashboard. Aquí puedes agregar gráficos, tablas, formularios, etc.
+    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Gráfico 1</h5>
+            <p class="card-text">
+              Aquí puedes incluir un gráfico o cualquier otro contenido.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Gráfico 2</h5>
+            <p class="card-text">
+              Aquí puedes incluir otro gráfico o contenido adicional.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
