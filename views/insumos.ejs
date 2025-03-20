@@ -2,11 +2,11 @@
 <html lang="es">
 <%- include('load/index') %>
 <body>
-  <!-- Incluir la barra lateral (nav-header.pug) -->
+  <!-- Incluir la barra lateral -->
   <%- include('load/nav-header') %>
 
-  <!-- Contenedor principal (con margen izquierdo para la barra lateral) -->
-  <main style="margin-left: 250px; padding: 20px;">
+  <!-- Contenedor principal -->
+  <main class="main-content">
     <div class="container mt-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
@@ -94,7 +94,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- Modal de Resultados de Búsqueda -->
   <div id="searchResultModal" class="modal fade" tabindex="-1" aria-labelledby="searchResultModalLabel" aria-hidden="true">
