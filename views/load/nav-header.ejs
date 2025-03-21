@@ -53,3 +53,51 @@
     </ul>
   </nav>
 </header>
+
+<style>
+/* Estilos para el contenido principal */
+.main-content {
+  margin-left: 250px; /* Margen para la barra lateral en pantallas grandes */
+  padding: 20px;
+  transition: margin-left 0.3s ease; /* Transición suave */
+}
+
+/* Estilos para el menú lateral */
+.sidebar {
+  transition: transform 0.3s ease;
+}
+
+/* Media query para pantallas pequeñas (menos de 768px) */
+@media (max-width: 767.98px) {
+  .main-content {
+    margin-left: 0; /* Elimina el margen izquierdo en móviles */
+  }
+
+  .sidebar {
+    transform: translateX(-100%); /* Oculta la barra lateral en móviles */
+  }
+
+  /* Muestra el botón de menú en móviles */
+  .navbar-toggler {
+    display: block !important;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1030;
+    background-color: #343a40;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  /* Ajustes para el offcanvas */
+  .offcanvas {
+    width: 250px !important;
+  }
+}
+
+</style>
