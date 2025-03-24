@@ -40,4 +40,10 @@ router.get('/landing', (req, res) => {
   });
 });
 
+router.get(`/landing/form`, (req, res) => {
+  res.render('form', {
+    pagina: 'form',
+    titulo: 'Dash board | form',
+  });
+});
 export default router;
