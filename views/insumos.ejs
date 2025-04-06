@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('load/index') %>
+<body>
+  <!-- Incluir la barra lateral -->
+  <%- include('load/nav-header') %>
+
+  <!-- Contenedor principal -->
+  <main class="main-content">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <!-- Tarjeta para agregar insumos -->
+          <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+              <h4>Agregar Insumos de Cocina</h4>
+            </div>
+            <div class="card-body">
+              <!-- Formulario para buscar insumos -->
+              <div class="form-group mb-4">
+                <label class="form-label" for="search">Buscar Insumo:</label>
+                <div class="input-group">
+                  <input id="search" class="form-control" type="text" placeholder="Nombre del insumo">
+                  <div class="input-group-append">
+                    <button id="searchButton" class="btn btn-outline-secondary" type="button">Buscar</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formulario para agregar insumos -->
+              <form id="insumoForm">
+                <div class="form-group mb-3">
+                  <label class="form-label" for="nombre">Nombre del Insumo:</label>
+                  <input id="nombre" class="form-control" type="text" name="nombre" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label class="form-label" for="categoria">Categoría:</label>
+                  <select id="categoria" class="form-control" name="categoria" required>
+                    <option value="abarrotes">ABARROTES</option>
+                    <option value="aves">AVES</option>
+                    <option value="bebidas y refrescos">BEBIDAS Y REFRESCOS</option>
+                    <option value="carnes">CARNES</option>
+                    <option value="enbutido">ENBUTIDO</option>
+                    <option value="frutas">FRUTAS</option>
+                    <option value="lacteos">LACTEOS</option>
+                    <option value="mariscos">MARISCOS</option>
+                    <option value="pasteles y postres">PASTELES Y POSTRES</option>
+                    <option value="pescados">PESCADOS</option>
+                    <option value="verduras">VERDURAS</option>
+                    <option value="pan y tortilla">PAN Y TORTILLA</option>
+                    <option value="desechables">DESECHABLES</option>
+                  </select>
+                </div>
+                <button class="btn btn-success btn-block" type="submit">Agregar Insumo</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tarjeta para mostrar insumos guardados -->
+          <div class="card mt-4 shadow">
+            <div class="card-header bg-info text-white text-center">
+              <h4>Insumos Guardados</h4>
+            </div>
+            <div id="insumosList" class="card-body">
+              <!-- Insumos se mostrarán aquí -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de Confirmación -->
+  <div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="confirmModalLabel" class="modal-title">Confirmar Categoría</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Es correcta la categoría seleccionada para el insumo "
+          <span id="modalInsumoNombre"></span>
+          "?
+          <p>
+            Categoría: 
+            <span id="modalInsumoCategoria"></span>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+          <button id="confirmButton" class="btn btn-primary" type="button">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Resultados de Búsqueda -->
+  <div id="searchResultModal" class="modal fade" tabindex="-1" aria-labelledby="searchResultModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="searchResultModalLabel" class="modal-title">Resultado de Búsqueda</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="searchResultBody" class="modal-body">
+          <!-- Resultados de búsqueda se mostrarán aquí -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Alerta -->
+  <div id="alertModal" class="modal fade" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="alertModalLabel" class="modal-title">Alerta</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="alertModalBody" class="modal-body">
+          <!-- Mensaje de alerta se mostrará aquí -->
+        </div>
+        <div class="modal-footer">
+          <button id="alertCancel" class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+          <button id="alertConfirm" class="btn btn-primary" type="button">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script>
+    let currentSearchTerm = '';
+    let editInsumoIndex = null;
+
+    // Función para mostrar los insumos
+    function displayInsumos(insumos) {
+      const insumosListDiv = document.getElementById('insumosList');
+      insumosListDiv.innerHTML = ''; // Limpiar la lista anterior
+      if (insumos && insumos.length > 0) {
+        insumos.forEach((insumo, index) => {
+          const insumoItem = document.createElement('div');
+          insumoItem.className = 'insumo-item mb-3 p-2 border rounded';
+          insumoItem.innerHTML = `
+            <p>Nombre: ${insumo.nombre}, Categoría: ${insumo.categoria}</p>
+            <button class="btn btn-info btn-sm mr-2 editButton" data-index="${index}">Editar</button>
+            <button class="btn btn-danger btn-sm deleteButton" data-index="${index}">Borrar</button>
+          `;
+          insumosListDiv.appendChild(insumoItem);
+        });
+
+        // Agregar eventos a los botones de editar y borrar
+        document.querySelectorAll('.editButton').forEach(button => {
+          button.addEventListener('click', function() {
+            editInsumoIndex = this.getAttribute('data-index');
+            const insumo = insumos[editInsumoIndex];
+            document.getElementById('nombre').value = insumo.nombre;
+            document.getElementById('categoria').value = insumo.categoria;
+          });
+        });
+
+        document.querySelectorAll('.deleteButton').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            insumos.splice(index, 1);
+            localStorage.setItem('insumos', JSON.stringify(insumos));
+            displayInsumos(insumos);
+          });
+        });
+      } else {
+        insumosListDiv.textContent = 'No hay insumos guardados.';
+      }
+    }
+
+    // Función para mostrar alertas
+    function showAlert(message) {
+      document.getElementById('alertModalBody').textContent = message;
+      new bootstrap.Modal(document.getElementById('alertModal')).show();
+    }
+
+    // Cargar insumos al iniciar la página
+    window.addEventListener('load', function() {
+      let insumos = localStorage.getItem('insumos');
+      if (insumos) {
+        insumos = JSON.parse(insumos);
+        displayInsumos(insumos);
+      } else {
+        document.getElementById('insumosList').textContent = 'No hay insumos guardados.';
+      }
+    });
+
+    // Manejar el envío del formulario
+    document.getElementById('insumoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const categoria = document.getElementById('categoria').value;
+
+      // Mostrar el modal de confirmación
+      document.getElementById('modalInsumoNombre').textContent = nombre;
+      document.getElementById('modalInsumoCategoria').textContent = categoria;
+      new bootstrap.Modal(document.getElementById('confirmModal')).show();
+    });
+
+    // Confirmar la adición del insumo
+    document.getElementById('confirmButton').addEventListener('click', function() {
+      const nombre = document.getElementById('nombre').value;
+      const categoria = document.getElementById('categoria').value;
+      const insumo = { nombre, categoria };
+
+      let insumos = localStorage.getItem('insumos');
+      if (insumos === null) {
+        insumos = [];
+      } else {
+        insumos = JSON.parse(insumos);
+      }
+
+      insumos.push(insumo);
+      localStorage.setItem('insumos', JSON.stringify(insumos));
+
+      // Limpiar el formulario
+      document.getElementById('insumoForm').reset();
+
+      // Ocultar el modal
+      new bootstrap.Modal(document.getElementById('confirmModal')).hide();
+
+      // Actualizar la lista de insumos
+      displayInsumos(JSON.parse(localStorage.getItem('insumos')));
+    });
+
+    // Buscar insumos
+    document.getElementById('searchButton').addEventListener('click', function() {
+      const searchTerm = document.getElementById('search').value.trim();
+      currentSearchTerm = searchTerm; // Guardar el término de búsqueda
+
+      let insumos = localStorage.getItem('insumos');
+      if (searchTerm !== '') {
+        if (insumos) {
+          insumos = JSON.parse(insumos);
+          const foundInsumos = insumos.filter(insumo => insumo.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
+          if (foundInsumos.length > 0) {
+            // Mostrar resultados en el modal
+            document.getElementById('searchResultBody').innerHTML = foundInsumos.map(insumo => `<p>Nombre: ${insumo.nombre}, Categoría: ${insumo.categoria}</p>`).join('');
+            new bootstrap.Modal(document.getElementById('searchResultModal')).show();
+          } else {
+            showAlert(`El insumo "${searchTerm}" no se encuentra. ¿Desea agregarlo?`);
+          }
+        } else {
+          showAlert(`El insumo "${searchTerm}" no se encuentra. ¿Desea agregarlo?`);
+        }
+      } else {
+        // Si el término de búsqueda está vacío, mostrar todos los insumos
+        if (insumos) {
+          displayInsumos(JSON.parse(insumos));
+        }
+      }
+    });
+
+    // Confirmar agregar insumo desde la alerta
+    document.getElementById('alertConfirm').addEventListener('click', function() {
+      document.getElementById('nombre').value = currentSearchTerm;
+      document.getElementById('nombre').focus();
+      new bootstrap.Modal(document.getElementById('alertModal')).hide();
+    });
+
+    // Cancelar agregar insumo desde la alerta
+    document.getElementById('alertCancel').addEventListener('click', function() {
+      new bootstrap.Modal(document.getElementById('alertModal')).hide();
+    });
+  </script>
+</body>
+</html>

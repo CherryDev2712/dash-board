@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Gastos</title>
+    <!-- Enlace a Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<main class="bg-light">
+  <!-- Incluir la barra lateral -->
+  <%- include('load/nav-header') %>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Gestión de Gastos</h1>
+
+        <!-- Formulario para ingresar los datos -->
+        <div class="card p-4 shadow-sm mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Tipo de Gasto</label>
+                    <select class="form-select" id="tipoGasto" onchange="guardarCampos()">
+                        <option value="fijo negocio">Fijo Casa</option>
+                        <option value="variable negocio">Variable negocio</option>
+                        <option value="deuda">Deuda</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Concepto de Gasto</label>
+                    <select class="form-select" id="conceptoGasto" onchange="guardarCampos()">
+                        <option selected disabled value>Concepto Gasto...</option>
+                        <option value="comida">comida</option>
+                        <option value="insumo">insumos</option>
+                        <option value="servicio">servicios</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Establecimiento</label>
+                    <input type="text" class="form-control" id="establecimiento" onchange="guardarCampos()">
+                </div>
+
+                <hr>
+                
+                <div class="col-md-3">
+                    <label class="form-label">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="nombreProducto">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Unidades</label>
+                    <input type="number" class="form-control" id="unidades" oninput="calcularMontoTotal()" >
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Medida de Unidad</label>
+                    <input type="text" class="form-control" id="medidaUnidad">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Precio x Unidad</label>
+                    <input type="number" class="form-control" id="precioUnidad" step="0.01" oninput="calcularMontoTotal()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Monto Total</label>
+                    <input type="number" class="form-control" id="montoTotal" step="0.01" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Imagen del Producto</label>
+                    <input type="file" class="form-control" id="imagenProducto" accept="image/*">
+                    <small class="text-muted">Selecciona una imagen del producto</small>
+                </div>
+                <div class="col-12 text-center mt-3">
+                    <button class="btn btn-primary" onclick="agregarFila()">Agregar Gasto</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla para mostrar los datos ingresados -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Tipo Gasto</th>
+                        <th>Concepto Gasto</th>
+                        <th>Establecimiento</th>
+                        <th>Nombre Producto</th>
+                        <th>Imagen</th>
+                        <th>Unidades</th>
+                        <th>Medida de Unidad</th>
+                        <th>Precio x Unidad</th>
+                        <th>Monto Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaGastos">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Botones para reiniciar y enviar la tabla -->
+        <div class="text-center mt-3">
+            <button class="btn btn-danger" onclick="confirmarReinicioTabla()">Reiniciar Tabla</button>
+            <button class="btn btn-success" type="submit" onclick="enviarTabla()">Enviar Tabla</button>
+        </div>
+    </div>
+    <!-- Script de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Función para calcular el monto total automáticamente
+        function calcularMontoTotal() {
+            const unidades = parseFloat(document.getElementById("unidades").value) || 0;
+            const precioUnidad = parseFloat(document.getElementById("precioUnidad").value) || 0;
+            const montoTotal = unidades * precioUnidad;
+            document.getElementById("montoTotal").value = montoTotal.toFixed(2);
+        }
+
+        // Función para guardar los campos "Tipo de Gasto", "Concepto de Gasto" y "Establecimiento" en el LocalStorage
+        function guardarCampos() {
+            const tipoGasto = document.getElementById("tipoGasto").value;
+            const conceptoGasto = document.getElementById("conceptoGasto").value;
+            const establecimiento = document.getElementById("establecimiento").value;
+            localStorage.setItem('tipoGasto', tipoGasto);
+            localStorage.setItem('conceptoGasto', conceptoGasto);
+            localStorage.setItem('establecimiento', establecimiento);
+        }
+
+        // Función para cargar los datos guardados en LocalStorage
+        function cargarCampos() {
+            const tipoGasto = localStorage.getItem('tipoGasto');
+            const conceptoGasto = localStorage.getItem('conceptoGasto');
+            const establecimiento = localStorage.getItem('establecimiento');
+
+            if (tipoGasto) document.getElementById('tipoGasto').value = tipoGasto;
+            if (conceptoGasto) document.getElementById('conceptoGasto').value = conceptoGasto;
+            if (establecimiento) document.getElementById('establecimiento').value = establecimiento;
+        }
+
+        // Función para convertir imagen a Base64
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Función para cargar los datos de la tabla desde el LocalStorage
+        function cargarDatos() {
+            cargarCampos();
+            const datos = obtenerDatosLocalStorage();
+            const tabla = document.getElementById("tablaGastos");
+            datos.forEach((gasto) => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${gasto.tipoGasto}</td>
+                    <td>${gasto.conceptoGasto}</td>
+                    <td>${gasto.establecimiento}</td>
+                    <td>${gasto.nombreProducto}</td>
+                    <td>${gasto.imagenNombre ? gasto.imagenNombre : 'Sin imagen'}</td>
+                    <td>${gasto.unidades}</td>
+                    <td>${gasto.medidaUnidad}</td>
+                    <td>${gasto.precioUnidad}</td>
+                    <td>${gasto.montoTotal}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="eliminarFila('${gasto.id}', this)">Eliminar</button></td>
+                `;
+                tabla.appendChild(fila);
+            });
+        }
+
+        // Función para obtener los datos del LocalStorage
+        function obtenerDatosLocalStorage() {
+            return JSON.parse(localStorage.getItem("gastos")) || [];
+        }
+
+        // Función para guardar los datos en el LocalStorage
+        function guardarDatosLocalStorage(datos) {
+            localStorage.setItem("gastos", JSON.stringify(datos));
+        }
+
+        // Función para agregar una fila a la tabla
+        async function agregarFila() {
+            const imagenInput = document.getElementById("imagenProducto");
+            let imagenBase64 = null;
+            let imagenNombre = null;
+
+            if (imagenInput.files && imagenInput.files[0]) {
+                imagenNombre = imagenInput.files[0].name;
+                imagenBase64 = await getBase64(imagenInput.files[0]);
+            }
+
+            const gasto = {
+                id: Date.now().toString(),
+                tipoGasto: document.getElementById("tipoGasto").value,
+                conceptoGasto: document.getElementById("conceptoGasto").value,
+                establecimiento: document.getElementById("establecimiento").value,
+                nombreProducto: document.getElementById("nombreProducto").value,
+                unidades: document.getElementById("unidades").value,
+                medidaUnidad: document.getElementById("medidaUnidad").value,
+                precioUnidad: document.getElementById("precioUnidad").value,
+                montoTotal: document.getElementById("montoTotal").value,
+                imagenBase64: imagenBase64,
+                imagenNombre: imagenNombre
+            };
+
+            const tabla = document.getElementById("tablaGastos");
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${gasto.tipoGasto}</td>
+                <td>${gasto.conceptoGasto}</td>
+                <td>${gasto.establecimiento}</td>
+                <td>${gasto.nombreProducto}</td>
+                <td>${gasto.imagenNombre ? gasto.imagenNombre : 'Sin imagen'}</td>
+                <td>${gasto.unidades}</td>
+                <td>${gasto.medidaUnidad}</td>
+                <td>${gasto.precioUnidad}</td>
+                <td>${gasto.montoTotal}</td>
+                <td><button class="btn btn-danger btn-sm" onclick="eliminarFila('${gasto.id}', this)">Eliminar</button></td>
+            `;
+            tabla.appendChild(fila);
+
+            const datos = obtenerDatosLocalStorage();
+            datos.push(gasto);
+            guardarDatosLocalStorage(datos);
+
+            reiniciarFormulario();
+        }
+
+        // Función para eliminar una fila de la tabla y del LocalStorage
+        function eliminarFila(id, boton) {
+            const datos = obtenerDatosLocalStorage().filter(gasto => gasto.id !== id);
+            guardarDatosLocalStorage(datos);
+            boton.closest("tr").remove();
+        }
+
+        // Función para reiniciar el formulario
+        function reiniciarFormulario() {
+            document.getElementById("nombreProducto").value = "";
+            document.getElementById("unidades").value = "";
+            document.getElementById("medidaUnidad").value = "";
+            document.getElementById("precioUnidad").value = "";
+            document.getElementById("montoTotal").value = "";
+            document.getElementById("imagenProducto").value = "";
+        }
+
+        // Función para confirmar y reiniciar la tabla y el formulario
+        function confirmarReinicioTabla() {
+            if (confirm("¿Seguro que quieres borrar el progreso?")) {
+                reiniciarTabla();
+                reiniciarFormulario();
+            }
+        }
+
+        // Función para reiniciar la tabla y el LocalStorage
+        function reiniciarTabla() {
+            localStorage.removeItem("gastos");
+            document.getElementById("tablaGastos").innerHTML = "";
+        }
+
+        // Función para enviar la tabla (simulado con una alerta)
+        function enviarTabla() {
+            const datos = obtenerDatosLocalStorage();
+            if (datos.length === 0) {
+                alert("No hay datos en la tabla para enviar.");
+                return;
+            }
+            console.log("Datos de la tabla:", datos);
+            alert("Tabla enviada con éxito!");
+        }
+
+        // Cargar los datos cuando la página se carga
+        document.addEventListener("DOMContentLoaded", cargarDatos);
+    </script>
+</main>
+</html>

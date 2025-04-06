@@ -1,0 +1,459 @@
+<!-- Botón de sandwich para móviles -->
+<button class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+<!-- Offcanvas (menú deslizable para móviles) -->
+<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">MiDashBoard</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link text-white" href="/">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="/board">Board</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="/agregar-receta">Agregar Receta</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="/agregar-insumos">Agregar Insumo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="/gestorDeGastos">gestor de gastos</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Barra lateral para pantallas grandes -->
+<nav class="sidebar bg-dark text-white d-none d-md-block" style="width: 250px; height: 100vh; position: fixed; top: 0; left: 0; padding: 20px; overflow-y: auto;">
+  <h2><a class="nav-link text-white" href="/">MiDashBoard</a></h2>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/">Inicio</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/board">Board</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/agregar-receta">Agregar Receta</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/agregar-insumos">Agregar Insumo</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/gestorDeGastos">gestor de gastos</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Navbar para móviles -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-block d-md-none">
+  <div class="container-fluid">
+    <!-- Enlace de Registrarse -->
+    <a
+      id="register-link"
+      class="nav-link nav-link-custom"
+      data-bs-toggle="modal"
+      data-bs-target="#registerModal"
+    >
+      Registrarse
+    </a>
+    <!-- Enlace de Iniciar Sesión o Icono de Usuario -->
+    <div id="user-section">
+      <!-- Si el usuario no está logueado, mostrar enlace de Iniciar Sesión -->
+      <a
+        id="login-link"
+        class="nav-link nav-link-custom"
+        data-bs-toggle="modal"
+        data-bs-target="#loginModal"
+      >
+        Iniciar Sesión
+      </a>
+      <!-- Si el usuario está logueado, mostrar icono de usuario con menú desplegable -->
+      <div id="user-icon" class="dropdown" style="display: none;">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-person-circle"></i>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <button id="editProfileBtn" class="dropdown-item">Editar Perfil</button>
+          </li>
+          <li>
+            <button id="deleteProfileBtn" class="dropdown-item">Eliminar Perfil</button>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <button id="logoutBtn" class="dropdown-item">Cerrar Sesión</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Navbar para pantallas grandes (arriba del contenido) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-md-block" style="position: fixed; top: 0; left: 250px; right: 0; z-index: 1000;">
+  <div class="container-fluid justify-content-end">
+    <!-- Enlace de Registrarse -->
+    <a
+      id="register-link"
+      class="nav-link nav-link-custom"
+      data-bs-toggle="modal"
+      data-bs-target="#registerModal"
+    >
+      Registrarse
+    </a>
+    <!-- Enlace de Iniciar Sesión o Icono de Usuario -->
+    <div id="user-section">
+      <!-- Si el usuario no está logueado, mostrar enlace de Iniciar Sesión -->
+      <a
+        id="login-link"
+        class="nav-link nav-link-custom"
+        data-bs-toggle="modal"
+        data-bs-target="#loginModal"
+      >
+        Iniciar Sesión
+      </a>
+      <!-- Si el usuario está logueado, mostrar icono de usuario con menú desplegable -->
+      <div id="user-icon" class="dropdown" style="display: none;">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-person-circle"></i>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <button id="editProfileBtn" class="dropdown-item">Editar Perfil</button>
+          </li>
+          <li>
+            <button id="deleteProfileBtn" class="dropdown-item">Eliminar Perfil</button>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            <button id="logoutBtn" class="dropdown-item">Cerrar Sesión</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Modales -->
+<!-- Modal de Log-in -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" required />
+          </div>
+          <div id="loginError" class="error-message" style="display: none;">Correo o contraseña incorrectos.</div>
+          <button type="submit" class="btn btn-success">Iniciar Sesión</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Registro -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Registrarse</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="registerForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" required />
+          </div>
+          <div id="registerError" class="error-message" style="display: none;">El correo ya está registrado.</div>
+          <button type="submit" class="btn btn-success">Registrarse</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Perfil -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">Perfil de Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Nombre:</strong> <span id="profileName"></span></p>
+        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+        <button id="editProfileBtn" class="btn btn-primary">Editar Perfil</button>
+        <button id="deleteProfileBtn" class="btn btn-danger">Borrar Perfil</button>
+        <button id="logoutBtn" class="btn btn-warning">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+  /* Estilos para el contenido principal */
+  .main-content {
+    margin-left: 250px; /* Margen para la barra lateral en pantallas grandes */
+    padding: 20px;
+    transition: margin-left 0.3s ease; /* Transición suave */
+  }
+
+  /* Estilos para el menú lateral */
+  .sidebar {
+    transition: transform 0.3s ease;
+  }
+
+  /* Media query para pantallas pequeñas (menos de 768px) */
+  @media (max-width: 767.98px) {
+    .main-content {
+      margin-left: 0; /* Elimina el margen izquierdo en móviles */
+    }
+
+    .sidebar {
+      transform: translateX(-100%); /* Oculta la barra lateral en móviles */
+    }
+
+    /* Muestra el botón de menú en móviles */
+    .navbar-toggler {
+      display: block !important;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1030;
+      background-color: #343a40;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* Ajustes para el offcanvas */
+    .offcanvas {
+      width: 250px !important;
+    }
+
+    /* Ajustes para el Navbar con icono de usuario en móviles */
+    .navbar {
+      margin-left: 0 !important; /* Elimina el margen izquierdo en móviles */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1020;
+      background-color: #f8f9fa;
+      padding: 10px;
+    }
+
+    .navbar .container-fluid {
+      justify-content: flex-end; /* Alinea los elementos a la derecha */
+    }
+
+    .navbar .nav-link-custom {
+      margin-right: 10px; /* Espaciado entre enlaces */
+    }
+
+    .navbar .dropdown-menu {
+      position: absolute;
+      right: 0;
+      left: auto; /* Alinea el menú desplegable a la derecha */
+    }
+  }
+
+  /* Estilos para el Navbar con icono de usuario */
+  .nav-link-custom {
+    cursor: pointer;
+    color: #4caf50;
+    text-decoration: none;
+  }
+
+  .nav-link-custom:hover {
+    text-decoration: underline;
+  }
+
+  .user-icon {
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-left: 10px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+  .dropdown-menu {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-item {
+    color: #333;
+    padding: 8px 16px;
+  }
+
+  .dropdown-item:hover {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .dropdown-divider {
+    border-top: 1px solid #ddd;
+  }
+</style>
+
+<!-- JavaScript -->
+<script>
+  let db;
+  const dbName = 'UserDB';
+  const storeName = 'users';
+
+  // Abrir o crear la base de datos
+  const request = indexedDB.open(dbName, 1);
+
+  request.onupgradeneeded = (event) => {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains(storeName)) {
+      db.createObjectStore(storeName, { keyPath: 'email' });
+    }
+  };
+
+  request.onsuccess = (event) => {
+    db = event.target.result;
+    checkUserLoggedIn();
+  };
+
+  request.onerror = (event) => {
+    console.error('Error al abrir IndexedDB:', event.target.error);
+  };
+
+  // Verificar si hay un usuario logueado al cargar la página
+  function checkUserLoggedIn() {
+    const transaction = db.transaction([storeName], 'readonly');
+    const store = transaction.objectStore(storeName);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      if (request.result.length > 0) {
+        const user = request.result[0];
+        showUserIcon(user);
+      } else {
+        alert('No hay un usuario registrado. Serás redirigido a la página de inicio.');
+        window.location.href = '/landing';
+      }
+    };
+
+    request.onerror = (event) => {
+      console.error('Error al obtener el usuario:', event.target.error);
+    };
+  }
+
+  // Mostrar ícono de usuario y ocultar enlaces de Registrarse e Iniciar Sesión
+  function showUserIcon(user) {
+    const userIcon = document.getElementById('user-icon');
+    const registerLink = document.getElementById('register-link');
+    const loginLink = document.getElementById('login-link');
+
+    userIcon.style.display = 'inline-block';
+    registerLink.style.display = 'none';
+    loginLink.style.display = 'none';
+
+    document.getElementById('profileName').textContent = user.name;
+    document.getElementById('profileEmail').textContent = user.email;
+  }
+
+  // Manejar la edición del perfil
+  document.getElementById('editProfileBtn').addEventListener('click', () => {
+    alert('Editar perfil: Esta funcionalidad está en desarrollo.');
+  });
+
+  // Manejar la eliminación del perfil
+  document.getElementById('deleteProfileBtn').addEventListener('click', () => {
+    const email = document.getElementById('profileEmail').textContent;
+    deleteUser(email);
+    alert('Perfil eliminado correctamente.');
+    window.location.href = '/landing';
+  });
+
+  // Manejar el cierre de sesión
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    const email = document.getElementById('profileEmail').textContent;
+    deleteUser(email);
+    alert('Sesión cerrada correctamente.');
+    window.location.href = '/landing';
+  });
+
+  // Eliminar usuario de IndexedDB
+  function deleteUser(email) {
+    const transaction = db.transaction([storeName], 'readwrite');
+    const store = transaction.objectStore(storeName);
+    const request = store.delete(email);
+
+    request.onsuccess = () => {
+      console.log('Usuario eliminado de IndexedDB');
+      hideUserIcon();
+    };
+
+    request.onerror = (event) => {
+      console.error('Error al eliminar el usuario:', event.target.error);
+    };
+  }
+
+  // Ocultar ícono de usuario
+  function hideUserIcon() {
+    const userIcon = document.getElementById('user-icon');
+    userIcon.style.display = 'none';
+    document.getElementById('login-link').style.display = 'inline-block';
+  }
+</script>
