@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MiDashBoard - Estadísticas de Recetas</title>
+  <title>MiDashBoard - Gestión Culinaria</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
@@ -104,6 +104,20 @@
       border-left-color: #e74a3b;
     }
 
+    .stat-card.insumos {
+      border-left-color: #6f42c1;
+    }
+
+    .stat-card.gastos {
+      border-left-color: #fd7e14;
+    }
+
+    /* Tabla de datos */
+    .data-table {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
     /* Responsive Adjustments */
     @media (max-width: 767.98px) {
       .main-content {
@@ -130,25 +144,25 @@
     .delay-2 { animation-delay: 0.4s; }
     .delay-3 { animation-delay: 0.6s; }
     .delay-4 { animation-delay: 0.8s; }
+    .delay-5 { animation-delay: 1.0s; }
+    .delay-6 { animation-delay: 1.2s; }
   </style>
 </head>
 <body>
-  <%- include('load/index') %>
-  <%- include('load/nav-header') %>
-
-  <br>
-  
+    <!-- Incluir el nav-header -->
+    <%- include('load/nav-header') %>
+    <br>
   <main class="main-content">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i> Inicio</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-speedometer2"></i> Dashboard</li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-speedometer2"></i> Dashboard Completo</li>
       </ol>
     </nav>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1><i class="bi bi-speedometer2"></i> Estadísticas de Recetas</h1>
+      <h1><i class="bi bi-speedometer2"></i> Gestión Culinaria Completa</h1>
       <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="timeRangeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-calendar-range"></i> Últimos 30 días
@@ -165,7 +179,8 @@
 
     <!-- Stats Cards -->
     <div class="row mb-4">
-      <div class="col-xl-3 col-md-6 mb-4 animated-card">
+      <!-- Recetas -->
+      <div class="col-xl-2 col-md-4 mb-4 animated-card">
         <div class="card stat-card total-recipes h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -182,7 +197,7 @@
         </div>
       </div>
 
-      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-1">
+      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-1">
         <div class="card stat-card entradas h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -199,7 +214,7 @@
         </div>
       </div>
 
-      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-2">
+      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-2">
         <div class="card stat-card platos h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -216,7 +231,7 @@
         </div>
       </div>
 
-      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-3">
+      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-3">
         <div class="card stat-card postres h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -227,6 +242,111 @@
               </div>
               <div class="col-auto">
                 <i class="bi bi-cake2 text-warning"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-4">
+        <div class="card stat-card bebidas h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                  Bebidas</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="bebidasCount">0</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-cup-straw text-danger"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-5">
+        <div class="card stat-card insumos h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-purple text-uppercase mb-1">
+                  Insumos</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="insumosCount">0</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-basket text-purple"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Row of Stats Cards -->
+    <div class="row mb-4">
+      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-6">
+        <div class="card stat-card gastos h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-orange text-uppercase mb-1">
+                  Total Gastos</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalGastos">$0</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-cash-coin text-orange"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4 animated-card">
+        <div class="card stat-card h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                  Insumos Únicos</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="insumosUnicos">0</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-tags text-secondary"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-1">
+        <div class="card stat-card h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                  Promedio Insumos/Receta</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="promedioInsumos">0</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-calculator text-info"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-2">
+        <div class="card stat-card h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                  Última Actualización</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="ultimaActualizacion">-</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-clock-history text-success"></i>
               </div>
             </div>
           </div>
@@ -271,7 +391,7 @@
       <div class="col-lg-6 mb-4">
         <div class="card h-100">
           <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-star"></i> Ingredientes Más Usados</h5>
+            <h5 class="card-title"><i class="bi bi-star"></i> Insumos Más Usados</h5>
           </div>
           <div class="card-body">
             <div class="chart-container">
@@ -281,28 +401,95 @@
         </div>
       </div>
 
-      <!-- Recetas recientes -->
+      <!-- Gastos por categoría -->
+      <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-transparent">
+            <h5 class="card-title"><i class="bi bi-pie-chart-fill"></i> Distribución de Gastos</h5>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="gastosChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Tables Row -->
+    <div class="row">
+      <!-- Tabla de recetas recientes -->
       <div class="col-lg-6 mb-4">
         <div class="card h-100">
           <div class="card-header bg-transparent">
             <h5 class="card-title"><i class="bi bi-clock-history"></i> Recetas Recientes</h5>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Receta</th>
-                    <th>Tipo</th>
-                    <th>Fecha</th>
-                    <th>Insumos</th>
-                  </tr>
-                </thead>
-                <tbody id="recentRecipesTable">
-                  <!-- Las recetas se cargarán aquí -->
-                </tbody>
-              </table>
-            </div>
+          <div class="card-body data-table">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Receta</th>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th>Insumos</th>
+                </tr>
+              </thead>
+              <tbody id="recentRecipesTable">
+                <!-- Las recetas se cargarán aquí -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de insumos -->
+      <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-transparent">
+            <h5 class="card-title"><i class="bi bi-basket"></i> Lista de Insumos</h5>
+          </div>
+          <div class="card-body data-table">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Insumo</th>
+                  <th>Cantidad</th>
+                  <th>Unidad</th>
+                  <th>Costo</th>
+                </tr>
+              </thead>
+              <tbody id="insumosTable">
+                <!-- Los insumos se cargarán aquí -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Data Tables Row -->
+    <div class="row">
+      <!-- Tabla de gastos -->
+      <div class="col-12 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-transparent">
+            <h5 class="card-title"><i class="bi bi-cash-stack"></i> Registro de Gastos</h5>
+          </div>
+          <div class="card-body data-table">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th>Categoría</th>
+                  <th>Monto</th>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody id="gastosTable">
+                <!-- Los gastos se cargarán aquí -->
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -320,7 +507,7 @@
   <script>
     // Variables globales
     let timeRange = 30; // Por defecto últimos 30 días
-    let typeDistributionChart, recipesOverTimeChart, topIngredientsChart;
+    let typeDistributionChart, recipesOverTimeChart, topIngredientsChart, gastosChart;
 
     // Función para cambiar el rango de tiempo
     function changeTimeRange(days) {
@@ -342,11 +529,21 @@
     function loadData() {
       // Obtener todas las recetas del localStorage
       const recipes = [];
+      const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+      const gastos = JSON.parse(localStorage.getItem('gastos')) || [];
+      
+      // Obtener todas las recetas (excluyendo insumos, gastos y theme)
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key !== 'insumos' && key !== 'theme') {
-          const recipe = JSON.parse(localStorage.getItem(key));
-          recipes.push(recipe);
+        if (!['insumos', 'gastos', 'theme'].includes(key)) {
+          try {
+            const recipe = JSON.parse(localStorage.getItem(key));
+            if (recipe && recipe.title) { // Validar que sea una receta
+              recipes.push(recipe);
+            }
+          } catch (e) {
+            console.error(`Error al parsear item ${key}:`, e);
+          }
         }
       }
 
@@ -360,18 +557,30 @@
         }) : 
         recipes;
 
+      const filteredGastos = timeRange > 0 ? 
+        gastos.filter(gasto => {
+          const gastoDate = new Date(gasto.fecha);
+          const cutoffDate = new Date();
+          cutoffDate.setDate(cutoffDate.getDate() - timeRange);
+          return gastoDate >= cutoffDate;
+        }) : 
+        gastos;
+
       // Actualizar estadísticas
-      updateStats(filteredRecipes, recipes);
+      updateStats(filteredRecipes, recipes, insumos, filteredGastos, gastos);
       
       // Actualizar gráficos
-      updateCharts(filteredRecipes, recipes);
+      updateCharts(filteredRecipes, recipes, filteredGastos);
       
-      // Actualizar tabla de recetas recientes
+      // Actualizar tablas
       updateRecentRecipesTable(filteredRecipes);
+      updateInsumosTable(insumos);
+      updateGastosTable(filteredGastos);
     }
 
     // Función para actualizar las estadísticas
-    function updateStats(filteredRecipes, allRecipes) {
+    function updateStats(filteredRecipes, allRecipes, insumos, filteredGastos, allGastos) {
+      // Estadísticas de recetas
       document.getElementById('totalRecipes').textContent = allRecipes.length;
       
       // Contar por tipo
@@ -384,11 +593,47 @@
       document.getElementById('platosCount').textContent = platos;
       document.getElementById('postresCount').textContent = postres;
       document.getElementById('bebidasCount').textContent = bebidas;
+      
+      // Estadísticas de insumos
+      document.getElementById('insumosCount').textContent = insumos.reduce((sum, insumo) => sum + (parseFloat(insumo.cantidad) || 0), 0).toFixed(2);
+      document.getElementById('insumosUnicos').textContent = [...new Set(insumos.map(i => i.nombre))].length;
+      
+      // Calcular promedio de insumos por receta
+      const promedio = allRecipes.length > 0 ? 
+        (allRecipes.reduce((sum, receta) => sum + (receta.ingredients?.length || 0), 0) / allRecipes.length).toFixed(1) : 
+        '0';
+      document.getElementById('promedioInsumos').textContent = promedio;
+      
+      // Estadísticas de gastos
+      const totalGastos = allGastos.reduce((sum, gasto) => sum + (parseFloat(gasto.monto) || 0), 0);
+      document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
+      
+      // Última actualización
+      const lastUpdated = new Date(Math.max(
+        ...allRecipes.map(r => new Date(r.date).getTime()),
+        ...allGastos.map(g => new Date(g.fecha).getTime())
+      ));
+      document.getElementById('ultimaActualizacion').textContent = isNaN(lastUpdated.getTime()) ? 
+        'Nunca' : 
+        lastUpdated.toLocaleDateString() + ' ' + lastUpdated.toLocaleTimeString();
     }
 
     // Función para actualizar los gráficos
-    function updateCharts(filteredRecipes, allRecipes) {
-      // Datos para el gráfico de distribución por tipo
+    function updateCharts(filteredRecipes, allRecipes, filteredGastos) {
+      // Colores para los gráficos
+      const backgroundColors = [
+        'rgba(78, 115, 223, 0.8)',    // Azul
+        'rgba(28, 200, 138, 0.8)',    // Verde
+        'rgba(54, 185, 204, 0.8)',    // Cyan
+        'rgba(246, 194, 62, 0.8)',    // Amarillo
+        'rgba(231, 74, 59, 0.8)',     // Rojo
+        'rgba(111, 66, 193, 0.8)',    // Morado
+        'rgba(253, 126, 20, 0.8)'     // Naranja
+      ];
+
+      const borderColors = backgroundColors.map(color => color.replace('0.8', '1'));
+
+      // Gráfico de distribución por tipo (Pie)
       const typeData = {
         'entrada': filteredRecipes.filter(r => r.type === 'entrada').length,
         'plato fuerte': filteredRecipes.filter(r => r.type === 'plato fuerte').length,
@@ -396,35 +641,17 @@
         'bebida': filteredRecipes.filter(r => r.type === 'bebida').length
       };
 
-      // Colores para los gráficos
-      const backgroundColors = [
-        'rgba(78, 115, 223, 0.8)',
-        'rgba(28, 200, 138, 0.8)',
-        'rgba(54, 185, 204, 0.8)',
-        'rgba(246, 194, 62, 0.8)'
-      ];
-
-      const borderColors = [
-        'rgba(78, 115, 223, 1)',
-        'rgba(28, 200, 138, 1)',
-        'rgba(54, 185, 204, 1)',
-        'rgba(246, 194, 62, 1)'
-      ];
-
-      // Gráfico de distribución por tipo (Pie)
-      if (typeDistributionChart) {
-        typeDistributionChart.destroy();
-      }
+      if (typeDistributionChart) typeDistributionChart.destroy();
       
       const typeCtx = document.getElementById('typeDistributionChart').getContext('2d');
       typeDistributionChart = new Chart(typeCtx, {
         type: 'pie',
         data: {
-          labels: Object.keys(typeData),
+          labels: Object.keys(typeData).filter(k => typeData[k] > 0),
           datasets: [{
-            data: Object.values(typeData),
-            backgroundColor: backgroundColors,
-            borderColor: borderColors,
+            data: Object.values(typeData).filter(v => v > 0),
+            backgroundColor: backgroundColors.slice(0, Object.keys(typeData).length),
+            borderColor: borderColors.slice(0, Object.keys(typeData).length),
             borderWidth: 1
           }]
         },
@@ -450,7 +677,7 @@
         }
       });
 
-      // Datos para el gráfico de recetas agregadas por tiempo
+      // Gráfico de recetas agregadas por tiempo (Line)
       const now = new Date();
       const timeData = {};
       const timeLabels = [];
@@ -471,7 +698,7 @@
         const recipeDate = new Date(recipe.date);
         const diffDays = Math.floor((now - recipeDate) / (1000 * 60 * 60 * 24));
         
-        if (diffDays >= 0 && diffDays < timeRange) {
+        if (diffDays >= 0 && diffDays < (timeRange > 0 ? timeRange : 30)) {
           const date = new Date(recipeDate);
           const dateKey = timeRange > 90 ? 
             `${date.getMonth() + 1}/${date.getFullYear()}` : 
@@ -481,10 +708,7 @@
         }
       });
 
-      // Gráfico de recetas agregadas por tiempo (Line)
-      if (recipesOverTimeChart) {
-        recipesOverTimeChart.destroy();
-      }
+      if (recipesOverTimeChart) recipesOverTimeChart.destroy();
       
       const timeCtx = document.getElementById('recipesOverTimeChart').getContext('2d');
       recipesOverTimeChart = new Chart(timeCtx, {
@@ -518,10 +742,10 @@
         }
       });
 
-      // Datos para el gráfico de ingredientes más usados
+      // Gráfico de ingredientes más usados (Bar)
       const ingredientCounts = {};
       allRecipes.forEach(recipe => {
-        recipe.ingredients.forEach(ing => {
+        recipe.ingredients?.forEach(ing => {
           if (ingredientCounts[ing.name]) {
             ingredientCounts[ing.name]++;
           } else {
@@ -534,10 +758,7 @@
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
 
-      // Gráfico de ingredientes más usados (Bar)
-      if (topIngredientsChart) {
-        topIngredientsChart.destroy();
-      }
+      if (topIngredientsChart) topIngredientsChart.destroy();
       
       const ingredientsCtx = document.getElementById('topIngredientsChart').getContext('2d');
       topIngredientsChart = new Chart(ingredientsCtx, {
@@ -568,6 +789,53 @@
           }
         }
       });
+
+      // Gráfico de distribución de gastos (Doughnut)
+      const gastosPorCategoria = {};
+      filteredGastos.forEach(gasto => {
+        const categoria = gasto.categoria || 'Sin categoría';
+        if (gastosPorCategoria[categoria]) {
+          gastosPorCategoria[categoria] += parseFloat(gasto.monto) || 0;
+        } else {
+          gastosPorCategoria[categoria] = parseFloat(gasto.monto) || 0;
+        }
+      });
+
+      if (gastosChart) gastosChart.destroy();
+      
+      const gastosCtx = document.getElementById('gastosChart').getContext('2d');
+      gastosChart = new Chart(gastosCtx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(gastosPorCategoria),
+          datasets: [{
+            data: Object.values(gastosPorCategoria),
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: $${value.toFixed(2)} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
     }
 
     // Función para actualizar la tabla de recetas recientes
@@ -576,15 +844,56 @@
       tableBody.innerHTML = '';
       
       // Ordenar recetas por fecha (más recientes primero)
-      const sortedRecipes = [...recipes].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+      const sortedRecipes = [...recipes].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
       
       sortedRecipes.forEach(recipe => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${recipe.title}</td>
-          <td><span class="badge ${getTypeBadgeClass(recipe.type)}">${recipe.type}</span></td>
-          <td>${new Date(recipe.date).toLocaleDateString()}</td>
-          <td>${recipe.ingredients.length}</td>
+          <td>${recipe.title || 'Sin título'}</td>
+          <td><span class="badge ${getTypeBadgeClass(recipe.type)}">${recipe.type || 'Sin tipo'}</span></td>
+          <td>${recipe.date ? new Date(recipe.date).toLocaleDateString() : 'Sin fecha'}</td>
+          <td>${recipe.ingredients?.length || 0}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Función para actualizar la tabla de insumos
+    function updateInsumosTable(insumos) {
+      const tableBody = document.getElementById('insumosTable');
+      tableBody.innerHTML = '';
+      
+      // Ordenar insumos alfabéticamente
+      const sortedInsumos = [...insumos].sort((a, b) => a.nombre?.localeCompare(b.nombre));
+      
+      sortedInsumos.forEach(insumo => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${insumo.nombre || 'Sin nombre'}</td>
+          <td>${insumo.cantidad || '0'}</td>
+          <td>${insumo.unidad || '-'}</td>
+          <td>${insumo.costo ? `$${parseFloat(insumo.costo).toFixed(2)}` : '$0.00'}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Función para actualizar la tabla de gastos
+    function updateGastosTable(gastos) {
+      const tableBody = document.getElementById('gastosTable');
+      tableBody.innerHTML = '';
+      
+      // Ordenar gastos por fecha (más recientes primero)
+      const sortedGastos = [...gastos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+      
+      sortedGastos.forEach(gasto => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${gasto.concepto || 'Sin concepto'}</td>
+          <td><span class="badge bg-secondary">${gasto.categoria || 'Sin categoría'}</span></td>
+          <td>$${parseFloat(gasto.monto || 0).toFixed(2)}</td>
+          <td>${gasto.fecha ? new Date(gasto.fecha).toLocaleDateString() : 'Sin fecha'}</td>
+          <td>${gasto.descripcion || '-'}</td>
         `;
         tableBody.appendChild(row);
       });
@@ -631,6 +940,12 @@
         themeIcon.classList.remove('bi-moon-stars');
         themeIcon.classList.add('bi-sun');
       }
+      
+      // Inicializar tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
       
       // Cargar datos
       loadData();
