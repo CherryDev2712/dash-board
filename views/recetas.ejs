@@ -1,501 +1,747 @@
 <!DOCTYPE html>
-<html lang="es">
-<%- include('load/index') %>
-<body>
-  <!-- Incluir la barra lateral -->
-  <%- include('load/nav-header') %>
-
-  <!-- Contenedor principal -->
-  <main class="main-content">
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <!-- Formulario para agregar recetas -->
-          <form id="recipeForm">
-            <div class="mb-3">
-              <label for="recipeType" class="form-label">Tipo de Receta</label>
-              <select class="form-control" id="recipeType" required>
-                <option value="">Seleccione un tipo</option>
-                <option value="entrada">Entrada</option>
-                <option value="plato fuerte">Plato Fuerte</option>
-                <option value="postre">Postre</option>
-                <option value="bebida">Bebida</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="recipeTitle" class="form-label">Título de la Receta</label>
-              <input type="text" class="form-control" id="recipeTitle" required>
-            </div>
-
-            <!-- Sección de insumos -->
-            <div class="mb-3">
-              <h4>Insumos</h4>
-              <div class="mb-3">
-                <label for="categorySelect" class="form-label">Categoría</label>
-                <select class="form-control" id="categorySelect">
-                  <option value="">Seleccione una categoría</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="ingredientSelect" class="form-label">Insumo</label>
-                <select class="form-control" id="ingredientSelect">
-                  <option value="">Seleccione un insumo</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="unitSelect" class="form-label">Unidad</label>
-                <select class="form-control" id="unitSelect">
-                  <option value="">Seleccione una unidad</option>
-                  <option value="kg">Kilogramos (kg)</option>
-                  <option value="g">Gramos (g)</option>
-                  <option value="l">Litros (l)</option>
-                  <option value="ml">Mililitros (ml)</option>
-                  <option value="unidad">Unidad</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="quantityInput" class="form-label">Cantidad</label>
-                <input type="number" class="form-control" id="quantityInput" step="0.01">
-              </div>
-              <button type="button" class="btn btn-primary" id="addIngredient">Agregar Insumo</button>
-            </div>
-
-            <!-- Tabla de insumos seleccionados -->
-            <table class="table table-bordered mt-3" id="selectedIngredientsTable">
-              <thead>
-                <tr>
-                  <th>Insumo</th>
-                  <th>Unidad</th>
-                  <th>Cantidad</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Insumos seleccionados se mostrarán aquí -->
-              </tbody>
-            </table>
-
-            <!-- Sección de pasos -->
-            <div class="mb-3">
-              <h4>Pasos</h4>
-              <div id="stepsContainer"></div>
-              <button type="button" class="btn btn-primary" id="addStepButton">Agregar Paso</button>
-            </div>
-
-            <!-- Tabla de pasos -->
-            <table class="table table-bordered mt-3" id="stepsTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Paso</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Pasos se mostrarán aquí -->
-              </tbody>
-            </table>
-
-            <!-- Sección de rendimientos -->
-            <div class="mb-3">
-              <h4>Rendimientos</h4>
-              <div class="mb-3">
-                <label for="yieldNameInput" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="yieldNameInput">
-              </div>
-              <div class="mb-3">
-                <label for="yieldUnitSelect" class="form-label">Unidad</label>
-                <select class="form-control" id="yieldUnitSelect">
-                  <option value="">Seleccione una unidad</option>
-                  <option value="kg">Kilogramos (kg)</option>
-                  <option value="g">Gramos (g)</option>
-                  <option value="l">Litros (l)</option>
-                  <option value="ml">Mililitros (ml)</option>
-                  <option value="unidad">Unidad</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="yieldQuantityInput" class="form-label">Cantidad</label>
-                <input type="number" class="form-control" id="yieldQuantityInput" step="0.01">
-              </div>
-              <button type="button" class="btn btn-primary" id="addYield">Agregar Rendimiento</button>
-            </div>
-
-            <!-- Tabla de rendimientos seleccionados -->
-            <table class="table table-bordered mt-3" id="selectedYieldsTable">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Unidad</th>
-                  <th>Cantidad</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Rendimientos seleccionados se mostrarán aquí -->
-              </tbody>
-            </table>
-
-            <!-- Feedback -->
-            <div id="formFeedback" class="alert d-none"></div>
-
-            <!-- Botón de guardar -->
-            <button type="submit" class="btn btn-success">Guardar Receta</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Bootstrap JS (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-  <script>
-// Variables globales
-let selectedIngredients = [];
-let steps = [];
-let selectedYields = [];
-
-// Funciones para abrir y cerrar modales
-function openModal(modalId) {
-  const modal = new bootstrap.Modal(document.getElementById(modalId));
-  modal.show();
-}
-
-function closeModal(modalId) {
-  const modal = new bootstrap.Modal(document.getElementById(modalId));
-  modal.hide();
-}
-
-// Función para mostrar feedback
-function showFeedback(message, type) {
-  const feedback = document.getElementById('formFeedback');
-  if (feedback) {
-    feedback.textContent = message;
-    feedback.classList.remove('alert-success', 'alert-danger', 'd-none');
-    feedback.classList.add(`alert-${type}`);
-    setTimeout(() => feedback.classList.add('d-none'), 3000);
-  }
-}
-
-// Cargar insumos desde localStorage
-function loadInsumos() {
-  const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
-  const categorySelect = document.getElementById('categorySelect');
-  const ingredientSelect = document.getElementById('ingredientSelect');
-
-  if (categorySelect && ingredientSelect) {
-    // Limpiar selects
-    categorySelect.innerHTML = '<option value="">Seleccione una categoría</option>';
-    ingredientSelect.innerHTML = '<option value="">Seleccione un insumo</option>';
-
-    // Obtener categorías únicas
-    const categorias = [...new Set(insumos.map(insumo => insumo.categoria))];
-    categorias.forEach(categoria => {
-      const option = document.createElement('option');
-      option.value = categoria;
-      option.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-      categorySelect.appendChild(option);
-    });
-
-    // Filtrar insumos por categoría seleccionada
-    categorySelect.addEventListener('change', function () {
-      const selectedCategory = this.value;
-      ingredientSelect.innerHTML = '<option value="">Seleccione un insumo</option>';
-
-      if (selectedCategory) {
-        const filteredInsumos = insumos.filter(insumo => insumo.categoria === selectedCategory);
-        filteredInsumos.forEach(insumo => {
-          const option = document.createElement('option');
-          option.value = insumo.nombre;
-          option.textContent = insumo.nombre;
-          ingredientSelect.appendChild(option);
-        });
-      }
-    });
-  }
-}
-
-// Cargar insumos al iniciar la página
-document.addEventListener('DOMContentLoaded', loadInsumos);
-
-// Función para agregar un insumo
-document.getElementById('addIngredient')?.addEventListener('click', function () {
-  const selectedIngredient = document.getElementById('ingredientSelect').value;
-  const unit = document.getElementById('unitSelect').value;
-  const quantity = parseFloat(document.getElementById('quantityInput').value.trim());
-
-  // Validar que se haya seleccionado un insumo, una unidad y una cantidad válida
-  if (!selectedIngredient || !unit || !quantity || quantity <= 0) {
-    showFeedback('Por favor, selecciona un insumo, una unidad y una cantidad válida (mayor que 0).', 'danger');
-    return;
-  }
-
-  // Crear un objeto para el insumo seleccionado
-  const ingredient = {
-    name: selectedIngredient,
-    unit: unit,
-    quantity: quantity
-  };
-
-  // Agregar el insumo al arreglo de insumos seleccionados
-  selectedIngredients.push(ingredient);
-
-  // Actualizar la tabla
-  updateSelectedIngredientsTable();
-
-  // Limpiar inputs
-  document.getElementById('unitSelect').value = '';
-  document.getElementById('quantityInput').value = '';
-  document.getElementById('ingredientSelect').value = '';
-  document.getElementById('categorySelect').value = '';
-
-  showFeedback('Insumo agregado correctamente.', 'success');
-});
-
-// Función para actualizar la tabla de insumos seleccionados
-function updateSelectedIngredientsTable() {
-  const tbody = document.querySelector("#selectedIngredientsTable tbody");
-  if (tbody) {
-    tbody.innerHTML = "";
-    selectedIngredients.forEach((ingredient, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${ingredient.name}</td>
-        <td>${ingredient.unit}</td>
-        <td>${ingredient.quantity}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="removeIngredient(${index})">Eliminar</button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-}
-
-// Función para eliminar un insumo
-window.removeIngredient = function (index) {
-  selectedIngredients.splice(index, 1);
-  updateSelectedIngredientsTable();
-  showFeedback('Insumo eliminado correctamente.', 'success');
-};
-
-// Lógica para agregar pasos
-document.getElementById('addStepButton')?.addEventListener('click', function () {
-  const stepsContainer = document.getElementById('stepsContainer');
-  if (stepsContainer) {
-    // Crear un nuevo div para el paso
-    const stepDiv = document.createElement('div');
-    stepDiv.classList.add('mb-3', 'step-item');
-
-    // Crear el textarea para el paso
-    const textarea = document.createElement('textarea');
-    textarea.classList.add('form-control');
-    textarea.rows = 2;
-    textarea.placeholder = `Escribe el paso ${steps.length + 1}...`;
-    textarea.required = true;
-
-    // Crear el botón de guardar paso
-    const saveButton = document.createElement('button');
-    saveButton.type = 'button';
-    saveButton.classList.add('btn', 'btn-success', 'btn-sm', 'mt-2');
-    saveButton.textContent = 'Guardar Paso';
-    saveButton.onclick = function () {
-      const stepText = textarea.value.trim();
-      if (stepText === "") {
-        showFeedback('El paso no puede estar vacío.', 'danger');
-        return;
-      }
-
-      steps.push(stepText); // Agregar el paso al arreglo
-      updateStepsTable(); // Actualizar la tabla
-      stepsContainer.removeChild(stepDiv); // Eliminar el textarea y el botón de guardar
-      showFeedback('Paso guardado correctamente.', 'success');
-    };
-
-    // Crear el botón de eliminar paso
-    const deleteButton = document.createElement('button');
-    deleteButton.type = 'button';
-    deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'mt-2');
-    deleteButton.textContent = 'Eliminar Paso';
-    deleteButton.onclick = function () {
-      stepsContainer.removeChild(stepDiv); // Eliminar el paso del DOM
-    };
-
-    // Agregar el textarea y los botones al div del paso
-    stepDiv.innerHTML = `
-      <label class="form-label">Paso ${steps.length + 1}</label>
-    `;
-    stepDiv.appendChild(textarea);
-    stepDiv.appendChild(saveButton);
-    stepDiv.appendChild(deleteButton);
-
-    // Agregar el paso al contenedor
-    stepsContainer.appendChild(stepDiv);
-  }
-});
-
-// Función para actualizar la tabla de pasos
-function updateStepsTable() {
-  const tbody = document.querySelector("#stepsTable tbody");
-  if (tbody) {
-    tbody.innerHTML = "";
-    steps.forEach((step, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${step}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="removeStep(${index})">Eliminar</button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-}
-
-// Función para eliminar un paso
-window.removeStep = function (index) {
-  steps.splice(index, 1);
-  updateStepsTable();
-  showFeedback('Paso eliminado correctamente.', 'success');
-};
-
-// Función para agregar un rendimiento
-document.getElementById('addYield')?.addEventListener('click', function () {
-  const name = document.getElementById('yieldNameInput').value.trim();
-  const unit = document.getElementById('yieldUnitSelect').value;
-  const quantity = parseFloat(document.getElementById('yieldQuantityInput').value.trim());
-
-  // Validar que se haya ingresado un nombre, una unidad y una cantidad válida
-  if (!name || !unit || !quantity || quantity <= 0) {
-    showFeedback('Por favor, completa todos los campos del rendimiento.', 'danger');
-    return;
-  }
-
-  // Crear un objeto para el rendimiento seleccionado
-  const yieldItem = {
-    name: name,
-    unit: unit,
-    quantity: quantity
-  };
-
-  // Agregar el rendimiento al arreglo de rendimientos seleccionados
-  selectedYields.push(yieldItem);
-
-  // Actualizar la tabla
-  updateSelectedYieldsTable();
-
-  // Limpiar inputs
-  document.getElementById('yieldNameInput').value = '';
-  document.getElementById('yieldUnitSelect').value = '';
-  document.getElementById('yieldQuantityInput').value = '';
-
-  showFeedback('Rendimiento agregado correctamente.', 'success');
-});
-
-// Función para actualizar la tabla de rendimientos
-function updateSelectedYieldsTable() {
-  const tbody = document.querySelector("#selectedYieldsTable tbody");
-  if (tbody) {
-    tbody.innerHTML = "";
-    selectedYields.forEach((yieldItem, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${yieldItem.name}</td>
-        <td>${yieldItem.unit}</td>
-        <td>${yieldItem.quantity}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="removeYield(${index})">Eliminar</button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-}
-
-// Función para eliminar un rendimiento
-window.removeYield = function (index) {
-  selectedYields.splice(index, 1);
-  updateSelectedYieldsTable();
-  showFeedback('Rendimiento eliminado correctamente.', 'success');
-};
-
-// Guardar receta en localStorage
-document.getElementById('recipeForm')?.addEventListener('submit', function (event) {
-  event.preventDefault();
-
-  const recipeType = document.getElementById('recipeType').value;
-  const recipeTitle = document.getElementById('recipeTitle').value.trim();
-
-  // Validar que todos los campos estén completos
-  if (!recipeType || !recipeTitle || selectedIngredients.length === 0 || selectedYields.length === 0 || steps.length === 0) {
-    showFeedback('Por favor, completa todos los campos.', 'danger');
-    return;
-  }
-
-  // Verificar si ya existe una receta con el mismo título
-  if (localStorage.getItem(recipeTitle)) {
-    showFeedback('Ya existe una receta con ese título. Por favor, elige otro.', 'danger');
-    return;
-  }
-
-  // Crear el objeto de la receta
-  const creationDate = new Date().toISOString();
-  const recipe = {
-    type: recipeType,
-    title: recipeTitle,
-    ingredients: selectedIngredients,
-    yields: selectedYields,
-    steps: steps,
-    date: creationDate
-  };
-
-  // Guardar la receta en localStorage
-  localStorage.setItem(recipeTitle, JSON.stringify(recipe));
-
-  // Mostrar feedback de éxito
-  showFeedback('Receta guardada exitosamente.', 'success');
-
-  // Reiniciar el formulario
-  document.getElementById('recipeForm').reset();
-
-  // Limpiar contenedores y arreglos
-  document.getElementById('stepsContainer').innerHTML = '';
-  document.querySelector("#stepsTable tbody").innerHTML = '';
-  document.querySelector("#selectedYieldsTable tbody").innerHTML = '';
-  selectedIngredients = [];
-  selectedYields = [];
-  steps = [];
-});
-
-// Función para buscar recetas
-document.getElementById('searchForm')?.addEventListener('submit', function (event) {
-  event.preventDefault();
-  const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-  const resultsContainer = document.getElementById('searchResults');
-  if (resultsContainer) {
-    resultsContainer.innerHTML = '';
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key !== 'insumos') {
-        const recipe = JSON.parse(localStorage.getItem(key));
-        if (recipe.title.toLowerCase().includes(searchTerm)) {
-          const card = document.createElement('div');
-          card.classList.add('card', 'mb-3');
-          card.innerHTML = `
-            <div class="card-body">
-              <h5 class="card-title">${recipe.title}</h5>
-              <p class="card-text">Tipo: ${recipe.type}</p>
-              <p class="card-text">Fecha: ${new Date(recipe.date).toLocaleString()}</p>
-            </div>
-          `;
-          resultsContainer.appendChild(card);
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recetas</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --card-bg: #ffffff;
+            --sidebar-width: 250px;
+            --navbar-height: 70px;
         }
-      }
-    }
-  }
-});
-  </script>
+
+        [data-bs-theme="dark"] {
+            --bg-color: #212529;
+            --text-color: #f8f9fa;
+            --card-bg: #2c3034;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            padding-top: calc(var(--navbar-height) + 20px);
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg);
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Badge Styles for Recipe Types */
+        .badge-entrada {
+            background-color: #6f42c1;
+        }
+
+        .badge-plato {
+            background-color: #fd7e14;
+        }
+
+        .badge-postre {
+            background-color: #e83e8c;
+        }
+
+        .badge-bebida {
+            background-color: #20c997;
+        }
+
+        /* Step Item Styles */
+        .step-item {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #0d6efd;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767.98px) {
+            .main-content {
+                margin-left: 0;
+                padding-top: 60px;
+            }
+        }
+
+        /* Image Preview */
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            display: none;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Incluir el nav-header -->
+    <%- include('load/nav-header') %>
+    <br>
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i> Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-book"></i> Gestión de Recetas</li>
+                </ol>
+            </nav>
+
+            <h1 class="text-center mb-4"><i class="bi bi-book"></i> Gestión de Recetas</h1>
+
+            <!-- Formulario para agregar recetas -->
+            <div class="card form-card p-4 mb-4">
+                <form id="recipeForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="recipeType" class="form-label">Tipo de Receta</label>
+                            <select class="form-select" id="recipeType" required>
+                                <option value="">Seleccione un tipo</option>
+                                <option value="entrada">Entrada</option>
+                                <option value="plato fuerte">Plato Fuerte</option>
+                                <option value="postre">Postre</option>
+                                <option value="bebida">Bebida</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="recipeTitle" class="form-label">Título de la Receta</label>
+                            <input type="text" class="form-control" id="recipeTitle" required placeholder="Ej: Ensalada César">
+                        </div>
+                    </div>
+
+                    <!-- Sección de insumos -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="bi bi-basket"></i> Insumos</h4>
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ingredientsSection">
+                                <i class="bi bi-chevron-down"></i> Mostrar/Ocultar
+                            </button>
+                        </div>
+                        
+                        <div class="collapse show" id="ingredientsSection">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="categorySelect" class="form-label">Categoría</label>
+                                    <select class="form-select" id="categorySelect">
+                                        <option value="">Seleccione una categoría</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="ingredientSelect" class="form-label">Insumo</label>
+                                    <select class="form-select" id="ingredientSelect">
+                                        <option value="">Seleccione un insumo</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="unitSelect" class="form-label">Unidad</label>
+                                    <select class="form-select" id="unitSelect">
+                                        <option value="">Unidad</option>
+                                        <option value="kg">Kilogramos (kg)</option>
+                                        <option value="g">Gramos (g)</option>
+                                        <option value="l">Litros (l)</option>
+                                        <option value="ml">Mililitros (ml)</option>
+                                        <option value="unidad">Unidad</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="quantityInput" class="form-label">Cantidad</label>
+                                    <input type="number" class="form-control" id="quantityInput" step="0.01" min="0.01">
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-primary" id="addIngredient" data-bs-toggle="tooltip" title="Agregar insumo a la receta">
+                                    <i class="bi bi-plus-circle"></i> Agregar Insumo
+                                </button>
+                            </div>
+
+                            <!-- Tabla de insumos seleccionados -->
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered" id="selectedIngredientsTable">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Insumo</th>
+                                            <th>Unidad</th>
+                                            <th>Cantidad</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Insumos seleccionados se mostrarán aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de pasos -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="bi bi-list-ol"></i> Pasos de Preparación</h4>
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#stepsSection">
+                                <i class="bi bi-chevron-down"></i> Mostrar/Ocultar
+                            </button>
+                        </div>
+                        
+                        <div class="collapse show" id="stepsSection">
+                            <div id="stepsContainer"></div>
+                            <div class="text-end mt-3">
+                                <button type="button" class="btn btn-primary" id="addStepButton" data-bs-toggle="tooltip" title="Agregar nuevo paso de preparación">
+                                    <i class="bi bi-plus-circle"></i> Agregar Paso
+                                </button>
+                            </div>
+
+                            <!-- Tabla de pasos -->
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered" id="stepsTable">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th style="width: 50px;">#</th>
+                                            <th>Paso</th>
+                                            <th style="width: 100px;">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Pasos se mostrarán aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección de rendimientos -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="bi bi-box-seam"></i> Rendimientos</h4>
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#yieldsSection">
+                                <i class="bi bi-chevron-down"></i> Mostrar/Ocultar
+                            </button>
+                        </div>
+                        
+                        <div class="collapse show" id="yieldsSection">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="yieldNameInput" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="yieldNameInput" placeholder="Ej: Porciones, Litros, etc.">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="yieldUnitSelect" class="form-label">Unidad</label>
+                                    <select class="form-select" id="yieldUnitSelect">
+                                        <option value="">Seleccione una unidad</option>
+                                        <option value="kg">Kilogramos (kg)</option>
+                                        <option value="g">Gramos (g)</option>
+                                        <option value="l">Litros (l)</option>
+                                        <option value="ml">Mililitros (ml)</option>
+                                        <option value="unidad">Unidad</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="yieldQuantityInput" class="form-label">Cantidad</label>
+                                    <input type="number" class="form-control" id="yieldQuantityInput" step="0.01" min="0.01">
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-primary" id="addYield" data-bs-toggle="tooltip" title="Agregar rendimiento de la receta">
+                                    <i class="bi bi-plus-circle"></i> Agregar Rendimiento
+                                </button>
+                            </div>
+
+                            <!-- Tabla de rendimientos seleccionados -->
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered" id="selectedYieldsTable">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Unidad</th>
+                                            <th>Cantidad</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Rendimientos seleccionados se mostrarán aquí -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="reset" class="btn btn-secondary" data-bs-toggle="tooltip" title="Limpiar todos los campos del formulario">
+                            <i class="bi bi-x-circle"></i> Limpiar
+                        </button>
+                        <button type="submit" class="btn btn-success" data-bs-toggle="tooltip" title="Guardar la receta en el sistema">
+                            <i class="bi bi-save"></i> Guardar Receta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para cambiar tema (dark/light) -->
+    <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
+        <i class="bi bi-moon-stars"></i>
+    </button>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Variables globales
+        let selectedIngredients = [];
+        let steps = [];
+        let selectedYields = [];
+
+        // Función para inicializar la página
+        function inicializarPagina() {
+            // Activar tooltips
+            const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(t => new bootstrap.Tooltip(t));
+            
+            // Cargar insumos
+            loadInsumos();
+            
+            // Configurar eventos
+            configurarEventos();
+        }
+
+        // Función para configurar eventos
+        function configurarEventos() {
+            // Evento para agregar insumo
+            document.getElementById('addIngredient')?.addEventListener('click', agregarInsumo);
+            
+            // Evento para agregar paso
+            document.getElementById('addStepButton')?.addEventListener('click', agregarPaso);
+            
+            // Evento para agregar rendimiento
+            document.getElementById('addYield')?.addEventListener('click', agregarRendimiento);
+            
+            // Evento para enviar formulario
+            document.getElementById('recipeForm')?.addEventListener('submit', guardarReceta);
+        }
+
+        // Función para mostrar feedback con SweetAlert2
+        function showFeedback(message, type) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: 'var(--card-bg)',
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            
+            Toast.fire({
+                icon: type,
+                title: message
+            });
+        }
+
+        // Cargar insumos desde localStorage
+        function loadInsumos() {
+            const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+            const categorySelect = document.getElementById('categorySelect');
+            const ingredientSelect = document.getElementById('ingredientSelect');
+
+            if (categorySelect && ingredientSelect) {
+                // Limpiar selects
+                categorySelect.innerHTML = '<option value="">Seleccione una categoría</option>';
+                ingredientSelect.innerHTML = '<option value="">Seleccione un insumo</option>';
+
+                // Obtener categorías únicas
+                const categorias = [...new Set(insumos.map(insumo => insumo.categoria))];
+                categorias.forEach(categoria => {
+                    const option = document.createElement('option');
+                    option.value = categoria;
+                    option.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+                    categorySelect.appendChild(option);
+                });
+
+                // Filtrar insumos por categoría seleccionada
+                categorySelect.addEventListener('change', function () {
+                    const selectedCategory = this.value;
+                    ingredientSelect.innerHTML = '<option value="">Seleccione un insumo</option>';
+
+                    if (selectedCategory) {
+                        const filteredInsumos = insumos.filter(insumo => insumo.categoria === selectedCategory);
+                        filteredInsumos.forEach(insumo => {
+                            const option = document.createElement('option');
+                            option.value = insumo.nombre;
+                            option.textContent = insumo.nombre;
+                            ingredientSelect.appendChild(option);
+                        });
+                    }
+                });
+            }
+        }
+
+        // Función para agregar un insumo
+        function agregarInsumo() {
+            const selectedIngredient = document.getElementById('ingredientSelect').value;
+            const unit = document.getElementById('unitSelect').value;
+            const quantity = parseFloat(document.getElementById('quantityInput').value.trim());
+
+            // Validar que se haya seleccionado un insumo, una unidad y una cantidad válida
+            if (!selectedIngredient || !unit || !quantity || quantity <= 0) {
+                showFeedback('Seleccione un insumo, unidad y cantidad válida', 'error');
+                return;
+            }
+
+            // Crear un objeto para el insumo seleccionado
+            const ingredient = {
+                name: selectedIngredient,
+                unit: unit,
+                quantity: quantity
+            };
+
+            // Agregar el insumo al arreglo de insumos seleccionados
+            selectedIngredients.push(ingredient);
+
+            // Actualizar la tabla
+            updateSelectedIngredientsTable();
+
+            // Limpiar inputs
+            document.getElementById('unitSelect').value = '';
+            document.getElementById('quantityInput').value = '';
+            document.getElementById('ingredientSelect').value = '';
+            document.getElementById('categorySelect').value = '';
+
+            showFeedback('Insumo agregado correctamente', 'success');
+        }
+
+        // Función para actualizar la tabla de insumos seleccionados
+        function updateSelectedIngredientsTable() {
+            const tbody = document.querySelector("#selectedIngredientsTable tbody");
+            if (tbody) {
+                tbody.innerHTML = "";
+                selectedIngredients.forEach((ingredient, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${ingredient.name}</td>
+                        <td>${ingredient.unit}</td>
+                        <td>${ingredient.quantity}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removeIngredient(${index})" data-bs-toggle="tooltip" title="Eliminar insumo">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        // Función para eliminar un insumo
+        window.removeIngredient = function (index) {
+            selectedIngredients.splice(index, 1);
+            updateSelectedIngredientsTable();
+            showFeedback('Insumo eliminado correctamente', 'success');
+        };
+
+        // Función para agregar un paso
+        function agregarPaso() {
+            const stepsContainer = document.getElementById('stepsContainer');
+            if (stepsContainer) {
+                // Crear un nuevo div para el paso
+                const stepDiv = document.createElement('div');
+                stepDiv.classList.add('mb-3', 'step-item');
+
+                // Crear el textarea para el paso
+                const textarea = document.createElement('textarea');
+                textarea.classList.add('form-control');
+                textarea.rows = 3;
+                textarea.placeholder = `Describe el paso ${steps.length + 1}...`;
+                textarea.required = true;
+
+                // Crear el botón de guardar paso
+                const saveButton = document.createElement('button');
+                saveButton.type = 'button';
+                saveButton.classList.add('btn', 'btn-success', 'btn-sm', 'mt-2', 'me-2');
+                saveButton.innerHTML = '<i class="bi bi-check-circle"></i> Guardar';
+                saveButton.onclick = function () {
+                    const stepText = textarea.value.trim();
+                    if (stepText === "") {
+                        showFeedback('El paso no puede estar vacío', 'error');
+                        return;
+                    }
+
+                    steps.push(stepText); // Agregar el paso al arreglo
+                    updateStepsTable(); // Actualizar la tabla
+                    stepsContainer.removeChild(stepDiv); // Eliminar el textarea y el botón de guardar
+                    showFeedback('Paso guardado correctamente', 'success');
+                };
+
+                // Crear el botón de eliminar paso
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'mt-2');
+                deleteButton.innerHTML = '<i class="bi bi-x-circle"></i> Cancelar';
+                deleteButton.onclick = function () {
+                    stepsContainer.removeChild(stepDiv); // Eliminar el paso del DOM
+                };
+
+                // Agregar elementos al div del paso
+                stepDiv.innerHTML = `
+                    <label class="form-label">Paso ${steps.length + 1}</label>
+                `;
+                stepDiv.appendChild(textarea);
+                stepDiv.appendChild(saveButton);
+                stepDiv.appendChild(deleteButton);
+
+                // Agregar el paso al contenedor
+                stepsContainer.appendChild(stepDiv);
+                
+                // Enfocar el textarea
+                textarea.focus();
+            }
+        }
+
+        // Función para actualizar la tabla de pasos
+        function updateStepsTable() {
+            const tbody = document.querySelector("#stepsTable tbody");
+            if (tbody) {
+                tbody.innerHTML = "";
+                steps.forEach((step, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${step}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removeStep(${index})" data-bs-toggle="tooltip" title="Eliminar paso">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        // Función para eliminar un paso
+        window.removeStep = function (index) {
+            steps.splice(index, 1);
+            updateStepsTable();
+            showFeedback('Paso eliminado correctamente', 'success');
+        };
+
+        // Función para agregar un rendimiento
+        function agregarRendimiento() {
+            const name = document.getElementById('yieldNameInput').value.trim();
+            const unit = document.getElementById('yieldUnitSelect').value;
+            const quantity = parseFloat(document.getElementById('yieldQuantityInput').value.trim());
+
+            // Validar que se haya ingresado un nombre, una unidad y una cantidad válida
+            if (!name || !unit || !quantity || quantity <= 0) {
+                showFeedback('Complete todos los campos del rendimiento', 'error');
+                return;
+            }
+
+            // Crear un objeto para el rendimiento seleccionado
+            const yieldItem = {
+                name: name,
+                unit: unit,
+                quantity: quantity
+            };
+
+            // Agregar el rendimiento al arreglo de rendimientos seleccionados
+            selectedYields.push(yieldItem);
+
+            // Actualizar la tabla
+            updateSelectedYieldsTable();
+
+            // Limpiar inputs
+            document.getElementById('yieldNameInput').value = '';
+            document.getElementById('yieldUnitSelect').value = '';
+            document.getElementById('yieldQuantityInput').value = '';
+
+            showFeedback('Rendimiento agregado correctamente', 'success');
+        }
+
+        // Función para actualizar la tabla de rendimientos
+        function updateSelectedYieldsTable() {
+            const tbody = document.querySelector("#selectedYieldsTable tbody");
+            if (tbody) {
+                tbody.innerHTML = "";
+                selectedYields.forEach((yieldItem, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${yieldItem.name}</td>
+                        <td>${yieldItem.unit}</td>
+                        <td>${yieldItem.quantity}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removeYield(${index})" data-bs-toggle="tooltip" title="Eliminar rendimiento">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+        // Función para eliminar un rendimiento
+        window.removeYield = function (index) {
+            selectedYields.splice(index, 1);
+            updateSelectedYieldsTable();
+            showFeedback('Rendimiento eliminado correctamente', 'success');
+        };
+
+        // Guardar receta en localStorage
+        function guardarReceta(event) {
+            event.preventDefault();
+
+            const recipeType = document.getElementById('recipeType').value;
+            const recipeTitle = document.getElementById('recipeTitle').value.trim();
+
+            // Validar que todos los campos estén completos
+            if (!recipeType || !recipeTitle) {
+                showFeedback('Complete el tipo y título de la receta', 'error');
+                return;
+            }
+            
+            if (selectedIngredients.length === 0) {
+                showFeedback('Agregue al menos un insumo', 'error');
+                return;
+            }
+            
+            if (steps.length === 0) {
+                showFeedback('Agregue al menos un paso de preparación', 'error');
+                return;
+            }
+            
+            if (selectedYields.length === 0) {
+                showFeedback('Agregue al menos un rendimiento', 'error');
+                return;
+            }
+
+            // Verificar si ya existe una receta con el mismo título
+            if (localStorage.getItem(recipeTitle)) {
+                showFeedback('Ya existe una receta con ese título', 'error');
+                return;
+            }
+
+            // Crear el objeto de la receta
+            const creationDate = new Date().toISOString();
+            const recipe = {
+                type: recipeType,
+                title: recipeTitle,
+                ingredients: selectedIngredients,
+                yields: selectedYields,
+                steps: steps,
+                date: creationDate
+            };
+
+            // Mostrar confirmación antes de guardar
+            Swal.fire({
+                title: '¿Guardar receta?',
+                html: `
+                    <div class="text-start">
+                        <p><strong>Título:</strong> ${recipeTitle}</p>
+                        <p><strong>Tipo:</strong> ${recipeType}</p>
+                        <p><strong>Insumos:</strong> ${selectedIngredients.length}</p>
+                        <p><strong>Pasos:</strong> ${steps.length}</p>
+                        <p><strong>Rendimientos:</strong> ${selectedYields.length}</p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar',
+                background: 'var(--card-bg)'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Guardar la receta en localStorage
+                    localStorage.setItem(recipeTitle, JSON.stringify(recipe));
+
+                    // Mostrar feedback de éxito
+                    showFeedback('Receta guardada exitosamente', 'success');
+
+                    // Reiniciar el formulario
+                    document.getElementById('recipeForm').reset();
+
+                    // Limpiar contenedores y arreglos
+                    document.getElementById('stepsContainer').innerHTML = '';
+                    document.querySelector("#stepsTable tbody").innerHTML = '';
+                    document.querySelector("#selectedYieldsTable tbody").innerHTML = '';
+                    document.querySelector("#selectedIngredientsTable tbody").innerHTML = '';
+                    
+                    selectedIngredients = [];
+                    selectedYields = [];
+                    steps = [];
+                }
+            });
+        }
+
+        // Función para cambiar entre tema claro/oscuro
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            
+            // Cambiar icono
+            const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+            themeIcon.classList.toggle('bi-moon-stars');
+            themeIcon.classList.toggle('bi-sun');
+            
+            // Guardar preferencia
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Cargar los datos cuando la página se carga
+        document.addEventListener("DOMContentLoaded", function() {
+            // Cargar tema guardado
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            
+            // Ajustar icono del tema
+            const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+            if (savedTheme === 'dark') {
+                themeIcon.classList.remove('bi-moon-stars');
+                themeIcon.classList.add('bi-sun');
+            }
+            
+            inicializarPagina();
+        });
+    </script>
 </body>
 </html>

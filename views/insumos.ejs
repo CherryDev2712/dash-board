@@ -1,68 +1,245 @@
 <!DOCTYPE html>
-<html lang="es">
-<%- include('load/index') %>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Insumos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #212529;
+      --card-bg: #ffffff;
+      --sidebar-width: 250px;
+      --navbar-height: 70px;
+    }
+
+    [data-bs-theme="dark"] {
+      --bg-color: #212529;
+      --text-color: #f8f9fa;
+      --card-bg: #2c3034;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 20px;
+      padding-top: calc(var(--navbar-height) + 20px);
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Card Styles */
+    .card {
+      background-color: var(--card-bg);
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+
+    /* Insumo Item */
+    .insumo-item {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .insumo-item:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Badge Categories */
+    .badge-abarrotes { background-color: #6f42c1; }
+    .badge-aves { background-color: #fd7e14; }
+    .badge-bebidas { background-color: #20c997; }
+    .badge-carnes { background-color: #e83e8c; }
+    .badge-enbutido { background-color: #6610f2; }
+    .badge-frutas { background-color: #28a745; }
+    .badge-lacteos { background-color: #17a2b8; }
+    .badge-mariscos { background-color: #007bff; }
+    .badge-postres { background-color: #ffc107; color: #212529; }
+    .badge-pescados { background-color: #6c757d; }
+    .badge-verduras { background-color: #20c997; }
+    .badge-pan { background-color: #dc3545; }
+    .badge-desechables { background-color: #6c757d; }
+
+    /* Responsive Adjustments */
+    @media (max-width: 767.98px) {
+      .main-content {
+        margin-left: 0;
+        padding-top: 60px;
+      }
+    }
+  </style>
+</head>
 <body>
-  <!-- Incluir la barra lateral -->
+  <%- include('load/index') %>
   <%- include('load/nav-header') %>
-
-  <!-- Contenedor principal -->
+  
   <main class="main-content">
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <!-- Tarjeta para agregar insumos -->
-          <div class="card shadow">
-            <div class="card-header bg-success text-white text-center">
-              <h4>Agregar Insumos de Cocina</h4>
-            </div>
-            <div class="card-body">
-              <!-- Formulario para buscar insumos -->
-              <div class="form-group mb-4">
-                <label class="form-label" for="search">Buscar Insumo:</label>
-                <div class="input-group">
-                  <input id="search" class="form-control" type="text" placeholder="Nombre del insumo">
-                  <div class="input-group-append">
-                    <button id="searchButton" class="btn btn-outline-secondary" type="button">Buscar</button>
-                  </div>
-                </div>
-              </div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i> Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-basket"></i> Gestión de Insumos</li>
+      </ol>
+    </nav>
 
-              <!-- Formulario para agregar insumos -->
-              <form id="insumoForm">
-                <div class="form-group mb-3">
-                  <label class="form-label" for="nombre">Nombre del Insumo:</label>
-                  <input id="nombre" class="form-control" type="text" name="nombre" required>
-                </div>
-                <div class="form-group mb-3">
-                  <label class="form-label" for="categoria">Categoría:</label>
-                  <select id="categoria" class="form-control" name="categoria" required>
-                    <option value="abarrotes">ABARROTES</option>
-                    <option value="aves">AVES</option>
-                    <option value="bebidas y refrescos">BEBIDAS Y REFRESCOS</option>
-                    <option value="carnes">CARNES</option>
-                    <option value="enbutido">ENBUTIDO</option>
-                    <option value="frutas">FRUTAS</option>
-                    <option value="lacteos">LACTEOS</option>
-                    <option value="mariscos">MARISCOS</option>
-                    <option value="pasteles y postres">PASTELES Y POSTRES</option>
-                    <option value="pescados">PESCADOS</option>
-                    <option value="verduras">VERDURAS</option>
-                    <option value="pan y tortilla">PAN Y TORTILLA</option>
-                    <option value="desechables">DESECHABLES</option>
-                  </select>
-                </div>
-                <button class="btn btn-success btn-block" type="submit">Agregar Insumo</button>
-              </form>
+    <h1 class="mb-4"><i class="bi bi-basket"></i> Gestión de Insumos</h1>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Total Insumos</h5>
+            <h2 class="mb-0" id="totalInsumos">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Categorías</h5>
+            <h2 class="mb-0" id="totalCategorias">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Último Agregado</h5>
+            <h4 class="mb-0" id="ultimoInsumo">-</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Formulario de Insumos -->
+      <div class="col-lg-5">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Agregar Insumo</h4>
+          </div>
+          <div class="card-body">
+            <!-- Formulario para buscar insumos -->
+            <div class="mb-4">
+              <label class="form-label" for="search"><i class="bi bi-search"></i> Buscar Insumo:</label>
+              <div class="input-group">
+                <input id="search" class="form-control" type="text" placeholder="Nombre del insumo">
+                <button id="searchButton" class="btn btn-outline-secondary" type="button">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulario para agregar insumos -->
+            <form id="insumoForm">
+              <div class="mb-3">
+                <label class="form-label" for="nombre"><i class="bi bi-tag"></i> Nombre del Insumo:</label>
+                <input id="nombre" class="form-control" type="text" name="nombre" required>
+              </div>
+              <div class="mb-4">
+                <label class="form-label" for="categoria"><i class="bi bi-folder"></i> Categoría:</label>
+                <select id="categoria" class="form-select" name="categoria" required>
+                  <option value="abarrotes">Abarrotes</option>
+                  <option value="aves">Aves</option>
+                  <option value="bebidas y refrescos">Bebidas y Refrescos</option>
+                  <option value="carnes">Carnes</option>
+                  <option value="enbutido">Embutidos</option>
+                  <option value="frutas">Frutas</option>
+                  <option value="lacteos">Lácteos</option>
+                  <option value="mariscos">Mariscos</option>
+                  <option value="pasteles y postres">Pasteles y Postres</option>
+                  <option value="pescados">Pescados</option>
+                  <option value="verduras">Verduras</option>
+                  <option value="pan y tortilla">Pan y Tortilla</option>
+                  <option value="desechables">Desechables</option>
+                </select>
+              </div>
+              <button class="btn btn-primary w-100" type="submit">
+                <i class="bi bi-save"></i> Guardar Insumo
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Gráfico de Categorías -->
+        <div class="card mt-4">
+          <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="bi bi-pie-chart"></i> Distribución por Categoría</h4>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="categoriasChart"></canvas>
             </div>
           </div>
+        </div>
+      </div>
 
-          <!-- Tarjeta para mostrar insumos guardados -->
-          <div class="card mt-4 shadow">
-            <div class="card-header bg-info text-white text-center">
-              <h4>Insumos Guardados</h4>
+      <!-- Lista de Insumos -->
+      <div class="col-lg-7">
+        <div class="card">
+          <div class="card-header bg-success text-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="mb-0"><i class="bi bi-list-check"></i> Insumos Registrados</h4>
+              <div class="input-group" style="width: 200px;">
+                <input type="text" id="filterInsumos" class="form-control" placeholder="Filtrar...">
+                <button class="btn btn-outline-light" type="button" id="clearFilter">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
             </div>
-            <div id="insumosList" class="card-body">
+          </div>
+          <div class="card-body">
+            <div id="insumosList" class="row row-cols-1 row-cols-md-2 g-4">
               <!-- Insumos se mostrarán aquí -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Insumos Recientes -->
+        <div class="card mt-4">
+          <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="bi bi-bar-chart"></i> Insumos Agregados Recientemente</h4>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="recentInsumosChart"></canvas>
             </div>
           </div>
         </div>
@@ -70,206 +247,441 @@
     </div>
   </main>
 
-  <!-- Modal de Confirmación -->
-  <div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <!-- Modal de Edición -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="confirmModalLabel" class="modal-title">Confirmar Categoría</h5>
-          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">Editar Insumo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ¿Es correcta la categoría seleccionada para el insumo "
-          <span id="modalInsumoNombre"></span>
-          "?
-          <p>
-            Categoría: 
-            <span id="modalInsumoCategoria"></span>
-          </p>
+          <form id="editForm">
+            <input type="hidden" id="editIndex">
+            <div class="mb-3">
+              <label for="editNombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="editNombre" required>
+            </div>
+            <div class="mb-3">
+              <label for="editCategoria" class="form-label">Categoría</label>
+              <select class="form-select" id="editCategoria" required>
+                <option value="abarrotes">Abarrotes</option>
+                <option value="aves">Aves</option>
+                <option value="bebidas y refrescos">Bebidas y Refrescos</option>
+                <option value="carnes">Carnes</option>
+                <option value="enbutido">Embutidos</option>
+                <option value="frutas">Frutas</option>
+                <option value="lacteos">Lácteos</option>
+                <option value="mariscos">Mariscos</option>
+                <option value="pasteles y postres">Pasteles y Postres</option>
+                <option value="pescados">Pescados</option>
+                <option value="verduras">Verduras</option>
+                <option value="pan y tortilla">Pan y Tortilla</option>
+                <option value="desechables">Desechables</option>
+              </select>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-          <button id="confirmButton" class="btn btn-primary" type="button">Confirmar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="saveEdit">Guardar Cambios</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal de Resultados de Búsqueda -->
-  <div id="searchResultModal" class="modal fade" tabindex="-1" aria-labelledby="searchResultModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="searchResultModalLabel" class="modal-title">Resultado de Búsqueda</h5>
-          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div id="searchResultBody" class="modal-body">
-          <!-- Resultados de búsqueda se mostrarán aquí -->
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Botón para cambiar tema (dark/light) -->
+  <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
+    <i class="bi bi-moon-stars"></i>
+  </button>
 
-  <!-- Modal de Alerta -->
-  <div id="alertModal" class="modal fade" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="alertModalLabel" class="modal-title">Alerta</h5>
-          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div id="alertModalBody" class="modal-body">
-          <!-- Mensaje de alerta se mostrará aquí -->
-        </div>
-        <div class="modal-footer">
-          <button id="alertCancel" class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
-          <button id="alertConfirm" class="btn btn-primary" type="button">Agregar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Bootstrap JS (con Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Bootstrap JS (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script>
-    let currentSearchTerm = '';
-    let editInsumoIndex = null;
+    // Variables globales
+    let insumos = [];
+    let categoriasChart, recentInsumosChart;
+
+    // Función para cargar insumos desde localStorage
+    function loadInsumos() {
+      const storedInsumos = localStorage.getItem('insumos');
+      insumos = storedInsumos ? JSON.parse(storedInsumos) : [];
+      updateUI();
+    }
+
+    // Función para guardar insumos en localStorage
+    function saveInsumos() {
+      localStorage.setItem('insumos', JSON.stringify(insumos));
+      updateUI();
+    }
+
+    // Función para actualizar la interfaz
+    function updateUI() {
+      displayInsumos();
+      updateStats();
+      updateCharts();
+    }
 
     // Función para mostrar los insumos
-    function displayInsumos(insumos) {
+    function displayInsumos(filter = '') {
       const insumosListDiv = document.getElementById('insumosList');
-      insumosListDiv.innerHTML = ''; // Limpiar la lista anterior
-      if (insumos && insumos.length > 0) {
-        insumos.forEach((insumo, index) => {
-          const insumoItem = document.createElement('div');
-          insumoItem.className = 'insumo-item mb-3 p-2 border rounded';
-          insumoItem.innerHTML = `
-            <p>Nombre: ${insumo.nombre}, Categoría: ${insumo.categoria}</p>
-            <button class="btn btn-info btn-sm mr-2 editButton" data-index="${index}">Editar</button>
-            <button class="btn btn-danger btn-sm deleteButton" data-index="${index}">Borrar</button>
-          `;
-          insumosListDiv.appendChild(insumoItem);
-        });
+      insumosListDiv.innerHTML = '';
 
-        // Agregar eventos a los botones de editar y borrar
-        document.querySelectorAll('.editButton').forEach(button => {
-          button.addEventListener('click', function() {
-            editInsumoIndex = this.getAttribute('data-index');
-            const insumo = insumos[editInsumoIndex];
-            document.getElementById('nombre').value = insumo.nombre;
-            document.getElementById('categoria').value = insumo.categoria;
-          });
-        });
+      const filteredInsumos = filter ? 
+        insumos.filter(insumo => 
+          insumo.nombre.toLowerCase().includes(filter.toLowerCase()) ||
+          insumo.categoria.toLowerCase().includes(filter.toLowerCase())
+        ) : 
+        insumos;
 
-        document.querySelectorAll('.deleteButton').forEach(button => {
-          button.addEventListener('click', function() {
-            const index = this.getAttribute('data-index');
-            insumos.splice(index, 1);
-            localStorage.setItem('insumos', JSON.stringify(insumos));
-            displayInsumos(insumos);
-          });
+      if (filteredInsumos.length === 0) {
+        insumosListDiv.innerHTML = `
+          <div class="col">
+            <div class="alert alert-info text-center">
+              No hay insumos registrados
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      filteredInsumos.forEach((insumo, index) => {
+        const categoriaClass = `badge-${insumo.categoria.split(' ')[0].toLowerCase()}`;
+        const insumoItem = document.createElement('div');
+        insumoItem.className = 'col';
+        insumoItem.innerHTML = `
+          <div class="insumo-item h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="mb-0">${insumo.nombre}</h5>
+              <span class="badge ${categoriaClass}">${insumo.categoria}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <small class="text-muted">Agregado: ${new Date(insumo.fecha || new Date()).toLocaleDateString()}</small>
+              <div>
+                <button class="btn btn-sm btn-outline-primary edit-btn" data-index="${index}">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-btn" data-index="${index}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        insumosListDiv.appendChild(insumoItem);
+      });
+
+      // Agregar eventos a los botones
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const index = this.getAttribute('data-index');
+          openEditModal(index);
         });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const index = this.getAttribute('data-index');
+          deleteInsumo(index);
+        });
+      });
+    }
+
+    // Función para actualizar estadísticas
+    function updateStats() {
+      document.getElementById('totalInsumos').textContent = insumos.length;
+      
+      const categoriasUnicas = [...new Set(insumos.map(i => i.categoria))];
+      document.getElementById('totalCategorias').textContent = categoriasUnicas.length;
+      
+      if (insumos.length > 0) {
+        const ultimo = insumos[insumos.length - 1];
+        document.getElementById('ultimoInsumo').textContent = ultimo.nombre;
       } else {
-        insumosListDiv.textContent = 'No hay insumos guardados.';
+        document.getElementById('ultimoInsumo').textContent = '-';
       }
     }
 
-    // Función para mostrar alertas
-    function showAlert(message) {
-      document.getElementById('alertModalBody').textContent = message;
-      new bootstrap.Modal(document.getElementById('alertModal')).show();
+    // Función para actualizar gráficos
+    function updateCharts() {
+      updateCategoriasChart();
+      updateRecentInsumosChart();
     }
 
-    // Cargar insumos al iniciar la página
-    window.addEventListener('load', function() {
-      let insumos = localStorage.getItem('insumos');
-      if (insumos) {
-        insumos = JSON.parse(insumos);
-        displayInsumos(insumos);
-      } else {
-        document.getElementById('insumosList').textContent = 'No hay insumos guardados.';
+    // Gráfico de distribución por categoría
+    function updateCategoriasChart() {
+      const ctx = document.getElementById('categoriasChart').getContext('2d');
+      
+      // Agrupar por categoría
+      const categoriasCount = {};
+      insumos.forEach(insumo => {
+        categoriasCount[insumo.categoria] = (categoriasCount[insumo.categoria] || 0) + 1;
+      });
+      
+      const labels = Object.keys(categoriasCount);
+      const data = Object.values(categoriasCount);
+      
+      // Colores para las categorías
+      const backgroundColors = labels.map(label => {
+        const colorMap = {
+          'abarrotes': '#6f42c1',
+          'aves': '#fd7e14',
+          'bebidas y refrescos': '#20c997',
+          'carnes': '#e83e8c',
+          'embutido': '#6610f2',
+          'frutas': '#28a745',
+          'lácteos': '#17a2b8',
+          'mariscos': '#007bff',
+          'pasteles y postres': '#ffc107',
+          'pescados': '#6c757d',
+          'verduras': '#20c997',
+          'pan y tortilla': '#dc3545',
+          'desechables': '#6c757d'
+        };
+        return colorMap[label.toLowerCase()] || '#6c757d';
+      });
+
+      if (categoriasChart) {
+        categoriasChart.destroy();
       }
+
+      categoriasChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: ${value} (${percentage}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico de insumos recientes
+    function updateRecentInsumosChart() {
+      const ctx = document.getElementById('recentInsumosChart').getContext('2d');
+      
+      // Obtener últimos 30 días
+      const now = new Date();
+      const days = 30;
+      const labels = [];
+      const data = [];
+      
+      for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        labels.push(date.toLocaleDateString());
+        
+        const count = insumos.filter(insumo => {
+          const insumoDate = new Date(insumo.fecha || new Date());
+          return insumoDate.toDateString() === date.toDateString();
+        }).length;
+        
+        data.push(count);
+      }
+
+      if (recentInsumosChart) {
+        recentInsumosChart.destroy();
+      }
+
+      recentInsumosChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Insumos agregados',
+            data: data,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    }
+
+    // Función para abrir modal de edición
+    function openEditModal(index) {
+      const insumo = insumos[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('editNombre').value = insumo.nombre;
+      document.getElementById('editCategoria').value = insumo.categoria;
+      
+      const modal = new bootstrap.Modal(document.getElementById('editModal'));
+      modal.show();
+    }
+
+    // Función para guardar cambios de edición
+    document.getElementById('saveEdit').addEventListener('click', function() {
+      const index = document.getElementById('editIndex').value;
+      const nombre = document.getElementById('editNombre').value.trim();
+      const categoria = document.getElementById('editCategoria').value;
+      
+      if (!nombre) {
+        Swal.fire('Error', 'El nombre no puede estar vacío', 'error');
+        return;
+      }
+      
+      insumos[index] = {
+        nombre,
+        categoria,
+        fecha: insumos[index].fecha || new Date()
+      };
+      
+      saveInsumos();
+      Swal.fire('Éxito', 'Insumo actualizado correctamente', 'success');
+      
+      const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+      modal.hide();
+    });
+
+    // Función para eliminar insumo
+    function deleteInsumo(index) {
+      Swal.fire({
+        title: '¿Eliminar insumo?',
+        text: `Estás a punto de eliminar "${insumos[index].nombre}"`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        background: 'var(--card-bg)'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          insumos.splice(index, 1);
+          saveInsumos();
+          Swal.fire('Eliminado', 'El insumo ha sido eliminado', 'success');
+        }
+      });
+    }
+
+    // Función para buscar insumos
+    document.getElementById('searchButton').addEventListener('click', function() {
+      const searchTerm = document.getElementById('search').value.trim();
+      if (searchTerm) {
+        displayInsumos(searchTerm);
+      } else {
+        Swal.fire('Información', 'Ingresa un término de búsqueda', 'info');
+      }
+    });
+
+    // Función para limpiar filtro
+    document.getElementById('clearFilter').addEventListener('click', function() {
+      document.getElementById('filterInsumos').value = '';
+      displayInsumos();
+    });
+
+    // Filtrar al escribir
+    document.getElementById('filterInsumos').addEventListener('input', function() {
+      displayInsumos(this.value);
     });
 
     // Manejar el envío del formulario
-    document.getElementById('insumoForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const nombre = document.getElementById('nombre').value;
+    document.getElementById('insumoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const nombre = document.getElementById('nombre').value.trim();
       const categoria = document.getElementById('categoria').value;
-
-      // Mostrar el modal de confirmación
-      document.getElementById('modalInsumoNombre').textContent = nombre;
-      document.getElementById('modalInsumoCategoria').textContent = categoria;
-      new bootstrap.Modal(document.getElementById('confirmModal')).show();
-    });
-
-    // Confirmar la adición del insumo
-    document.getElementById('confirmButton').addEventListener('click', function() {
-      const nombre = document.getElementById('nombre').value;
-      const categoria = document.getElementById('categoria').value;
-      const insumo = { nombre, categoria };
-
-      let insumos = localStorage.getItem('insumos');
-      if (insumos === null) {
-        insumos = [];
-      } else {
-        insumos = JSON.parse(insumos);
+      
+      if (!nombre) {
+        Swal.fire('Error', 'El nombre no puede estar vacío', 'error');
+        return;
       }
-
-      insumos.push(insumo);
-      localStorage.setItem('insumos', JSON.stringify(insumos));
-
-      // Limpiar el formulario
+      
+      // Verificar si ya existe
+      const exists = insumos.some(i => i.nombre.toLowerCase() === nombre.toLowerCase());
+      if (exists) {
+        Swal.fire('Advertencia', 'Este insumo ya está registrado', 'warning');
+        return;
+      }
+      
+      // Agregar nuevo insumo
+      insumos.push({
+        nombre,
+        categoria,
+        fecha: new Date()
+      });
+      
+      saveInsumos();
+      Swal.fire('Éxito', 'Insumo agregado correctamente', 'success');
+      
+      // Limpiar formulario
       document.getElementById('insumoForm').reset();
-
-      // Ocultar el modal
-      new bootstrap.Modal(document.getElementById('confirmModal')).hide();
-
-      // Actualizar la lista de insumos
-      displayInsumos(JSON.parse(localStorage.getItem('insumos')));
-    });
-
-    // Buscar insumos
-    document.getElementById('searchButton').addEventListener('click', function() {
-      const searchTerm = document.getElementById('search').value.trim();
-      currentSearchTerm = searchTerm; // Guardar el término de búsqueda
-
-      let insumos = localStorage.getItem('insumos');
-      if (searchTerm !== '') {
-        if (insumos) {
-          insumos = JSON.parse(insumos);
-          const foundInsumos = insumos.filter(insumo => insumo.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
-          if (foundInsumos.length > 0) {
-            // Mostrar resultados en el modal
-            document.getElementById('searchResultBody').innerHTML = foundInsumos.map(insumo => `<p>Nombre: ${insumo.nombre}, Categoría: ${insumo.categoria}</p>`).join('');
-            new bootstrap.Modal(document.getElementById('searchResultModal')).show();
-          } else {
-            showAlert(`El insumo "${searchTerm}" no se encuentra. ¿Desea agregarlo?`);
-          }
-        } else {
-          showAlert(`El insumo "${searchTerm}" no se encuentra. ¿Desea agregarlo?`);
-        }
-      } else {
-        // Si el término de búsqueda está vacío, mostrar todos los insumos
-        if (insumos) {
-          displayInsumos(JSON.parse(insumos));
-        }
-      }
-    });
-
-    // Confirmar agregar insumo desde la alerta
-    document.getElementById('alertConfirm').addEventListener('click', function() {
-      document.getElementById('nombre').value = currentSearchTerm;
       document.getElementById('nombre').focus();
-      new bootstrap.Modal(document.getElementById('alertModal')).hide();
     });
 
-    // Cancelar agregar insumo desde la alerta
-    document.getElementById('alertCancel').addEventListener('click', function() {
-      new bootstrap.Modal(document.getElementById('alertModal')).hide();
+    // Función para cambiar entre tema claro/oscuro
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-bs-theme', newTheme);
+      
+      // Cambiar icono
+      const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+      themeIcon.classList.toggle('bi-moon-stars');
+      themeIcon.classList.toggle('bi-sun');
+      
+      // Guardar preferencia
+      localStorage.setItem('theme', newTheme);
+      
+      // Recargar gráficos para que se adapten al nuevo tema
+      updateCharts();
+    }
+
+    // Inicializar la aplicación
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar tema guardado
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      
+      // Ajustar icono del tema
+      const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+      if (savedTheme === 'dark') {
+        themeIcon.classList.remove('bi-moon-stars');
+        themeIcon.classList.add('bi-sun');
+      }
+      
+      // Cargar insumos
+      loadInsumos();
     });
   </script>
 </body>

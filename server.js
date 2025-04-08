@@ -28,3 +28,9 @@ app.listen(port, () => {
   console.log(`El servidor se está ejecutando en el puerto: ${port}`);
   console.log(`Entorno: ${env}`);
 });
+
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+});
