@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MiDashBoard - Gestión Culinaria</title>
+  <title>MiDashBoard - Panel Completo</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
@@ -84,36 +84,25 @@
       opacity: 0.7;
     }
 
-    .stat-card.total-recipes {
-      border-left-color: #4e73df;
-    }
+    /* Color Themes for Cards */
+    .stat-card.recetas { border-left-color: #4e73df; }
+    .stat-card.insumos { border-left-color: #1cc88a; }
+    .stat-card.gastos { border-left-color: #f6c23e; }
+    .stat-card.entradas { border-left-color: #36b9cc; }
+    .stat-card.platos { border-left-color: #e74a3b; }
+    .stat-card.postres { border-left-color: #6f42c1; }
+    .stat-card.bebidas { border-left-color: #fd7e14; }
 
-    .stat-card.entradas {
-      border-left-color: #1cc88a;
-    }
+    /* Badge Styles */
+    .badge-entrada { background-color: #36b9cc; }
+    .badge-plato { background-color: #e74a3b; }
+    .badge-postre { background-color: #6f42c1; }
+    .badge-bebida { background-color: #fd7e14; }
+    .badge-gasto { background-color: #f6c23e; color: #212529; }
+    .badge-insumo { background-color: #1cc88a; }
 
-    .stat-card.platos {
-      border-left-color: #36b9cc;
-    }
-
-    .stat-card.postres {
-      border-left-color: #f6c23e;
-    }
-
-    .stat-card.bebidas {
-      border-left-color: #e74a3b;
-    }
-
-    .stat-card.insumos {
-      border-left-color: #6f42c1;
-    }
-
-    .stat-card.gastos {
-      border-left-color: #fd7e14;
-    }
-
-    /* Tabla de datos */
-    .data-table {
+    /* Table Styles */
+    .table-responsive {
       max-height: 300px;
       overflow-y: auto;
     }
@@ -144,50 +133,33 @@
     .delay-2 { animation-delay: 0.4s; }
     .delay-3 { animation-delay: 0.6s; }
     .delay-4 { animation-delay: 0.8s; }
-    .delay-5 { animation-delay: 1.0s; }
-    .delay-6 { animation-delay: 1.2s; }
   </style>
 </head>
 <body>
-    <!-- Incluir el nav-header -->
-    <%- include('load/nav-header') %>
-    <br>
+  <%- include('load/index') %>
+  <%- include('load/nav-header') %>
+  
   <main class="main-content">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i> Inicio</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-speedometer2"></i> Dashboard Completo</li>
+        <li class="breadcrumb-item active" aria-current="page"><i class="bi bi-speedometer2"></i> Panel Completo</li>
       </ol>
     </nav>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1><i class="bi bi-speedometer2"></i> Gestión Culinaria Completa</h1>
-      <div class="dropdown">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="timeRangeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-calendar-range"></i> Últimos 30 días
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="timeRangeDropdown">
-          <li><a class="dropdown-item" href="#" onclick="changeTimeRange(7)">Últimos 7 días</a></li>
-          <li><a class="dropdown-item" href="#" onclick="changeTimeRange(30)">Últimos 30 días</a></li>
-          <li><a class="dropdown-item" href="#" onclick="changeTimeRange(90)">Últimos 90 días</a></li>
-          <li><a class="dropdown-item" href="#" onclick="changeTimeRange(365)">Último año</a></li>
-          <li><a class="dropdown-item" href="#" onclick="changeTimeRange(0)">Todo el tiempo</a></li>
-        </ul>
-      </div>
-    </div>
+    <h1 class="mb-4"><i class="bi bi-speedometer2"></i> Panel de Control</h1>
 
-    <!-- Stats Cards -->
+    <!-- Resumen General -->
     <div class="row mb-4">
-      <!-- Recetas -->
-      <div class="col-xl-2 col-md-4 mb-4 animated-card">
-        <div class="card stat-card total-recipes h-100">
+      <div class="col-xl-3 col-md-6 mb-4 animated-card">
+        <div class="card stat-card recetas h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                   Total Recetas</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalRecipes">0</div>
+                <div class="h5 mb-0 font-weight-bold" id="totalRecipes">0</div>
               </div>
               <div class="col-auto">
                 <i class="bi bi-book text-primary"></i>
@@ -197,139 +169,17 @@
         </div>
       </div>
 
-      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-1">
-        <div class="card stat-card entradas h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  Entradas</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="entradasCount">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-egg-fried text-success"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-2">
-        <div class="card stat-card platos h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                  Platos Fuertes</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="platosCount">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-egg text-info"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-3">
-        <div class="card stat-card postres h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                  Postres</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="postresCount">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-cake2 text-warning"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-4">
-        <div class="card stat-card bebidas h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                  Bebidas</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="bebidasCount">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-cup-straw text-danger"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-2 col-md-4 mb-4 animated-card delay-5">
+      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-1">
         <div class="card stat-card insumos h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-purple text-uppercase mb-1">
-                  Insumos</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="insumosCount">0</div>
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                  Total Insumos</div>
+                <div class="h5 mb-0 font-weight-bold" id="totalInsumos">0</div>
               </div>
               <div class="col-auto">
-                <i class="bi bi-basket text-purple"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Second Row of Stats Cards -->
-    <div class="row mb-4">
-      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-6">
-        <div class="card stat-card gastos h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-orange text-uppercase mb-1">
-                  Total Gastos</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalGastos">$0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-cash-coin text-orange"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6 mb-4 animated-card">
-        <div class="card stat-card h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                  Insumos Únicos</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="insumosUnicos">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-tags text-secondary"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-1">
-        <div class="card stat-card h-100">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                  Promedio Insumos/Receta</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="promedioInsumos">0</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-calculator text-info"></i>
+                <i class="bi bi-basket text-success"></i>
               </div>
             </div>
           </div>
@@ -337,16 +187,33 @@
       </div>
 
       <div class="col-xl-3 col-md-6 mb-4 animated-card delay-2">
-        <div class="card stat-card h-100">
+        <div class="card stat-card gastos h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  Última Actualización</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="ultimaActualizacion">-</div>
+                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                  Total Gastos</div>
+                <div class="h5 mb-0 font-weight-bold" id="totalGastos">$0.00</div>
               </div>
               <div class="col-auto">
-                <i class="bi bi-clock-history text-success"></i>
+                <i class="bi bi-cash-stack text-warning"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4 animated-card delay-3">
+        <div class="card stat-card platos h-100">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                  Gastos Promedio</div>
+                <div class="h5 mb-0 font-weight-bold" id="gastoPromedio">$0.00</div>
+              </div>
+              <div class="col-auto">
+                <i class="bi bi-graph-up text-danger"></i>
               </div>
             </div>
           </div>
@@ -354,142 +221,136 @@
       </div>
     </div>
 
-    <!-- Charts Row -->
-    <div class="row">
-      <!-- Gráfico de distribución por tipo -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-pie-chart"></i> Distribución por Tipo</h5>
+    <!-- Sección de Recetas -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-book"></i> Estadísticas de Recetas</h4>
           </div>
           <div class="card-body">
-            <div class="chart-container">
-              <canvas id="typeDistributionChart"></canvas>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card stat-card entradas h-100">
+                  <div class="card-body text-center">
+                    <h5>Entradas</h5>
+                    <h3 id="entradasCount">0</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card stat-card platos h-100">
+                  <div class="card-body text-center">
+                    <h5>Platos Fuertes</h5>
+                    <h3 id="platosCount">0</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card stat-card postres h-100">
+                  <div class="card-body text-center">
+                    <h5>Postres</h5>
+                    <h3 id="postresCount">0</h3>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gráfico de recetas agregadas por tiempo -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-bar-chart"></i> Recetas Agregadas</h5>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <canvas id="recipesOverTimeChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Second Charts Row -->
-    <div class="row">
-      <!-- Top 5 ingredientes más usados -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-star"></i> Insumos Más Usados</h5>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <canvas id="topIngredientsChart"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gastos por categoría -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-pie-chart-fill"></i> Distribución de Gastos</h5>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <canvas id="gastosChart"></canvas>
+            
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <div class="chart-container">
+                  <canvas id="typeDistributionChart"></canvas>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="chart-container">
+                  <canvas id="topIngredientsChart"></canvas>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Data Tables Row -->
-    <div class="row">
-      <!-- Tabla de recetas recientes -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-clock-history"></i> Recetas Recientes</h5>
+    <!-- Sección de Insumos -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="bi bi-basket"></i> Estadísticas de Insumos</h4>
           </div>
-          <div class="card-body data-table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Receta</th>
-                  <th>Tipo</th>
-                  <th>Fecha</th>
-                  <th>Insumos</th>
-                </tr>
-              </thead>
-              <tbody id="recentRecipesTable">
-                <!-- Las recetas se cargarán aquí -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tabla de insumos -->
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-basket"></i> Lista de Insumos</h5>
-          </div>
-          <div class="card-body data-table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Insumo</th>
-                  <th>Cantidad</th>
-                  <th>Unidad</th>
-                  <th>Costo</th>
-                </tr>
-              </thead>
-              <tbody id="insumosTable">
-                <!-- Los insumos se cargarán aquí -->
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="chart-container">
+                  <canvas id="categoriasInsumosChart"></canvas>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h5>Insumos más utilizados</h5>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Insumo</th>
+                        <th>Categoría</th>
+                        <th>Recetas que lo usan</th>
+                      </tr>
+                    </thead>
+                    <tbody id="topInsumosTable">
+                      <!-- Datos se cargarán aquí -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Third Data Tables Row -->
+    <!-- Sección de Gastos -->
     <div class="row">
-      <!-- Tabla de gastos -->
-      <div class="col-12 mb-4">
-        <div class="card h-100">
-          <div class="card-header bg-transparent">
-            <h5 class="card-title"><i class="bi bi-cash-stack"></i> Registro de Gastos</h5>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="bi bi-cash-stack"></i> Estadísticas de Gastos</h4>
           </div>
-          <div class="card-body data-table">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Concepto</th>
-                  <th>Categoría</th>
-                  <th>Monto</th>
-                  <th>Fecha</th>
-                  <th>Descripción</th>
-                </tr>
-              </thead>
-              <tbody id="gastosTable">
-                <!-- Los gastos se cargarán aquí -->
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="chart-container">
+                  <canvas id="gastosPorTipoChart"></canvas>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="chart-container">
+                  <canvas id="gastosPorMesChart"></canvas>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row mt-4">
+              <div class="col-12">
+                <h5>Últimos Gastos Registrados</h5>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Concepto</th>
+                        <th>Establecimiento</th>
+                        <th>Monto</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ultimosGastosTable">
+                      <!-- Datos se cargarán aquí -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -506,152 +367,103 @@
 
   <script>
     // Variables globales
-    let timeRange = 30; // Por defecto últimos 30 días
-    let typeDistributionChart, recipesOverTimeChart, topIngredientsChart, gastosChart;
+    let typeDistributionChart, topIngredientsChart, categoriasInsumosChart, gastosPorTipoChart, gastosPorMesChart;
 
-    // Función para cambiar el rango de tiempo
-    function changeTimeRange(days) {
-      timeRange = days;
-      document.getElementById('timeRangeDropdown').innerHTML = `<i class="bi bi-calendar-range"></i> ${getTimeRangeText()}`;
-      loadData();
-    }
-
-    // Función para obtener el texto del rango de tiempo
-    function getTimeRangeText() {
-      if (timeRange === 7) return 'Últimos 7 días';
-      if (timeRange === 30) return 'Últimos 30 días';
-      if (timeRange === 90) return 'Últimos 90 días';
-      if (timeRange === 365) return 'Último año';
-      return 'Todo el tiempo';
-    }
-
-    // Función para cargar los datos
-    function loadData() {
-      // Obtener todas las recetas del localStorage
+    // Función para cargar todos los datos
+    function loadAllData() {
+      // Cargar recetas
       const recipes = [];
-      const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
-      const gastos = JSON.parse(localStorage.getItem('gastos')) || [];
-      
-      // Obtener todas las recetas (excluyendo insumos, gastos y theme)
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (!['insumos', 'gastos', 'theme'].includes(key)) {
-          try {
-            const recipe = JSON.parse(localStorage.getItem(key));
-            if (recipe && recipe.title) { // Validar que sea una receta
-              recipes.push(recipe);
-            }
-          } catch (e) {
-            console.error(`Error al parsear item ${key}:`, e);
-          }
+        if (key !== 'insumos' && key !== 'gastos' && key !== 'theme') {
+          const recipe = JSON.parse(localStorage.getItem(key));
+          recipes.push(recipe);
         }
       }
 
-      // Filtrar por rango de tiempo si es necesario
-      const filteredRecipes = timeRange > 0 ? 
-        recipes.filter(recipe => {
-          const recipeDate = new Date(recipe.date);
-          const cutoffDate = new Date();
-          cutoffDate.setDate(cutoffDate.getDate() - timeRange);
-          return recipeDate >= cutoffDate;
-        }) : 
-        recipes;
+      // Cargar insumos
+      const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
 
-      const filteredGastos = timeRange > 0 ? 
-        gastos.filter(gasto => {
-          const gastoDate = new Date(gasto.fecha);
-          const cutoffDate = new Date();
-          cutoffDate.setDate(cutoffDate.getDate() - timeRange);
-          return gastoDate >= cutoffDate;
-        }) : 
-        gastos;
+      // Cargar gastos
+      const gastos = JSON.parse(localStorage.getItem('gastos')) || [];
 
-      // Actualizar estadísticas
-      updateStats(filteredRecipes, recipes, insumos, filteredGastos, gastos);
+      // Actualizar estadísticas generales
+      updateGeneralStats(recipes, insumos, gastos);
       
-      // Actualizar gráficos
-      updateCharts(filteredRecipes, recipes, filteredGastos);
+      // Actualizar sección de recetas
+      updateRecipesSection(recipes);
       
-      // Actualizar tablas
-      updateRecentRecipesTable(filteredRecipes);
-      updateInsumosTable(insumos);
-      updateGastosTable(filteredGastos);
+      // Actualizar sección de insumos
+      updateInsumosSection(recipes, insumos);
+      
+      // Actualizar sección de gastos
+      updateGastosSection(gastos);
     }
 
-    // Función para actualizar las estadísticas
-    function updateStats(filteredRecipes, allRecipes, insumos, filteredGastos, allGastos) {
-      // Estadísticas de recetas
-      document.getElementById('totalRecipes').textContent = allRecipes.length;
+    // Función para actualizar estadísticas generales
+    function updateGeneralStats(recipes, insumos, gastos) {
+      document.getElementById('totalRecipes').textContent = recipes.length;
+      document.getElementById('totalInsumos').textContent = insumos.length;
       
+      // Calcular total de gastos
+      const totalGastos = gastos.reduce((total, gasto) => {
+        return total + parseFloat(gasto.montoTotal || 0);
+      }, 0);
+      
+      document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
+      
+      // Calcular gasto promedio
+      const gastoPromedio = gastos.length > 0 ? totalGastos / gastos.length : 0;
+      document.getElementById('gastoPromedio').textContent = `$${gastoPromedio.toFixed(2)}`;
+    }
+
+    // Función para actualizar sección de recetas
+    function updateRecipesSection(recipes) {
       // Contar por tipo
-      const entradas = filteredRecipes.filter(r => r.type === 'entrada').length;
-      const platos = filteredRecipes.filter(r => r.type === 'plato fuerte').length;
-      const postres = filteredRecipes.filter(r => r.type === 'postre').length;
-      const bebidas = filteredRecipes.filter(r => r.type === 'bebida').length;
+      const entradas = recipes.filter(r => r.type === 'entrada').length;
+      const platos = recipes.filter(r => r.type === 'plato fuerte').length;
+      const postres = recipes.filter(r => r.type === 'postre').length;
+      const bebidas = recipes.filter(r => r.type === 'bebida').length;
       
       document.getElementById('entradasCount').textContent = entradas;
       document.getElementById('platosCount').textContent = platos;
       document.getElementById('postresCount').textContent = postres;
       document.getElementById('bebidasCount').textContent = bebidas;
+
+      // Gráfico de distribución por tipo
+      updateTypeDistributionChart(recipes);
       
-      // Estadísticas de insumos
-      document.getElementById('insumosCount').textContent = insumos.reduce((sum, insumo) => sum + (parseFloat(insumo.cantidad) || 0), 0).toFixed(2);
-      document.getElementById('insumosUnicos').textContent = [...new Set(insumos.map(i => i.nombre))].length;
-      
-      // Calcular promedio de insumos por receta
-      const promedio = allRecipes.length > 0 ? 
-        (allRecipes.reduce((sum, receta) => sum + (receta.ingredients?.length || 0), 0) / allRecipes.length).toFixed(1) : 
-        '0';
-      document.getElementById('promedioInsumos').textContent = promedio;
-      
-      // Estadísticas de gastos
-      const totalGastos = allGastos.reduce((sum, gasto) => sum + (parseFloat(gasto.monto) || 0), 0);
-      document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
-      
-      // Última actualización
-      const lastUpdated = new Date(Math.max(
-        ...allRecipes.map(r => new Date(r.date).getTime()),
-        ...allGastos.map(g => new Date(g.fecha).getTime())
-      ));
-      document.getElementById('ultimaActualizacion').textContent = isNaN(lastUpdated.getTime()) ? 
-        'Nunca' : 
-        lastUpdated.toLocaleDateString() + ' ' + lastUpdated.toLocaleTimeString();
+      // Gráfico de ingredientes más usados
+      updateTopIngredientsChart(recipes);
     }
 
-    // Función para actualizar los gráficos
-    function updateCharts(filteredRecipes, allRecipes, filteredGastos) {
-      // Colores para los gráficos
-      const backgroundColors = [
-        'rgba(78, 115, 223, 0.8)',    // Azul
-        'rgba(28, 200, 138, 0.8)',    // Verde
-        'rgba(54, 185, 204, 0.8)',    // Cyan
-        'rgba(246, 194, 62, 0.8)',    // Amarillo
-        'rgba(231, 74, 59, 0.8)',     // Rojo
-        'rgba(111, 66, 193, 0.8)',    // Morado
-        'rgba(253, 126, 20, 0.8)'     // Naranja
-      ];
-
-      const borderColors = backgroundColors.map(color => color.replace('0.8', '1'));
-
-      // Gráfico de distribución por tipo (Pie)
+    // Gráfico de distribución por tipo de receta
+    function updateTypeDistributionChart(recipes) {
       const typeData = {
-        'entrada': filteredRecipes.filter(r => r.type === 'entrada').length,
-        'plato fuerte': filteredRecipes.filter(r => r.type === 'plato fuerte').length,
-        'postre': filteredRecipes.filter(r => r.type === 'postre').length,
-        'bebida': filteredRecipes.filter(r => r.type === 'bebida').length
+        'entrada': recipes.filter(r => r.type === 'entrada').length,
+        'plato fuerte': recipes.filter(r => r.type === 'plato fuerte').length,
+        'postre': recipes.filter(r => r.type === 'postre').length,
+        'bebida': recipes.filter(r => r.type === 'bebida').length
       };
 
-      if (typeDistributionChart) typeDistributionChart.destroy();
+      const ctx = document.getElementById('typeDistributionChart').getContext('2d');
       
-      const typeCtx = document.getElementById('typeDistributionChart').getContext('2d');
-      typeDistributionChart = new Chart(typeCtx, {
+      if (typeDistributionChart) {
+        typeDistributionChart.destroy();
+      }
+
+      typeDistributionChart = new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: Object.keys(typeData).filter(k => typeData[k] > 0),
+          labels: Object.keys(typeData),
           datasets: [{
-            data: Object.values(typeData).filter(v => v > 0),
-            backgroundColor: backgroundColors.slice(0, Object.keys(typeData).length),
-            borderColor: borderColors.slice(0, Object.keys(typeData).length),
+            data: Object.values(typeData),
+            backgroundColor: [
+              'rgba(54, 185, 204, 0.8)',
+              'rgba(231, 74, 59, 0.8)',
+              'rgba(111, 66, 193, 0.8)',
+              'rgba(253, 126, 20, 0.8)'
+            ],
             borderWidth: 1
           }]
         },
@@ -659,9 +471,7 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom',
-            },
+            legend: { position: 'bottom' },
             tooltip: {
               callbacks: {
                 label: function(context) {
@@ -676,76 +486,13 @@
           }
         }
       });
+    }
 
-      // Gráfico de recetas agregadas por tiempo (Line)
-      const now = new Date();
-      const timeData = {};
-      const timeLabels = [];
-      
-      for (let i = timeRange > 0 ? timeRange - 1 : 29; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        
-        const dateKey = timeRange > 90 ? 
-          `${date.getMonth() + 1}/${date.getFullYear()}` : 
-          `${date.getDate()}/${date.getMonth() + 1}`;
-        
-        timeLabels.push(dateKey);
-        timeData[dateKey] = 0;
-      }
-      
-      filteredRecipes.forEach(recipe => {
-        const recipeDate = new Date(recipe.date);
-        const diffDays = Math.floor((now - recipeDate) / (1000 * 60 * 60 * 24));
-        
-        if (diffDays >= 0 && diffDays < (timeRange > 0 ? timeRange : 30)) {
-          const date = new Date(recipeDate);
-          const dateKey = timeRange > 90 ? 
-            `${date.getMonth() + 1}/${date.getFullYear()}` : 
-            `${date.getDate()}/${date.getMonth() + 1}`;
-          
-          timeData[dateKey]++;
-        }
-      });
-
-      if (recipesOverTimeChart) recipesOverTimeChart.destroy();
-      
-      const timeCtx = document.getElementById('recipesOverTimeChart').getContext('2d');
-      recipesOverTimeChart = new Chart(timeCtx, {
-        type: 'line',
-        data: {
-          labels: timeLabels,
-          datasets: [{
-            label: 'Recetas agregadas',
-            data: Object.values(timeData),
-            backgroundColor: 'rgba(78, 115, 223, 0.2)',
-            borderColor: 'rgba(78, 115, 223, 1)',
-            borderWidth: 2,
-            tension: 0.3,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              precision: 0
-            }
-          },
-          plugins: {
-            legend: {
-              display: false
-            }
-          }
-        }
-      });
-
-      // Gráfico de ingredientes más usados (Bar)
+    // Gráfico de ingredientes más usados
+    function updateTopIngredientsChart(recipes) {
       const ingredientCounts = {};
-      allRecipes.forEach(recipe => {
-        recipe.ingredients?.forEach(ing => {
+      recipes.forEach(recipe => {
+        recipe.ingredients.forEach(ing => {
           if (ingredientCounts[ing.name]) {
             ingredientCounts[ing.name]++;
           } else {
@@ -758,18 +505,21 @@
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
 
-      if (topIngredientsChart) topIngredientsChart.destroy();
+      const ctx = document.getElementById('topIngredientsChart').getContext('2d');
       
-      const ingredientsCtx = document.getElementById('topIngredientsChart').getContext('2d');
-      topIngredientsChart = new Chart(ingredientsCtx, {
+      if (topIngredientsChart) {
+        topIngredientsChart.destroy();
+      }
+
+      topIngredientsChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: sortedIngredients.map(i => i[0]),
           datasets: [{
             label: 'Recetas que lo usan',
             data: sortedIngredients.map(i => i[1]),
-            backgroundColor: 'rgba(54, 185, 204, 0.8)',
-            borderColor: 'rgba(54, 185, 204, 1)',
+            backgroundColor: 'rgba(28, 200, 138, 0.8)',
+            borderColor: 'rgba(28, 200, 138, 1)',
             borderWidth: 1
           }]
         },
@@ -783,35 +533,49 @@
             }
           },
           plugins: {
-            legend: {
-              display: false
-            }
+            legend: { display: false }
           }
         }
       });
+    }
 
-      // Gráfico de distribución de gastos (Doughnut)
-      const gastosPorCategoria = {};
-      filteredGastos.forEach(gasto => {
-        const categoria = gasto.categoria || 'Sin categoría';
-        if (gastosPorCategoria[categoria]) {
-          gastosPorCategoria[categoria] += parseFloat(gasto.monto) || 0;
-        } else {
-          gastosPorCategoria[categoria] = parseFloat(gasto.monto) || 0;
-        }
-      });
-
-      if (gastosChart) gastosChart.destroy();
+    // Función para actualizar sección de insumos
+    function updateInsumosSection(recipes, insumos) {
+      // Gráfico de distribución por categoría
+      updateCategoriasInsumosChart(insumos);
       
-      const gastosCtx = document.getElementById('gastosChart').getContext('2d');
-      gastosChart = new Chart(gastosCtx, {
+      // Tabla de insumos más usados
+      updateTopInsumosTable(recipes);
+    }
+
+    // Gráfico de categorías de insumos
+    function updateCategoriasInsumosChart(insumos) {
+      const categoriasCount = {};
+      insumos.forEach(insumo => {
+        categoriasCount[insumo.categoria] = (categoriasCount[insumo.categoria] || 0) + 1;
+      });
+      
+      const ctx = document.getElementById('categoriasInsumosChart').getContext('2d');
+      
+      if (categoriasInsumosChart) {
+        categoriasInsumosChart.destroy();
+      }
+
+      categoriasInsumosChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: Object.keys(gastosPorCategoria),
+          labels: Object.keys(categoriasCount),
           datasets: [{
-            data: Object.values(gastosPorCategoria),
-            backgroundColor: backgroundColors,
-            borderColor: borderColors,
+            data: Object.values(categoriasCount),
+            backgroundColor: [
+              'rgba(78, 115, 223, 0.8)',
+              'rgba(28, 200, 138, 0.8)',
+              'rgba(54, 185, 204, 0.8)',
+              'rgba(246, 194, 62, 0.8)',
+              'rgba(231, 74, 59, 0.8)',
+              'rgba(111, 66, 193, 0.8)',
+              'rgba(253, 126, 20, 0.8)'
+            ],
             borderWidth: 1
           }]
         },
@@ -819,95 +583,183 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: {
-              position: 'bottom',
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  const label = context.label || '';
-                  const value = context.raw || 0;
-                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const percentage = Math.round((value / total) * 100);
-                  return `${label}: $${value.toFixed(2)} (${percentage}%)`;
-                }
-              }
+            legend: { position: 'right' }
+          }
+        }
+      });
+    }
+
+    // Tabla de insumos más usados
+    function updateTopInsumosTable(recipes) {
+      const ingredientCounts = {};
+      recipes.forEach(recipe => {
+        recipe.ingredients.forEach(ing => {
+          if (ingredientCounts[ing.name]) {
+            ingredientCounts[ing.name].count++;
+          } else {
+            ingredientCounts[ing.name] = {
+              count: 1,
+              categoria: ing.categoria || 'Desconocida'
+            };
+          }
+        });
+      });
+
+      const sortedIngredients = Object.entries(ingredientCounts)
+        .sort((a, b) => b[1].count - a[1].count)
+        .slice(0, 5);
+
+      const tableBody = document.getElementById('topInsumosTable');
+      tableBody.innerHTML = '';
+      
+      sortedIngredients.forEach(([nombre, data]) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${nombre}</td>
+          <td><span class="badge bg-secondary">${data.categoria}</span></td>
+          <td>${data.count}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Función para actualizar sección de gastos
+    function updateGastosSection(gastos) {
+      // Gráfico de gastos por tipo
+      updateGastosPorTipoChart(gastos);
+      
+      // Gráfico de gastos por mes
+      updateGastosPorMesChart(gastos);
+      
+      // Tabla de últimos gastos
+      updateUltimosGastosTable(gastos);
+    }
+
+    // Gráfico de gastos por tipo
+    function updateGastosPorTipoChart(gastos) {
+      const tiposGasto = {
+        'fijo negocio': 0,
+        'variable negocio': 0,
+        'deuda': 0
+      };
+
+      gastos.forEach(gasto => {
+        if (gasto.tipoGasto in tiposGasto) {
+          tiposGasto[gasto.tipoGasto] += parseFloat(gasto.montoTotal || 0);
+        }
+      });
+
+      const ctx = document.getElementById('gastosPorTipoChart').getContext('2d');
+      
+      if (gastosPorTipoChart) {
+        gastosPorTipoChart.destroy();
+      }
+
+      gastosPorTipoChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(tiposGasto).map(t => {
+            if (t === 'fijo negocio') return 'Fijos';
+            if (t === 'variable negocio') return 'Variables';
+            return 'Deudas';
+          }),
+          datasets: [{
+            data: Object.values(tiposGasto),
+            backgroundColor: [
+              'rgba(78, 115, 223, 0.8)',
+              'rgba(28, 200, 138, 0.8)',
+              'rgba(231, 74, 59, 0.8)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    }
+
+    // Gráfico de gastos por mes
+    function updateGastosPorMesChart(gastos) {
+      const now = new Date();
+      const meses = {};
+      const mesesLabels = [];
+      
+      // Preparar los últimos 6 meses
+      for (let i = 5; i >= 0; i--) {
+        const date = new Date(now);
+        date.setMonth(date.getMonth() - i);
+        const mes = date.toLocaleString('default', { month: 'long' });
+        meses[mes] = 0;
+        mesesLabels.push(mes);
+      }
+      
+      // Sumar gastos por mes
+      gastos.forEach(gasto => {
+        const fecha = new Date(gasto.fecha || new Date());
+        const mes = fecha.toLocaleString('default', { month: 'long' });
+        
+        if (mes in meses) {
+          meses[mes] += parseFloat(gasto.montoTotal || 0);
+        }
+      });
+
+      const ctx = document.getElementById('gastosPorMesChart').getContext('2d');
+      
+      if (gastosPorMesChart) {
+        gastosPorMesChart.destroy();
+      }
+
+      gastosPorMesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: mesesLabels,
+          datasets: [{
+            label: 'Total Gastado',
+            data: Object.values(meses),
+            backgroundColor: 'rgba(246, 194, 62, 0.8)',
+            borderColor: 'rgba(246, 194, 62, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
             }
           }
         }
       });
     }
 
-    // Función para actualizar la tabla de recetas recientes
-    function updateRecentRecipesTable(recipes) {
-      const tableBody = document.getElementById('recentRecipesTable');
+    // Tabla de últimos gastos
+    function updateUltimosGastosTable(gastos) {
+      const tableBody = document.getElementById('ultimosGastosTable');
       tableBody.innerHTML = '';
       
-      // Ordenar recetas por fecha (más recientes primero)
-      const sortedRecipes = [...recipes].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
-      
-      sortedRecipes.forEach(recipe => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${recipe.title || 'Sin título'}</td>
-          <td><span class="badge ${getTypeBadgeClass(recipe.type)}">${recipe.type || 'Sin tipo'}</span></td>
-          <td>${recipe.date ? new Date(recipe.date).toLocaleDateString() : 'Sin fecha'}</td>
-          <td>${recipe.ingredients?.length || 0}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    // Función para actualizar la tabla de insumos
-    function updateInsumosTable(insumos) {
-      const tableBody = document.getElementById('insumosTable');
-      tableBody.innerHTML = '';
-      
-      // Ordenar insumos alfabéticamente
-      const sortedInsumos = [...insumos].sort((a, b) => a.nombre?.localeCompare(b.nombre));
-      
-      sortedInsumos.forEach(insumo => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${insumo.nombre || 'Sin nombre'}</td>
-          <td>${insumo.cantidad || '0'}</td>
-          <td>${insumo.unidad || '-'}</td>
-          <td>${insumo.costo ? `$${parseFloat(insumo.costo).toFixed(2)}` : '$0.00'}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    // Función para actualizar la tabla de gastos
-    function updateGastosTable(gastos) {
-      const tableBody = document.getElementById('gastosTable');
-      tableBody.innerHTML = '';
-      
-      // Ordenar gastos por fecha (más recientes primero)
-      const sortedGastos = [...gastos].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+      // Ordenar por fecha (más recientes primero)
+      const sortedGastos = [...gastos].sort((a, b) => {
+        const dateA = new Date(a.fecha || 0);
+        const dateB = new Date(b.fecha || 0);
+        return dateB - dateA;
+      }).slice(0, 5);
       
       sortedGastos.forEach(gasto => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${gasto.concepto || 'Sin concepto'}</td>
-          <td><span class="badge bg-secondary">${gasto.categoria || 'Sin categoría'}</span></td>
-          <td>$${parseFloat(gasto.monto || 0).toFixed(2)}</td>
-          <td>${gasto.fecha ? new Date(gasto.fecha).toLocaleDateString() : 'Sin fecha'}</td>
-          <td>${gasto.descripcion || '-'}</td>
+          <td>${new Date(gasto.fecha || new Date()).toLocaleDateString()}</td>
+          <td>${gasto.conceptoGasto || 'Sin concepto'}</td>
+          <td>${gasto.establecimiento || 'Sin establecimiento'}</td>
+          <td>$${parseFloat(gasto.montoTotal || 0).toFixed(2)}</td>
         `;
         tableBody.appendChild(row);
       });
-    }
-
-    // Función para obtener la clase del badge según el tipo de receta
-    function getTypeBadgeClass(type) {
-      switch(type) {
-        case 'entrada': return 'bg-success';
-        case 'plato fuerte': return 'bg-primary';
-        case 'postre': return 'bg-warning text-dark';
-        case 'bebida': return 'bg-info text-dark';
-        default: return 'bg-secondary';
-      }
     }
 
     // Función para cambiar entre tema claro/oscuro
@@ -925,7 +777,7 @@
       localStorage.setItem('theme', newTheme);
       
       // Recargar gráficos para que se adapten al nuevo tema
-      loadData();
+      loadAllData();
     }
 
     // Inicializar la página cuando se carga
@@ -941,14 +793,8 @@
         themeIcon.classList.add('bi-sun');
       }
       
-      // Inicializar tooltips
-      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
-      
-      // Cargar datos
-      loadData();
+      // Cargar todos los datos
+      loadAllData();
     });
   </script>
 </body>
