@@ -89,21 +89,17 @@
 <!-- Navbar para móviles -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-block d-md-none">
   <div class="container-fluid">
-    <!-- Enlace de Iniciar Sesión o Icono de Usuario -->
-    <div class="user-section">
-      
-      <!-- Icono de usuario para móviles -->
-      <div class="user-icon dropdown" style="display: none;">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-person-circle"> user</i>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMobile">
-          <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
-          <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
-        </ul>
-      </div>
+    <!-- Icono de usuario para móviles -->
+    <div class="user-icon dropdown" style="display: none;">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-person-circle"> user</i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMobile">
+        <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
+        <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
+      </ul>
     </div>
   </div>
 </nav>
@@ -111,21 +107,17 @@
 <!-- Navbar para pantallas grandes (arriba del contenido) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-md-block" style="position: fixed; top: 0; left: 250px; right: 0; z-index: 1000;">
   <div class="container-fluid justify-content-end">
-    <!-- Enlaces de login/register para desktop -->
-    <div class="user-section" style="margin-right: 150px;">
-      
-      <!-- Icono de usuario para desktop -->
-      <div class="user-icon dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-person-circle"> user</i>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
-          <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
-          <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
-        </ul>
-      </div>
+    <!-- Icono de usuario para desktop -->
+    <div class="user-icon dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-person-circle"> user</i>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
+        <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
+        <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
+      </ul>
     </div>
   </div>
 </nav>
@@ -206,9 +198,8 @@
   </div>
 </div>
 
-<!-- Estilos personalizados (se mantienen igual) -->
+<!-- Estilos personalizados -->
 <style>
-  /* Tus estilos actuales se mantienen igual */
   .main-content {
     margin-left: 250px;
     padding: 20px;
@@ -299,7 +290,7 @@
   }
 </style>
 
-<!-- JavaScript actualizado -->
+<!-- JavaScript Mejorado -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let db;
@@ -324,26 +315,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
   request.onerror = (event) => {
     console.error('Error al abrir IndexedDB:', event.target.error);
+    redirectToLanding();
   };
 
-  // Verificar si hay un usuario logueado al cargar la página
+  // Función para redirigir a landing
+  function redirectToLanding() {
+    if (window.location.pathname !== '/landing') {
+      window.location.href = '/landing';
+    }
+  }
+
+  // Verificar si hay un usuario logueado
   function checkUserLoggedIn() {
     const transaction = db.transaction([storeName], 'readonly');
     const store = transaction.objectStore(storeName);
     const request = store.getAll();
 
     request.onsuccess = () => {
-      if (request.result.length > 0) {
+      if (request.result.length === 0) {
+        // No hay usuarios registrados, redirigir
+        redirectToLanding();
+      } else {
         const user = request.result[0];
         showUserIcon(user);
-      } else {
-        // No redirigir automáticamente, solo mostrar los enlaces de login/register
-        hideUserIcon();
       }
     };
 
-    request.onerror = (event) => {
-      console.error('Error al obtener el usuario:', event.target.error);
+    request.onerror = () => {
+      console.error('Error al verificar usuario');
+      redirectToLanding();
+    };
+  }
+
+  // Mostrar ícono de usuario con datos
+  function showUserIcon(user) {
+    const userIcons = document.querySelectorAll('.user-icon');
+    userIcons.forEach(icon => {
+      icon.style.display = 'inline-block';
+      icon.querySelector('i').textContent = user.name || 'Usuario';
+    });
+    
+    // Actualizar datos en los dropdowns
+    document.querySelectorAll('.profile-name').forEach(el => {
+      el.textContent = user.name;
+    });
+    document.querySelectorAll('.profile-email').forEach(el => {
+      el.textContent = user.email;
+    });
+  }
+
+  // Función para cerrar sesión
+  function logoutUser() {
+    const transaction = db.transaction([storeName], 'readwrite');
+    const store = transaction.objectStore(storeName);
+    const clearRequest = store.clear(); // Limpiar todos los usuarios
+
+    clearRequest.onsuccess = () => {
+      window.location.href = '/landing';
+    };
+
+    clearRequest.onerror = (event) => {
+      console.error('Error al cerrar sesión:', event.target.error);
     };
   }
 
@@ -378,37 +410,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelectorAll('.logout-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const email = document.querySelector('.profile-email').textContent;
-        deleteUser(email);
-      });
+      btn.addEventListener('click', logoutUser);
     });
-  }
-
-  // Mostrar ícono de usuario y ocultar enlaces de Registrarse e Iniciar Sesión
-  function showUserIcon(user) {
-    const userIcons = document.querySelectorAll('.user-icon');
-    const registerLinks = document.querySelectorAll('.register-link');
-    const loginLinks = document.querySelectorAll('.login-link');
-    const profileNames = document.querySelectorAll('.profile-name');
-    const profileEmails = document.querySelectorAll('.profile-email');
-
-    userIcons.forEach(icon => icon.style.display = 'inline-block');
-    registerLinks.forEach(link => link.style.display = 'none');
-    loginLinks.forEach(link => link.style.display = 'none');
-    profileNames.forEach(el => el.textContent = user.name);
-    profileEmails.forEach(el => el.textContent = user.email);
-  }
-
-  // Ocultar ícono de usuario y mostrar enlaces de login/register
-  function hideUserIcon() {
-    const userIcons = document.querySelectorAll('.user-icon');
-    const registerLinks = document.querySelectorAll('.register-link');
-    const loginLinks = document.querySelectorAll('.login-link');
-
-    userIcons.forEach(icon => icon.style.display = 'none');
-    registerLinks.forEach(link => link.style.display = 'inline-block');
-    loginLinks.forEach(link => link.style.display = 'inline-block');
   }
 
   // Registrar nuevo usuario
@@ -480,9 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.onsuccess = () => {
       console.log('Usuario eliminado de IndexedDB');
-      hideUserIcon();
-      alert('Sesión cerrada correctamente.');
-      window.location.href = '/landing';
+      logoutUser();
     };
 
     request.onerror = (event) => {
