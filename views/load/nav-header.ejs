@@ -55,35 +55,22 @@
 <!-- Navbar para móviles -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-block d-md-none">
   <div class="container-fluid">
-
     <!-- Enlace de Iniciar Sesión o Icono de Usuario -->
-    <div id="user-section">
-
-      <!-- Si el usuario está logueado, mostrar icono de usuario con menú desplegable -->
-      <div id="user-icon" class="dropdown" style="display: none;">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="bi bi-person-circle"></i>
+    <div class="user-section">
+      <!-- Enlaces de login/register para móviles -->
+      <a class="nav-link-custom login-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a>
+      <a class="nav-link-custom register-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+      
+      <!-- Icono de usuario para móviles -->
+      <div class="user-icon dropdown" style="display: none;">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-circle">user</i>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li>
-            <button id="editProfileBtn" class="dropdown-item">Editar Perfil</button>
-          </li>
-          <li>
-            <button id="deleteProfileBtn" class="dropdown-item">Eliminar Perfil</button>
-          </li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <li>
-            <button id="logoutBtn" class="dropdown-item">Cerrar Sesión</button>
-          </li>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMobile">
+          <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
+          <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
         </ul>
       </div>
     </div>
@@ -93,36 +80,21 @@
 <!-- Navbar para pantallas grandes (arriba del contenido) -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-md-block" style="position: fixed; top: 0; left: 250px; right: 0; z-index: 1000;">
   <div class="container-fluid justify-content-end">
-    <!-- Enlace de Registrarse -->
-
-    <!-- Enlace de Iniciar Sesión o Icono de Usuario -->
-    <div id="user-section" style="margin-right: 250px;">
-
-      <!-- Si el usuario está logueado, mostrar icono de usuario con menú desplegable -->
-      <div id="user-icon" class="dropdown" >
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="bi bi-person-circle"></i>
+    <!-- Enlaces de login/register para desktop -->
+    <div class="user-section" style="margin-right: 150px;">
+      <a class="nav-link-custom login-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a>
+      <a class="nav-link-custom register-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+      
+      <!-- Icono de usuario para desktop -->
+      <div class="user-icon dropdown" style="display: none;">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-circle">user</i>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li>
-            <button id="editProfileBtn" class="dropdown-item">Editar Perfil</button>
-          </li>
-          <li>
-            <button id="deleteProfileBtn" class="dropdown-item">Eliminar Perfil</button>
-          </li>
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
-          <li>
-            <button id="logoutBtn" class="dropdown-item">Cerrar Sesión</button>
-          </li>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
+          <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
+          <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
         </ul>
       </div>
     </div>
@@ -141,14 +113,14 @@
       <div class="modal-body">
         <form id="loginForm">
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" required />
+            <label for="loginEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="loginEmail" required />
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" required />
+            <label for="loginPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="loginPassword" required />
           </div>
-          <div id="loginError" class="error-message" style="display: none;">Correo o contraseña incorrectos.</div>
+          <div class="error-message login-error" style="display: none;">Correo o contraseña incorrectos.</div>
           <button type="submit" class="btn btn-success">Iniciar Sesión</button>
         </form>
       </div>
@@ -167,18 +139,18 @@
       <div class="modal-body">
         <form id="registerForm">
           <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" required />
+            <label for="registerName" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="registerName" required />
           </div>
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" required />
+            <label for="registerEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="registerEmail" required />
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" required />
+            <label for="registerPassword" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="registerPassword" required />
           </div>
-          <div id="registerError" class="error-message" style="display: none;">El correo ya está registrado.</div>
+          <div class="error-message register-error" style="display: none;">El correo ya está registrado.</div>
           <button type="submit" class="btn btn-success">Registrarse</button>
         </form>
       </div>
@@ -195,41 +167,34 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p><strong>Nombre:</strong> <span id="profileName"></span></p>
-        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-        <button id="editProfileBtn" class="btn btn-primary">Editar Perfil</button>
-        <button id="deleteProfileBtn" class="btn btn-danger">Borrar Perfil</button>
-        <button id="logoutBtn" class="btn btn-warning">Cerrar Sesión</button>
+        <p><strong>Nombre:</strong> <span class="profile-name"></span></p>
+        <p><strong>Email:</strong> <span class="profile-email"></span></p>
+        <button class="btn btn-primary edit-profile-btn">Editar Perfil</button>
+        <button class="btn btn-danger delete-profile-btn">Borrar Perfil</button>
+        <button class="btn btn-warning logout-btn">Cerrar Sesión</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Estilos personalizados -->
+<!-- Estilos personalizados (se mantienen igual) -->
 <style>
-  /* Estilos para el contenido principal */
+  /* Tus estilos actuales se mantienen igual */
   .main-content {
-    margin-left: 250px; /* Margen para la barra lateral en pantallas grandes */
+    margin-left: 250px;
     padding: 20px;
-    transition: margin-left 0.3s ease; /* Transición suave */
+    transition: margin-left 0.3s ease;
   }
-
-  /* Estilos para el menú lateral */
   .sidebar {
     transition: transform 0.3s ease;
   }
-
-  /* Media query para pantallas pequeñas (menos de 768px) */
   @media (max-width: 767.98px) {
     .main-content {
-      margin-left: 0; /* Elimina el margen izquierdo en móviles */
+      margin-left: 0;
     }
-
     .sidebar {
-      transform: translateX(-100%); /* Oculta la barra lateral en móviles */
+      transform: translateX(-100%);
     }
-
-    /* Muestra el botón de menú en móviles */
     .navbar-toggler {
       display: block !important;
       position: fixed;
@@ -241,19 +206,14 @@
       padding: 8px;
       border-radius: 4px;
     }
-
     .navbar-toggler-icon {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
-
-    /* Ajustes para el offcanvas */
     .offcanvas {
       width: 250px !important;
     }
-
-    /* Ajustes para el Navbar con icono de usuario en móviles */
     .navbar {
-      margin-left: 0 !important; /* Elimina el margen izquierdo en móviles */
+      margin-left: 0 !important;
       position: fixed;
       top: 0;
       left: 0;
@@ -262,67 +222,55 @@
       background-color: #f8f9fa;
       padding: 10px;
     }
-
     .navbar .container-fluid {
-      justify-content: flex-end; /* Alinea los elementos a la derecha */
+      justify-content: flex-end;
     }
-
     .navbar .nav-link-custom {
-      margin-right: 10px; /* Espaciado entre enlaces */
+      margin-right: 10px;
     }
-
     .navbar .dropdown-menu {
       position: absolute;
       right: 0;
-      left: auto; /* Alinea el menú desplegable a la derecha */
+      left: auto;
     }
   }
-
-  /* Estilos para el Navbar con icono de usuario */
   .nav-link-custom {
     cursor: pointer;
     color: #4caf50;
     text-decoration: none;
   }
-
   .nav-link-custom:hover {
     text-decoration: underline;
   }
-
   .user-icon {
     cursor: pointer;
     font-size: 1.5rem;
     margin-left: 10px;
   }
-
   .error-message {
     color: red;
     font-size: 0.9rem;
     margin-top: 5px;
   }
-
   .dropdown-menu {
     background-color: #f8f9fa;
     border: 1px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-
   .dropdown-item {
     color: #333;
     padding: 8px 16px;
   }
-
   .dropdown-item:hover {
     background-color: #4caf50;
     color: white;
   }
-
   .dropdown-divider {
     border-top: 1px solid #ddd;
   }
 </style>
 
-<!-- JavaScript -->
+<!-- JavaScript actualizado -->
 <script>
   let db;
   const dbName = 'UserDB';
@@ -341,6 +289,7 @@
   request.onsuccess = (event) => {
     db = event.target.result;
     checkUserLoggedIn();
+    setupEventListeners();
   };
 
   request.onerror = (event) => {
@@ -358,8 +307,8 @@
         const user = request.result[0];
         showUserIcon(user);
       } else {
-        alert('No hay un usuario registrado. Serás redirigido a la página de inicio.');
-        window.location.href = '/landing';
+        // No redirigir automáticamente, solo mostrar los enlaces de login/register
+        hideUserIcon();
       }
     };
 
@@ -368,40 +317,130 @@
     };
   }
 
-  // Mostrar ícono de usuario y ocultar enlaces de Registrarse e Iniciar Sesión
-  function showUserIcon(user) {
-    const userIcon = document.getElementById('user-icon');
-    const registerLink = document.getElementById('register-link');
-    const loginLink = document.getElementById('login-link');
+  // Configurar event listeners
+  function setupEventListeners() {
+    // Formulario de registro
+    document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      registerUser();
+    });
 
-    userIcon.style.display = 'inline-block';
-    registerLink.style.display = 'none';
-    loginLink.style.display = 'none';
+    // Formulario de login
+    document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loginUser();
+    });
 
-    document.getElementById('profileName').textContent = user.name;
-    document.getElementById('profileEmail').textContent = user.email;
+    // Botones de perfil
+    document.querySelectorAll('.edit-profile-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert('Editar perfil: Esta funcionalidad está en desarrollo.');
+      });
+    });
+
+    document.querySelectorAll('.delete-profile-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que quieres eliminar tu perfil?')) {
+          const email = document.querySelector('.profile-email').textContent;
+          deleteUser(email);
+        }
+      });
+    });
+
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const email = document.querySelector('.profile-email').textContent;
+        deleteUser(email);
+      });
+    });
   }
 
-  // Manejar la edición del perfil
-  document.getElementById('editProfileBtn').addEventListener('click', () => {
-    alert('Editar perfil: Esta funcionalidad está en desarrollo.');
-  });
+  // Mostrar ícono de usuario y ocultar enlaces de Registrarse e Iniciar Sesión
+  function showUserIcon(user) {
+    const userIcons = document.querySelectorAll('.user-icon');
+    const registerLinks = document.querySelectorAll('.register-link');
+    const loginLinks = document.querySelectorAll('.login-link');
+    const profileNames = document.querySelectorAll('.profile-name');
+    const profileEmails = document.querySelectorAll('.profile-email');
 
-  // Manejar la eliminación del perfil
-  document.getElementById('deleteProfileBtn').addEventListener('click', () => {
-    const email = document.getElementById('profileEmail').textContent;
-    deleteUser(email);
-    alert('Perfil eliminado correctamente.');
-    window.location.href = '/landing';
-  });
+    userIcons.forEach(icon => icon.style.display = 'inline-block');
+    registerLinks.forEach(link => link.style.display = 'none');
+    loginLinks.forEach(link => link.style.display = 'none');
+    profileNames.forEach(el => el.textContent = user.name);
+    profileEmails.forEach(el => el.textContent = user.email);
+  }
 
-  // Manejar el cierre de sesión
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    const email = document.getElementById('profileEmail').textContent;
-    deleteUser(email);
-    alert('Sesión cerrada correctamente.');
-    window.location.href = '/landing';
-  });
+  // Ocultar ícono de usuario y mostrar enlaces de login/register
+  function hideUserIcon() {
+    const userIcons = document.querySelectorAll('.user-icon');
+    const registerLinks = document.querySelectorAll('.register-link');
+    const loginLinks = document.querySelectorAll('.login-link');
+
+    userIcons.forEach(icon => icon.style.display = 'none');
+    registerLinks.forEach(link => link.style.display = 'inline-block');
+    loginLinks.forEach(link => link.style.display = 'inline-block');
+  }
+
+  // Registrar nuevo usuario
+  function registerUser() {
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    const transaction = db.transaction([storeName], 'readwrite');
+    const store = transaction.objectStore(storeName);
+    const request = store.add({ name, email, password });
+
+    request.onsuccess = () => {
+      // Ocultar modal de registro
+      const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+      registerModal.hide();
+      
+      // Mostrar icono de usuario
+      showUserIcon({ name, email });
+      
+      // Limpiar formulario
+      document.getElementById('registerForm').reset();
+    };
+
+    request.onerror = (event) => {
+      console.error('Error al registrar usuario:', event.target.error);
+      document.querySelector('.register-error').style.display = 'block';
+    };
+  }
+
+  // Iniciar sesión
+  function loginUser() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const transaction = db.transaction([storeName], 'readonly');
+    const store = transaction.objectStore(storeName);
+    const request = store.get(email);
+
+    request.onsuccess = () => {
+      const user = request.result;
+      if (user && user.password === password) {
+        // Ocultar modal de login
+        const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        loginModal.hide();
+        
+        // Mostrar icono de usuario
+        showUserIcon(user);
+        
+        // Limpiar formulario
+        document.getElementById('loginForm').reset();
+        document.querySelector('.login-error').style.display = 'none';
+      } else {
+        document.querySelector('.login-error').style.display = 'block';
+      }
+    };
+
+    request.onerror = (event) => {
+      console.error('Error al iniciar sesión:', event.target.error);
+      document.querySelector('.login-error').style.display = 'block';
+    };
+  }
 
   // Eliminar usuario de IndexedDB
   function deleteUser(email) {
@@ -412,17 +451,12 @@
     request.onsuccess = () => {
       console.log('Usuario eliminado de IndexedDB');
       hideUserIcon();
+      alert('Sesión cerrada correctamente.');
+      window.location.href = '/landing';
     };
 
     request.onerror = (event) => {
       console.error('Error al eliminar el usuario:', event.target.error);
     };
-  }
-
-  // Ocultar ícono de usuario
-  function hideUserIcon() {
-    const userIcon = document.getElementById('user-icon');
-    userIcon.style.display = 'none';
-    document.getElementById('login-link').style.display = 'inline-block';
   }
 </script>
