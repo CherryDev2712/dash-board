@@ -10,8 +10,8 @@ const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Definir puerto y entorno desde variables de entorno
-const port =  5000; // Usa el puerto de la variable de entorno o 4000 por defecto
-const env = process.env.NODE_ENV || 'development'; // Usa el entorno de la variable de entorno o 'development' por defecto
+const port =  5000; 
+const env = process.env.NODE_ENV || 'development'; 
 
 // Habilitar EJS
 app.set('view engine', 'ejs');
