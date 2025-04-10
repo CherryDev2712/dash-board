@@ -136,6 +136,26 @@
                 min-width: 200px;
         }
 }
+            .form-controll {
+                display: flex;
+                gap: 10px; /* más espacio entre las columnas */
+            }
+        
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+        
+            .form-item {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+        
+            .form-label {
+                font-weight: bold;
+            }
     </style>
 </head>
 <body>
@@ -206,38 +226,43 @@
                 </div>
             </div>
 
-            <!-- Formulario para ingresar los datos -->
-            <div class="card form-card p-4 mb-4">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label">Tipo de Gasto</label>
-                        <select class="form-select" id="tipoGasto" onchange="guardarCampos()">
-                            <option value="fijo negocio">Fijo Casa</option>
-                            <option value="variable negocio">Variable negocio</option>
-                            <option value="deuda">Deuda</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Concepto de Gasto</label>
-                        <select class="form-select" id="conceptoGasto" onchange="guardarCampos()">
-                            <option selected disabled value>Concepto Gasto...</option>
-                            <option value="comida">comida</option>
-                            <option value="insumo">insumos</option>
-                            <option value="servicio">servicios</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Establecimiento</label>
-                        <input type="text" class="form-control" id="establecimiento" placeholder="Ej: Supermercado X" onchange="guardarCampos()">
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="fechaGasto" value="">
-                    </div>
-
+                <!-- Formulario para ingresar los datos -->
+                <div class="card form-card p-4 mb-4">
+                    <div class="row g-3">
+                        <div class="form-controll">
+                            <div class="form-group">
+                            <div class="form-item">
+                                <label class="form-label">Tipo de Gasto</label>
+                                <select class="form-select" id="tipoGasto" onchange="guardarCampos()">
+                                <option value="fijo negocio">Fijo Casa</option>
+                                <option value="variable negocio">Variable negocio</option>
+                                <option value="deuda">Deuda</option>
+                                </select>
+                            </div>
+                        
+                            <div class="form-item">
+                                <label class="form-label">Concepto de Gasto</label>
+                                <select class="form-select" id="conceptoGasto" onchange="guardarCampos()">
+                                <option selected disabled value>Concepto Gasto...</option>
+                                <option value="comida">comida</option>
+                                <option value="insumo">insumos</option>
+                                <option value="servicio">servicios</option>
+                                </select>
+                            </div>
+                            </div>
+                        
+                            <div class="form-group">
+                            <div class="form-item">
+                                <label class="form-label">Establecimiento</label>
+                                <input type="text" class="form-control" id="establecimiento" placeholder="Ej: Supermercado X" onchange="guardarCampos()">
+                            </div>
+                        
+                            <div class="form-item">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fechaGasto" value="">
+                            </div>
+                            </div>
+                        </div>
                     <hr>
                     
                     <div class="col-md-3">
