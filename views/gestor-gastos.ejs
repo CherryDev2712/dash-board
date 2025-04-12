@@ -459,18 +459,6 @@
 
         // Función para validar y agregar fila
         function validarYAgregarFila() {
-            const nombreProducto = document.getElementById("nombreProducto").value;
-            const precioUnidad = document.getElementById("precioUnidad").value;
-            
-            if (!nombreProducto) {
-                mostrarError("Debes ingresar un nombre de producto");
-                return;
-            }
-            
-            if (!precioUnidad || parseFloat(precioUnidad) <= 0) {
-                mostrarError("El precio por unidad debe ser mayor a cero");
-                return;
-            }
             
             agregarFila();
         }
