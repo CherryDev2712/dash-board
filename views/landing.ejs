@@ -17,15 +17,15 @@
     <!-- Estilos personalizados -->
     <style>
       body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
       }
       .navbar-brand {
-        font-weight: bold;
-        font-size: 1.5rem;
+        font-weight: 700;
+        font-size: 1.6rem;
       }
       .hero-section {
-        background-color: #4caf50;
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
         color: white;
         padding: 100px 0;
         text-align: center;
@@ -36,6 +36,7 @@
       }
       .hero-section p {
         font-size: 1.2rem;
+        opacity: 0.9;
       }
       .features-section,
       .why-section,
@@ -45,32 +46,35 @@
       .features-section h2,
       .why-section h2,
       .cta-section h2 {
-        color: #4caf50;
-        font-weight: bold;
+        color: #2c5364;
+        font-weight: 700;
         margin-bottom: 30px;
       }
       .feature-icon {
-        font-size: 2rem;
-        color: #4caf50;
+        font-size: 2.5rem;
+        color: #2c5364;
         margin-bottom: 15px;
       }
       .cta-button {
-        background-color: #4caf50;
+        background-color: #203a43;
         border: none;
         padding: 15px 30px;
         font-size: 1.2rem;
+        color: #fff;
+        border-radius: 8px;
+        transition: background 0.3s ease;
       }
       .cta-button:hover {
-        background-color: #45a049;
+        background-color: #1a2e35;
       }
       footer {
-        background-color: #333;
+        background-color: #1a2e35;
         color: white;
         padding: 20px 0;
         text-align: center;
       }
       footer a {
-        color: #4caf50;
+        color: #79c2d0;
         text-decoration: none;
       }
       footer a:hover {
@@ -88,7 +92,7 @@
       }
       .nav-link-custom {
         cursor: pointer;
-        color: #4caf50;
+        color: #2c5364;
         text-decoration: none;
       }
       .nav-link-custom:hover {
@@ -100,7 +104,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="">MiDashboard</a>
+        <a class="navbar-brand" href="">dashManagement</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -208,39 +212,40 @@
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="features-section">
-      <div class="container">
-        <h2>¿Qué ofrece nuestra app?</h2>
-        <div class="row">
-          <div class="col-md-3 text-center">
-            <div class="feature-icon">✅</div>
-            <h4>Guarda tus recetas</h4>
-            <p>Accede a tus recetas favoritas en segundos.</p>
-          </div>
-          <div class="col-md-3 text-center">
-            <div class="feature-icon">✅</div>
-            <h4>Controla tus insumos</h4>
-            <p>Agrega, actualiza o elimina ingredientes fácilmente.</p>
-          </div>
-          <div class="col-md-3 text-center">
-            <div class="feature-icon">✅</div>
-            <h4>Interfaz fácil</h4>
-            <p>Diseñada para que cualquiera pueda usarla.</p>
-          </div>
-          <div class="col-md-3 text-center">
-            <div class="feature-icon">✅</div>
-            <h4>Acceso inmediato</h4>
-            <p>Tus datos siempre están disponibles.</p>
-          </div>
-          <div class="col-md-3 text-center">
-            <div class="feature-icon">✅</div>
-            <h4>Control de gastos</h4>
-            <p>Tus gastos siempre disponibles y controlados.</p>
-          </div>
-        </div>
+<!-- Features Section -->
+<section id="features" class="features-section">
+  <div class="container">
+    <h2>¿Qué ofrece nuestra app?</h2>
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <div class="feature-icon"><i class="bi bi-journal-text"></i></div>
+        <h4>Guarda tus recetas</h4>
+        <p>Accede a tus recetas favoritas en segundos.</p>
       </div>
-    </section>
+      <div class="col-md-3 text-center">
+        <div class="feature-icon"><i class="bi bi-basket"></i></div>
+        <h4>Controla tus insumos</h4>
+        <p>Agrega, actualiza o elimina ingredientes fácilmente.</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="feature-icon"><i class="bi bi-ui-checks"></i></div>
+        <h4>Interfaz fácil</h4>
+        <p>Diseñada para que cualquiera pueda usarla.</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="feature-icon"><i class="bi bi-cloud-check"></i></div>
+        <h4>Acceso inmediato</h4>
+        <p>Tus datos siempre están disponibles.</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="feature-icon"><i class="bi bi-cash-coin"></i></div>
+        <h4>Control de gastos</h4>
+        <p>Tus gastos siempre disponibles y controlados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- Why Section -->
     <section id="why" class="why-section bg-light">
@@ -276,7 +281,7 @@
           ¿Preguntas? Contáctanos en
           <a href="#">Discord - Cherry's</a>
         </p>
-        <p>© 2025 MiDashboard. Todos los derechos reservados.</p>
+        <p>© 2025 dashManagement. Todos los derechos reservados.</p>
       </div>
     </footer>
 
