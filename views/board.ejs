@@ -221,50 +221,457 @@
         </div>
       </div>
     </div>
-     <!-- Gráfico de tickets -->
-     <div class="row mb-4">
-      <div class="col-xl-6 mb-4 animated-card">
-        <div class="card h-100">
-          <div class="card-header">
-            <h5 class="card-title">Distribución de Tickets</h5>
-          </div>
-          <div class="card-body">
-            <div class="chart-container"><canvas id="ticketsDistributionChart"></canvas></div>
-          </div>
-        </div>
-      </div>
 
       <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const data = {
-            labels: ['Total', 'Pagados', 'No Pagados'],
-            datasets: [{
-              label: 'Monto de Tickets',
-              data: [1000, 600, 400], // Replace with actual data from your application
-              backgroundColor: [
-                'rgba(54, 162, 235, 0.8)',
-                'rgba(75, 192, 192, 0.8)',
-                'rgba(255, 99, 132, 0.8)'
-              ],
-              borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(255, 99, 132, 1)'
-              ],
-              borderWidth: 1
-            }]
-          };
+// Variables globales
+let typeDistributionChart, topIngredientsChart, categoriasInsumosChart, gastosPorTipoChart, gastosPorMesChart;
 
-          const config = {
-            type: 'bar',
-            data: data,
-            options: {
-              scales: { y: { beginAtZero: true } }
-            },
-          };
+// Función para cargar todos los datos
+function loadAllData() {
+  // Cargar recetas (del modelo de recetas.ejs)
+  const recipes = JSON.parse(localStorage.getItem('recetas')) || [];
+  
+  // Cargar insumos (del modelo de insumos.ejs)
+  const insumos = JSON.parse(localStorage.getItem('insumos')) || [];
+  
+  // Cargar gastos (del modelo de gestor-gastos.ejs)
+  const gastos = JSON.parse(localStorage.getItem('gastos')) || [];
 
-          new Chart(document.getElementById('ticketsDistributionChart'), config);
-        });
+  // Actualizar estadísticas generales
+  updateGeneralStats(recipes, insumos, gastos);
+  
+  // Actualizar sección de recetas
+  updateRecipesSection(recipes);
+  
+  // Actualizar sección de insumos
+  updateInsumosSection(recipes, insumos);
+  
+  // Actualizar sección de gastos
+  updateGastosSection(gastos);
+}
+
+// Función para actualizar estadísticas generales
+function updateGeneralStats(recipes, insumos, gastos) {
+  // Total de recetas
+  document.getElementById('totalRecipes').textContent = recipes.length;
+  
+  // Total de insumos
+  document.getElementById('totalInsumos').textContent = insumos.length;
+  
+  // Calcular total de gastos (según gestor-gastos.ejs)
+  const totalGastos = gastos.reduce((total, gasto) => {
+    return total + parseFloat(gasto.monto || 0);
+  }, 0);
+  
+  document.getElementById('totalGastos').textContent = `$${totalGastos.toFixed(2)}`;
+  
+  // Calcular gasto promedio
+  const gastoPromedio = gastos.length > 0 ? totalGastos / gastos.length : 0;
+  document.getElementById('gastoPromedio').textContent = `$${gastoPromedio.toFixed(2)}`;
+}
+
+// Función para actualizar sección de recetas (basado en recetas.ejs)
+function updateRecipesSection(recipes) {
+  // Contar por tipo (según estructura de recetas.ejs)
+  const tipos = {
+    'entrada': 0,
+    'plato_fuerte': 0,
+    'postre': 0,
+    'bebida': 0
+  };
+  
+  recipes.forEach(recipe => {
+    if (recipe.tipo && tipos.hasOwnProperty(recipe.tipo)) {
+      tipos[recipe.tipo]++;
+    }
+  });
+  
+  // Actualizar gráfico de distribución por tipo
+  updateTypeDistributionChart(tipos);
+  
+  // Actualizar gráfico de ingredientes más usados
+  updateTopIngredientsChart(recipes);
+}
+
+// Gráfico de distribución por tipo de receta (actualizado para estructura de recetas.ejs)
+function updateTypeDistributionChart(tipos) {
+  const ctx = document.getElementById('typeDistributionChart');
+  if (!ctx) return;
+  
+  const labels = {
+    'entrada': 'Entradas',
+    'plato_fuerte': 'Platos Fuertes',
+    'postre': 'Postres',
+    'bebida': 'Bebidas'
+  };
+  
+  const backgroundColors = [
+    'rgba(54, 185, 204, 0.8)',
+    'rgba(231, 74, 59, 0.8)',
+    'rgba(111, 66, 193, 0.8)',
+    'rgba(253, 126, 20, 0.8)'
+  ];
+  
+  const chartData = {
+    labels: Object.keys(tipos).map(key => labels[key] || key),
+    datasets: [{
+      data: Object.values(tipos),
+      backgroundColor: backgroundColors.slice(0, Object.keys(tipos).length),
+      borderWidth: 1
+    }]
+  };
+
+  if (typeDistributionChart) {
+    typeDistributionChart.destroy();
+  }
+
+  typeDistributionChart = new Chart(ctx.getContext('2d'), {
+    type: 'pie',
+    data: chartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = Math.round((value / total) * 100);
+              return `${label}: ${value} (${percentage}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Gráfico de ingredientes más usados (basado en recetas.ejs)
+function updateTopIngredientsChart(recipes) {
+  const ctx = document.getElementById('topIngredientsChart');
+  if (!ctx) return;
+  
+  const ingredientCounts = {};
+  
+  recipes.forEach(recipe => {
+    if (recipe.ingredientes && Array.isArray(recipe.ingredientes)) {
+      recipe.ingredientes.forEach(ing => {
+        const nombreInsumo = ing.nombre || 'Desconocido';
+        ingredientCounts[nombreInsumo] = (ingredientCounts[nombreInsumo] || 0) + 1;
+      });
+    }
+  });
+
+  const sortedIngredients = Object.entries(ingredientCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+
+  if (topIngredientsChart) {
+    topIngredientsChart.destroy();
+  }
+
+  topIngredientsChart = new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: sortedIngredients.map(i => i[0]),
+      datasets: [{
+        label: 'Recetas que lo usan',
+        data: sortedIngredients.map(i => i[1]),
+        backgroundColor: 'rgba(28, 200, 138, 0.8)',
+        borderColor: 'rgba(28, 200, 138, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          precision: 0
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+
+// Función para actualizar sección de insumos (basado en insumos.ejs)
+function updateInsumosSection(recipes, insumos) {
+  // Gráfico de distribución por categoría
+  updateCategoriasInsumosChart(insumos);
+  
+  // Tabla de insumos más usados
+  updateTopInsumosTable(recipes);
+}
+
+// Gráfico de categorías de insumos (basado en insumos.ejs)
+function updateCategoriasInsumosChart(insumos) {
+  const ctx = document.getElementById('categoriasInsumosChart');
+  if (!ctx) return;
+  
+  const categoriasCount = {};
+  
+  insumos.forEach(insumo => {
+    const categoria = insumo.categoria || 'Sin categoría';
+    categoriasCount[categoria] = (categoriasCount[categoria] || 0) + 1;
+  });
+
+  if (categoriasInsumosChart) {
+    categoriasInsumosChart.destroy();
+  }
+
+  categoriasInsumosChart = new Chart(ctx.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(categoriasCount),
+      datasets: [{
+        data: Object.values(categoriasCount),
+        backgroundColor: [
+          'rgba(78, 115, 223, 0.8)',
+          'rgba(28, 200, 138, 0.8)',
+          'rgba(54, 185, 204, 0.8)',
+          'rgba(246, 194, 62, 0.8)',
+          'rgba(231, 74, 59, 0.8)',
+          'rgba(111, 66, 193, 0.8)',
+          'rgba(253, 126, 20, 0.8)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right' }
+      }
+    }
+  });
+}
+
+// Tabla de insumos más usados (basado en recetas.ejs e insumos.ejs)
+function updateTopInsumosTable(recipes) {
+  const tableBody = document.getElementById('topInsumosTable');
+  if (!tableBody) return;
+  
+  const ingredientCounts = {};
+  
+  recipes.forEach(recipe => {
+    if (recipe.ingredientes && Array.isArray(recipe.ingredientes)) {
+      recipe.ingredientes.forEach(ing => {
+        const nombreInsumo = ing.nombre || 'Desconocido';
+        if (ingredientCounts[nombreInsumo]) {
+          ingredientCounts[nombreInsumo].count++;
+        } else {
+          ingredientCounts[nombreInsumo] = {
+            count: 1,
+            categoria: ing.categoria || 'Desconocida'
+          };
+        }
+      });
+    }
+  });
+
+  const sortedIngredients = Object.entries(ingredientCounts)
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 5);
+
+  tableBody.innerHTML = '';
+  
+  sortedIngredients.forEach(([nombre, data]) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${nombre}</td>
+      <td><span class="badge bg-secondary">${data.categoria}</span></td>
+      <td>${data.count}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Función para actualizar sección de gastos (basado en gestor-gastos.ejs)
+function updateGastosSection(gastos) {
+  // Gráfico de gastos por tipo
+  updateGastosPorTipoChart(gastos);
+  
+  // Gráfico de gastos por mes
+  updateGastosPorMesChart(gastos);
+  
+  // Tabla de últimos gastos
+  updateUltimosGastosTable(gastos);
+}
+
+// Gráfico de gastos por tipo (basado en gestor-gastos.ejs)
+function updateGastosPorTipoChart(gastos) {
+  const ctx = document.getElementById('gastosPorTipoChart');
+  if (!ctx) return;
+  
+  const tiposGasto = {
+    'fijo': 0,
+    'variable': 0,
+    'deuda': 0
+  };
+
+  gastos.forEach(gasto => {
+    const tipo = gasto.tipo || 'variable';
+    const monto = parseFloat(gasto.monto || 0);
+    
+    if (tiposGasto.hasOwnProperty(tipo)) {
+      tiposGasto[tipo] += monto;
+    } else {
+      tiposGasto.variable += monto;
+    }
+  });
+
+  if (gastosPorTipoChart) {
+    gastosPorTipoChart.destroy();
+  }
+
+  gastosPorTipoChart = new Chart(ctx.getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: ['Fijos', 'Variables', 'Deudas'],
+      datasets: [{
+        data: [tiposGasto.fijo, tiposGasto.variable, tiposGasto.deuda],
+        backgroundColor: [
+          'rgba(78, 115, 223, 0.8)',
+          'rgba(28, 200, 138, 0.8)',
+          'rgba(231, 74, 59, 0.8)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+}
+
+// Gráfico de gastos por mes (basado en gestor-gastos.ejs)
+function updateGastosPorMesChart(gastos) {
+  const ctx = document.getElementById('gastosPorMesChart');
+  if (!ctx) return;
+  
+  const now = new Date();
+  const meses = {};
+  const mesesLabels = [];
+  
+  // Preparar los últimos 6 meses
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(now);
+    date.setMonth(date.getMonth() - i);
+    const mes = date.toLocaleString('default', { month: 'long' });
+    meses[mes] = 0;
+    mesesLabels.push(mes);
+  }
+  
+  // Sumar gastos por mes
+  gastos.forEach(gasto => {
+    const fecha = new Date(gasto.fecha || new Date());
+    const mes = fecha.toLocaleString('default', { month: 'long' });
+    
+    if (mes in meses) {
+      meses[mes] += parseFloat(gasto.monto || 0);
+    }
+  });
+
+  if (gastosPorMesChart) {
+    gastosPorMesChart.destroy();
+  }
+
+  gastosPorMesChart = new Chart(ctx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: mesesLabels,
+      datasets: [{
+        label: 'Total Gastado',
+        data: Object.values(meses),
+        backgroundColor: 'rgba(246, 194, 62, 0.8)',
+        borderColor: 'rgba(246, 194, 62, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+// Tabla de últimos gastos (basado en gestor-gastos.ejs)
+function updateUltimosGastosTable(gastos) {
+  const tableBody = document.getElementById('ultimosGastosTable');
+  if (!tableBody) return;
+  
+  // Ordenar por fecha (más recientes primero)
+  const sortedGastos = [...gastos].sort((a, b) => {
+    const dateA = new Date(a.fecha || 0);
+    const dateB = new Date(b.fecha || 0);
+    return dateB - dateA;
+  }).slice(0, 5);
+  
+  tableBody.innerHTML = '';
+  
+  sortedGastos.forEach(gasto => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${new Date(gasto.fecha || new Date()).toLocaleDateString()}</td>
+      <td>${gasto.concepto || 'Sin concepto'}</td>
+      <td>${gasto.tipo || 'Sin tipo'}</td>
+      <td>$${parseFloat(gasto.monto || 0).toFixed(2)}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Inicializar la página cuando se carga
+document.addEventListener('DOMContentLoaded', function() {
+  // Cargar tema guardado
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  
+  // Ajustar icono del tema
+  const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+  if (savedTheme === 'dark') {
+    themeIcon.classList.remove('bi-moon-stars');
+    themeIcon.classList.add('bi-sun');
+  }
+  
+  // Cargar todos los datos
+  loadAllData();
+});
+
+// Función para cambiar entre tema claro/oscuro
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-bs-theme', newTheme);
+  
+  // Cambiar icono
+  const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+  themeIcon.classList.toggle('bi-moon-stars');
+  themeIcon.classList.toggle('bi-sun');
+  
+  // Guardar preferencia
+  localStorage.setItem('theme', newTheme);
+  
+  // Recargar gráficos para que se adapten al nuevo tema
+  loadAllData();
+}
       </script>
     </div>
 
@@ -280,7 +687,7 @@
 
   <script>
     // Variables globales
-    let typeDistributionChart, topIngredientsChart, categoriasInsumosChart, gastosPorTipoChart, gastosPorMesChart;
+
 
     // Función para cargar todos los datos
     function loadAllData() {

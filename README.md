@@ -12,9 +12,11 @@
 
     # gestor de gastos
         -alinear h5 y h3 para mejor vista de usuario
+        -cambiar titulos de Resumen  de Gastos
+        -corregir errores para que funcionen los dos forms
 
     # nav-bar
         -quitar nav de usuario
 
 # DESCRIPCION
-    - estos cambios pertenesen a la version 1.2.1
+    - estos cambios pertenesen a la version 1.2.0

@@ -11,267 +11,275 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --text-color: #212529;
-            --card-bg: #ffffff;
-            --sidebar-width: 250px;
-            --navbar-height: 70px;
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --sidebar-width: 250px;
+    --navbar-height: 70px;
+}
+
+[data-bs-theme="dark"] {
+    --bg-color: #212529;
+    --text-color: #f8f9fa;
+    --card-bg: #2c3034;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+    padding-top: calc(var(--navbar-height) + 20px);
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--card-bg);
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Table Container */
+.table-container {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Badge Styles */
+.badge-fijo {
+    background-color: #28a745;
+}
+
+.badge-variable {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-deuda {
+    background-color: #dc3545;
+}
+
+/* Summary Cards */
+.summary-card {
+    border-left: 4px solid;
+}
+
+.summary-card.total {
+    border-left-color: #007bff;
+}
+
+.summary-card.fijo {
+    border-left-color: #28a745;
+}
+
+.summary-card.variable {
+    border-left-color: #ffc107;
+}
+
+.summary-card.deuda {
+    border-left-color: #dc3545;
+}
+
+/* Progress Bar */
+.progress {
+    height: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .main-content {
+        margin-left: 0;
+        padding-top: 60px;
+    }
+}
+
+/* Image Preview */
+.image-preview {
+    max-width: 100px;
+    max-height: 100px;
+    display: none;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* majora */
+.expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+    .expense-form {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .form-group {
+        flex: 1 1 45%;
+        min-width: 200px;
+}
+}
+    .form-controll {
+        display: flex;
+        gap: 10px; /* más espacio entre las columnas */
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+    .form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    }
+    .form-item {
+        margin-bottom: 15px;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+    .form-select, .form-control {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+    }
+    #btnGuardarGastoImagen {
+        width: 100%;
+        margin-top: 15px;
+    }
+    .table-container {
+        overflow-x: auto;
+        margin-top: 20px; /* Add some space above the table */
+    }
+
+    /* Basic table styles for better readability */
+    table#tablaTickets {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size: 16px;
+        margin-bottom: 1rem;
+    }
+
+    table#tablaTickets th,
+    table#tablaTickets td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table#tablaTickets th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 768px) {
+        table#tablaTickets {
+            font-size: 14px; /* Reduce font size */
         }
 
-        [data-bs-theme="dark"] {
-            --bg-color: #212529;
-            --text-color: #f8f9fa;
-            --card-bg: #2c3034;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-
-        /* Main Content Styles */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            padding: 20px;
-            padding-top: calc(var(--navbar-height) + 20px);
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
-        }
-
-        /* Card Styles */
-        .card {
-            background-color: var(--card-bg);
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Table Container */
-        .table-container {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        /* Badge Styles */
-        .badge-fijo {
-            background-color: #28a745;
-        }
-
-        .badge-variable {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .badge-deuda {
-            background-color: #dc3545;
-        }
-
-        /* Summary Cards */
-        .summary-card {
-            border-left: 4px solid;
-        }
-
-        .summary-card.total {
-            border-left-color: #007bff;
-        }
-
-        .summary-card.fijo {
-            border-left-color: #28a745;
-        }
-
-        .summary-card.variable {
-            border-left-color: #ffc107;
-        }
-
-        .summary-card.deuda {
-            border-left-color: #dc3545;
-        }
-
-        /* Progress Bar */
-        .progress {
-            height: 10px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 767.98px) {
-            .main-content {
-                margin-left: 0;
-                padding-top: 60px;
-            }
-        }
-
-        /* Image Preview */
-        .image-preview {
-            max-width: 100px;
-            max-height: 100px;
+        /* Hide thead and make table rows block */
+        table#tablaTickets thead {
             display: none;
-            margin-top: 10px;
-            border-radius: 5px;
         }
 
-        /* majora */
-        .expense-form {
+        table#tablaTickets tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd; /* Add border for block view */
+        }
+
+        table#tablaTickets td {
+            display: block;
+            text-align: left;
+            padding-left: 50%;
+            position: relative;
+            border-bottom: none; /* Remove border-bottom in block view */
+        }
+
+        /* Add data-label before each td */
+        table#tablaTickets td::before {
+            position: absolute;
+            left: 10px;
+            width: 40%;
+            padding-right: 10px;
+            white-space: nowrap;
+            content: attr(data-label); /* Use the data-label attribute */
+            font-weight: bold;
+        }
+
+        .form-container {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            }
-
-            @media (min-width: 768px) {
-            .expense-form {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .form-group {
-                flex: 1 1 45%;
-                min-width: 200px;
+            gap: 1rem; /* Add spacing between form elements */
         }
-}
-            .form-controll {
-                display: flex;
-                gap: 10px; /* más espacio entre las columnas */
-            }
-        
-            .form-group {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-        
-            .form-item {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-            }
-        
-            .form-label {
-                font-weight: bold;
-            }
-            .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-            }
-            .form-item {
-                margin-bottom: 15px;
-            }
-            .form-label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-            }
-            .form-select, .form-control {
-                width: 100%;
-                padding: 8px;
-                border-radius: 4px;
-                border: 1px solid #ced4da;
-            }
-            #btnGuardarGastoImagen {
-                width: 100%;
-                margin-top: 15px;
-            }
-            .table-container {
-                overflow-x: auto;
-                margin-top: 20px; /* Add some space above the table */
-            }
+    }
+    
+    img {
+        max-width: 100px;
+        height: auto;
+    }
+    .ticket-cell {
+        text-align: center;
+    }
+    /* Estilos para el modal */
+    #modalTicket .modal-dialog {
+        max-width: 80%;
+    }
 
-            /* Basic table styles for better readability */
-            table#tablaTickets {
-                width: 100%;
-                border-collapse: collapse;
-                border-spacing: 0;
-                font-size: 16px;
-                margin-bottom: 1rem;
-            }
+    #imagenModal {
+        max-height: 70vh;
+        width: auto;
+    }
 
-            table#tablaTickets th,
-            table#tablaTickets td {
-                text-align: left;
-                padding: 8px;
-                border-bottom: 1px solid #ddd;
-            }
-
-            table#tablaTickets th {
-                background-color: #f2f2f2;
-                font-weight: bold;
-            }
-
-            /* Responsive adjustments for smaller screens */
-            @media (max-width: 768px) {
-                table#tablaTickets {
-                    font-size: 14px; /* Reduce font size */
-                }
-
-                /* Hide thead and make table rows block */
-                table#tablaTickets thead {
-                    display: none;
-                }
-
-                table#tablaTickets tr {
-                    display: block;
-                    margin-bottom: 1rem;
-                    border: 1px solid #ddd; /* Add border for block view */
-                }
-
-                table#tablaTickets td {
-                    display: block;
-                    text-align: left;
-                    padding-left: 50%;
-                    position: relative;
-                    border-bottom: none; /* Remove border-bottom in block view */
-                }
-
-                /* Add data-label before each td */
-                table#tablaTickets td::before {
-                    position: absolute;
-                    left: 10px;
-                    width: 40%;
-                    padding-right: 10px;
-                    white-space: nowrap;
-                    content: attr(data-label); /* Use the data-label attribute */
-                    font-weight: bold;
-                }
-
-                .form-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem; /* Add spacing between form elements */
-                }
-            }
-            
-            img {
-                max-width: 100px;
-                height: auto;
-            }
-            .ticket-cell {
-                text-align: center;
-            }
-            /* Estilos para el modal */
-            #modalTicket .modal-dialog {
-                max-width: 80%;
-            }
-
-            #imagenModal {
-                max-height: 70vh;
-                width: auto;
-            }
-
-            .btn-ver-ticket {
-                white-space: nowrap;
-            }
-            .card-body {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
+    .btn-ver-ticket {
+        white-space: nowrap;
+    }
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .input-form {
+        display: flex; /* Sets the container to use flexbox */
+        flex-direction: row; /* Arranges the children horizontally */
+        flex-wrap: wrap; /* Allows the children to wrap onto multiple lines */
+        justify-content: space-between; /* Distributes space between the children */
+        align-items: center; /* Aligns the children vertically in the center */
+        gap: 1rem; /* Adds a 1rem gap between the children */
+    }
     </style>
 </head>
 <body>
@@ -305,7 +313,7 @@
                 <div class="col-md-3 mb-3">
                     <div class="card summary-card fijo h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Gastos Fijos</h5>
+                            <h5 class="card-title">Fijo Casa</h5>
                             <h3 class="card-text" id="totalFijos">$0.00</h3>
                         </div>
                     </div>
@@ -313,7 +321,7 @@
                 <div class="col-md-3 mb-3">
                     <div class="card summary-card variable h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Gastos Variables</h5>
+                            <h5 class="card-title">Variable Negocio</h5>
                             <h3 class="card-text" id="totalVariables">$0.00</h3>
                         </div>
                     </div>
@@ -342,32 +350,32 @@
                 </div>
             </div>
 
-                <!-- Formulario para ingresar los datos -->
-                <div class="card form-card p-4 mb-4">
-                    <div class="row g-3">
-                        <div class="form-controll">
-                            <div class="form-group">
+            <!-- Formulario para ingresar los datos -->
+            <div class="card form-card p-4 mb-4">
+                <div class="row g-3">
+                    <div class="form-controll">
+                        <div class="form-group">
                             <div class="form-item">
                                 <label class="form-label">Tipo de Gasto</label>
                                 <select class="form-select" id="tipoGasto" onchange="guardarCampos()">
-                                <option value="fijo negocio">Fijo Casa</option>
-                                <option value="variable negocio">Variable negocio</option>
-                                <option value="deuda">Deuda</option>
+                                    <option value="fijo casa">Fijo Casa</option>
+                                    <option value="variable negocio">Variable negocio</option>
+                                    <option value="deuda">Deuda</option>
                                 </select>
                             </div>
                         
                             <div class="form-item">
                                 <label class="form-label">Concepto de Gasto</label>
                                 <select class="form-select" id="conceptoGasto" onchange="guardarCampos()">
-                                <option selected disabled value>Concepto Gasto...</option>
-                                <option value="comida">comida</option>
-                                <option value="insumo">insumos</option>
-                                <option value="servicio">servicios</option>
+                                    <option selected disabled value>Concepto Gasto...</option>
+                                    <option value="comida">comida</option>
+                                    <option value="insumo">insumos</option>
+                                    <option value="servicio">servicios</option>
                                 </select>
                             </div>
-                            </div>
-                        
-                            <div class="form-group">
+                        </div>
+                    
+                        <div class="form-group">
                             <div class="form-item">
                                 <label class="form-label">Establecimiento</label>
                                 <input type="text" class="form-control" id="establecimiento" placeholder="Ej: Supermercado X" onchange="guardarCampos()">
@@ -377,34 +385,35 @@
                                 <label class="form-label">Fecha</label>
                                 <input type="date" class="form-control" id="fechaGasto" value="">
                             </div>
-                            </div>
                         </div>
+                    </div>
                     <hr>
-                    
-                    <div class="col-md-3">
-                        <label class="form-label">Producto</label>
-                        <input type="text" class="form-control" id="nombreProducto" placeholder="Ej: Arroz, Servicio de luz">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Unidades</label>
-                        <input type="number" class="form-control" id="unidades" oninput="calcularMontoTotal()" min="1" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">Medida</label>
-                        <select class="form-control" id="medidaUnidad">
-                            <option value="" disabled>*medida de unidad*</option>
-                            <option value="litros">litros</option>
-                            <option value="Kilos">kilos</option>
-                            <option value="litros">litros</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Precio x Unidad</label>
-                        <input type="number" class="form-control" id="precioUnidad" step="0.01" oninput="calcularMontoTotal()" min="0">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Monto Total</label>
-                        <input type="number" class="form-control" id="montoTotal" step="0.01" readonly>
+                    <div class="input-form">
+                        <div class="col-md-3">
+                            <label class="form-label">Producto</label>
+                            <input type="text" class="form-control" id="nombreProducto" placeholder="Ej: Arroz, Servicio de luz">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Unidades</label>
+                            <input type="number" class="form-control" id="unidades" oninput="calcularMontoTotal()" min="1" value="1">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Medida</label>
+                            <select class="form-control" id="medidaUnidad">
+                                <option value="" disabled>*medida de unidad*</option>
+                                <option value="litros">litros</option>
+                                <option value="Kilos">kilos</option>
+                                <option value="unidades">unidades</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Precio x Unidad</label>
+                            <input type="number" class="form-control" id="precioUnidad" step="0.01" oninput="calcularMontoTotal()" min="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Monto Total</label>
+                            <input type="number" class="form-control" id="montoTotal" step="0.01" readonly>
+                        </div>
                     </div>
                     <div class="col-12 text-center mt-3">
                         <button class="btn btn-primary" onclick="validarYAgregarFila()" data-bs-toggle="tooltip" title="Agrega un nuevo gasto a la lista">
@@ -482,52 +491,53 @@
             </div>
         </div>
         <hr>
+        
         <!-- form para imagen -->
         <div class="container mt-4">
             <div class="form-container">
-                <h2 class="text-center mb-4">Registro de Tickets</h2>
-                
-                <div class="form-item">
-                    <label class="form-label">Tipo de Gasto</label>
-                    <select class="form-select" id="tipoGastoImagen">
-                        <option value="fijo negocio">Fijo Casa</option>
-                        <option value="variable negocio">Variable negocio</option>
-                        <option value="deuda">Deuda</option>
-                    </select>
-                </div>
-                
-                <div class="form-item">
-                    <label class="form-label">Concepto de Gasto</label>
-                    <select class="form-select" id="conceptoGastoImagen">
-                        <option selected disabled value>Seleccione...</option>
-                        <option value="comida">comida</option>
-                        <option value="insumo">insumos</option>
-                        <option value="servicio">servicios</option>
-                    </select>
-                </div>
-                
-                <div class="form-item">
-                    <label class="form-label">Establecimiento</label>
-                    <input type="text" class="form-control" id="establecimientoImagen" placeholder="Ej: Bodega">
-                </div>
-                
-                <div class="form-item">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-control" id="fechaGastoImagen">
-                </div>
-                
-                <div class="form-item">
-                    <label class="form-label">Elige una imagen</label>
-                    <input type="file" class="form-control" id="imagenTicketInput">
-                    <small class="form-text text-muted">Toma una foto a tu ticket de compra y subelo para tenerlo registrado.</small>
-                </div>
-                
-                <button class="btn btn-success" type="button" id="btnGuardarTicket">
-                    <i class="bi bi-save"></i> Guardar Ticket
-                </button>
+    <h2 class="text-center mb-4">Registro de Tickets</h2>
+    
+    <div class="form-item">
+        <label class="form-label">Tipo de Gasto</label>
+        <select class="form-select" id="tipoGastoImagen">
+            <option value="fijo negocio">Fijo Casa</option>
+            <option value="variable negocio">Variable negocio</option>
+            <option value="deuda">Deuda</option>
+        </select>
+    </div>
+    
+    <div class="form-item">
+        <label class="form-label">Concepto de Gasto</label>
+        <select class="form-select" id="conceptoGastoImagen">
+            <option selected disabled value="">Seleccione...</option>
+            <option value="comida">comida</option>
+            <option value="insumo">insumos</option>
+            <option value="servicio">servicios</option>
+        </select>
+    </div>
+    
+    <div class="form-item">
+        <label class="form-label">Establecimiento</label>
+        <input type="text" class="form-control" id="establecimientoImagen" placeholder="Ej: Bodega">
+    </div>
+    
+    <div class="form-item">
+        <label class="form-label">Fecha</label>
+        <input type="date" class="form-control" id="fechaGastoImagen">
+    </div>
+    
+    <div class="form-item">
+        <label class="form-label">Elige una imagen</label>
+        <input type="file" class="form-control" id="imagenTicketInput" accept="image/*">
+        <small class="form-text text-muted">Toma una foto a tu ticket de compra y subelo para tenerlo registrado.</small>
+    </div>
+    
+    <button class="btn btn-success" type="button" id="btnGuardarTicket">
+        <i class="bi bi-save"></i> Guardar Ticket
+    </button>
                 
                 <!-- Tabla simplificada -->
-                <div class="table-container" style="width: max-content;">
+                <div class="table-container">
                     <table class="table table-bordered" id="tablaTickets">
                         <thead>
                             <tr>
@@ -550,606 +560,597 @@
         <!-- Modal para visualizar tickets -->
         <div class="modal fade" id="modalTicket" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title">Ticket de Compra</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ticket de Compra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="imagenModal" src="" class="img-fluid" alt="Ticket de compra">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
-                <div class="modal-body text-center">
-                <img id="imagenModal" src="" class="img-fluid" alt="Ticket de compra">
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
             </div>
         </div>
      
-    <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
-        <i class="bi bi-moon-stars"></i>
-    </button>
+        <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
+            <i class="bi bi-moon-stars"></i>
+        </button>
 
-    <!-- Script de Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Script de Bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Variables globales
-        let presupuestoMensual = 50; // Puedes hacer esto editable
-        let gastos = [];
+        <!-- JavaScript -->
+        <script>
+ // Variables globales
+let presupuestoMensual = 50; // Puedes hacer esto editable
+let gastos = [];
+let ticketsGuardados = [];
 
+// Función para inicializar la página
+function inicializarPagina() {
+    // Establecer fecha actual por defecto
+    document.getElementById('fechaGasto').valueAsDate = new Date();
+    document.getElementById('fechaGastoImagen').valueAsDate = new Date();
+    
+    // Activar tooltips
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach(t => new bootstrap.Tooltip(t));
+    
+    // Configurar botón de guardar ticket
+    const btnGuardarTicket = document.getElementById('btnGuardarTicket');
+    if (btnGuardarTicket) {
+        btnGuardarTicket.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Botón Guardar Ticket clickeado");
+            guardarTicket();
+        });
+    } else {
+        console.error("El botón btnGuardarTicket no fue encontrado");
+    }
+    
+    // Cargar datos guardados
+    cargarDatos();
+    cargarTickets();
+    
+    // Actualizar resumen
+    actualizarResumen();
+}
 
-        // Función para inicializar la página
-        function inicializarPagina() {
-            // Establecer fecha actual por defecto
-            document.getElementById('fechaGasto').valueAsDate = new Date();
-            
-            // Activar tooltips
-            const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            tooltips.forEach(t => new bootstrap.Tooltip(t));
-            
-            // Cargar datos guardados
-            cargarDatos();
-            
-            // Actualizar resumen
-            actualizarResumen();
-        }
+// Función para calcular el monto total automáticamente
+function calcularMontoTotal() {
+    const unidades = parseFloat(document.getElementById("unidades").value) || 0;
+    const precioUnidad = parseFloat(document.getElementById("precioUnidad").value) || 0;
+    const montoTotal = unidades * precioUnidad;
+    document.getElementById("montoTotal").value = montoTotal.toFixed(2);
+}
 
-        // Función para calcular el monto total automáticamente
-        function calcularMontoTotal() {
-            const unidades = parseFloat(document.getElementById("unidades").value) || 0;
-            const precioUnidad = parseFloat(document.getElementById("precioUnidad").value) || 0;
-            const montoTotal = unidades * precioUnidad;
-            document.getElementById("montoTotal").value = montoTotal.toFixed(2);
-        }
+// Función para guardar los campos en el LocalStorage
+function guardarCampos() {
+    const tipoGasto = document.getElementById("tipoGasto").value;
+    const conceptoGasto = document.getElementById("conceptoGasto").value;
+    const establecimiento = document.getElementById("establecimiento").value;
+    localStorage.setItem('tipoGasto', tipoGasto);
+    localStorage.setItem('conceptoGasto', conceptoGasto);
+    localStorage.setItem('establecimiento', establecimiento);
+}
 
-        // Función para guardar los campos en el LocalStorage
-        function guardarCampos() {
-            const tipoGasto = document.getElementById("tipoGasto").value;
-            const conceptoGasto = document.getElementById("conceptoGasto").value;
-            const establecimiento = document.getElementById("establecimiento").value;
-            localStorage.setItem('tipoGasto', tipoGasto);
-            localStorage.setItem('conceptoGasto', conceptoGasto);
-            localStorage.setItem('establecimiento', establecimiento);
-        }
+// Función para cargar los datos guardados en LocalStorage
+function cargarCampos() {
+    const tipoGasto = localStorage.getItem('tipoGasto');
+    const conceptoGasto = localStorage.getItem('conceptoGasto');
+    const establecimiento = localStorage.getItem('establecimiento');
 
-        // Función para cargar los datos guardados en LocalStorage
-        function cargarCampos() {
-            const tipoGasto = localStorage.getItem('tipoGasto');
-            const conceptoGasto = localStorage.getItem('conceptoGasto');
-            const establecimiento = localStorage.getItem('establecimiento');
+    if (tipoGasto) document.getElementById('tipoGasto').value = tipoGasto;
+    if (conceptoGasto) document.getElementById('conceptoGasto').value = conceptoGasto;
+    if (establecimiento) document.getElementById('establecimiento').value = establecimiento;
+}
 
-            if (tipoGasto) document.getElementById('tipoGasto').value = tipoGasto;
-            if (conceptoGasto) document.getElementById('conceptoGasto').value = conceptoGasto;
-            if (establecimiento) document.getElementById('establecimiento').value = establecimiento;
-        }
+// Función para validar y agregar fila
+function validarYAgregarFila() {        
+    const nombreProducto = document.getElementById("nombreProducto").value;
+    const precioUnidad = document.getElementById("precioUnidad").value;
+    
+    if (!nombreProducto) {
+        mostrarError("Debes ingresar un nombre de producto");
+        return;
+    }
+    
+    if (!precioUnidad || parseFloat(precioUnidad) <= 0) {
+        mostrarError("El precio por unidad debe ser mayor a cero");
+        return;
+    }
+    
+    agregarFila();
+}
 
-        // Función para convertir imagen a Base64
-        function getBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        }
+async function agregarFila() {
+    const gasto = {
+        id: Date.now().toString(),
+        tipoGasto: document.getElementById("tipoGasto").value,
+        conceptoGasto: document.getElementById("conceptoGasto").value,
+        establecimiento: document.getElementById("establecimiento").value,
+        nombreProducto: document.getElementById("nombreProducto").value,
+        unidades: document.getElementById("unidades").value,
+        medidaUnidad: document.getElementById("medidaUnidad").value,
+        precioUnidad: document.getElementById("precioUnidad").value,
+        montoTotal: document.getElementById("montoTotal").value,
+        fecha: document.getElementById("fechaGasto").value || new Date().toISOString().split('T')[0],
+    };
 
-        // Función para validar y agregar fila
-        function validarYAgregarFila() {        
-            const nombreProducto = document.getElementById("nombreProducto").value;
-            const precioUnidad = document.getElementById("precioUnidad").value;
-            
-            if (!nombreProducto) {
-                mostrarError("Debes ingresar un nombre de producto");
-                return;
-            }
-            
-            if (!precioUnidad || parseFloat(precioUnidad) <= 0) {
-                mostrarError("El precio por unidad debe ser mayor a cero");
-                return;
-            }
-            agregarFila();
-        }
+    agregarFilaATabla(gasto);
+    gastos.push(gasto);
+    guardarDatosLocalStorage(gastos);
+    actualizarResumen();
+    reiniciarFormulario();
+    mostrarExito("Gasto agregado correctamente");
+}
 
-        // Función para agregar una fila a la tabla
-        async function agregarFila() {
-            const imagenInput = document.getElementById("imagenProducto");
-            let imagenBase64 = null;
-            let imagenNombre = null;
+function agregarFilaATabla(gasto) {
+    const tabla = document.getElementById("tablaGastos");
+    const fila = document.createElement("tr");
+    
+    let badgeClass = '';
+    if (gasto.tipoGasto.includes('fijo')) badgeClass = 'badge-fijo';
+    else if (gasto.tipoGasto.includes('variable')) badgeClass = 'badge-variable';
+    else if (gasto.tipoGasto === 'deuda') badgeClass = 'badge-deuda';
+    
+    fila.innerHTML = `
+        <td><span class="badge ${badgeClass}">${gasto.tipoGasto}</span></td>
+        <td>${gasto.conceptoGasto}</td>
+        <td>${gasto.establecimiento}</td>
+        <td>${gasto.nombreProducto}</td>
+        <td>${gasto.unidades}</td>
+        <td>${gasto.medidaUnidad}</td>
+        <td>$${parseFloat(gasto.precioUnidad).toFixed(2)}</td>
+        <td>$${parseFloat(gasto.montoTotal).toFixed(2)}</td>
+        <td>${gasto.fecha}</td>
+        <td>
+            <button class="btn btn-danger btn-sm" onclick="eliminarFila('${gasto.id}', this)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    tabla.appendChild(fila);
+}
 
-            if (imagenInput.files && imagenInput.files[0]) {
-                imagenNombre = imagenInput.files[0].name;
-                imagenBase64 = await getBase64(imagenInput.files[0]);
-            }
+// Función para cargar los datos de la tabla desde el LocalStorage
+function cargarDatos() {
+    cargarCampos();
+    gastos = obtenerDatosLocalStorage();
+    
+    const tabla = document.getElementById("tablaGastos");
+    tabla.innerHTML = '';
+    
+    gastos.forEach((gasto) => {
+        agregarFilaATabla(gasto);
+    });
+    
+    // Ordenar por fecha más reciente por defecto
+    ordenarTabla();
+}
 
-            const gasto = {
-                id: Date.now().toString(),
-                tipoGasto: document.getElementById("tipoGasto").value,
-                conceptoGasto: document.getElementById("conceptoGasto").value,
-                establecimiento: document.getElementById("establecimiento").value,
-                nombreProducto: document.getElementById("nombreProducto").value,
-                unidades: document.getElementById("unidades").value,
-                medidaUnidad: document.getElementById("medidaUnidad").value,
-                precioUnidad: document.getElementById("precioUnidad").value,
-                montoTotal: document.getElementById("montoTotal").value,
-                fecha: document.getElementById("fechaGasto").value || new Date().toISOString().split('T')[0],
-                imagenBase64: imagenBase64,
-                imagenNombre: imagenNombre
-            };
+// Función para obtener los datos del LocalStorage
+function obtenerDatosLocalStorage() {
+    return JSON.parse(localStorage.getItem("gastos")) || [];
+}
 
-            // Agregar a la tabla
-            agregarFilaATabla(gasto);
+// Función para guardar los datos en el LocalStorage
+function guardarDatosLocalStorage(datos) {
+    localStorage.setItem("gastos", JSON.stringify(datos));
+}
 
-            // Agregar al array de gastos
-            gastos.push(gasto);
-            
-            // Guardar en LocalStorage
+// Función para eliminar una fila de la tabla y del LocalStorage
+function eliminarFila(id, boton) {
+    Swal.fire({
+        title: '¿Eliminar gasto?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        background: 'var(--card-bg)'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            gastos = gastos.filter(gasto => gasto.id !== id);
             guardarDatosLocalStorage(gastos);
-            
-            // Actualizar resumen
+            boton.closest("tr").remove();
             actualizarResumen();
-            
-            // Reiniciar formulario
+            mostrarExito("Gasto eliminado correctamente");
+        }
+    });
+}
+
+// Función para reiniciar el formulario
+function reiniciarFormulario() {
+    document.getElementById("nombreProducto").value = "";
+    document.getElementById("unidades").value = "1";
+    document.getElementById("medidaUnidad").value = "";
+    document.getElementById("precioUnidad").value = "";
+    document.getElementById("montoTotal").value = "";
+    document.getElementById("nombreProducto").focus();
+}
+
+// Función para confirmar y reiniciar la tabla y el formulario
+function confirmarReinicioTabla() {
+    Swal.fire({
+        title: '¿Reiniciar tabla?',
+        text: "Se eliminarán todos los gastos registrados",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, reiniciar',
+        cancelButtonText: 'Cancelar',
+        background: 'var(--card-bg)'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            reiniciarTabla();
             reiniciarFormulario();
-            
-            // Mostrar confirmación
-            mostrarExito("Gasto agregado correctamente");
+            mostrarExito("Tabla reiniciada correctamente");
         }
+    });
+}
 
-        // Función para agregar fila a la tabla HTML
-        function agregarFilaATabla(gasto) {
-            const tabla = document.getElementById("tablaGastos");
-            const fila = document.createElement("tr");
-            
-            // Determinar clase de badge según tipo de gasto
-            let badgeClass = '';
-            if (gasto.tipoGasto.includes('fijo')) badgeClass = 'badge-fijo';
-            else if (gasto.tipoGasto.includes('variable')) badgeClass = 'badge-variable';
-            else if (gasto.tipoGasto === 'deuda') badgeClass = 'badge-deuda';
-            
-            fila.innerHTML = `
-                <td><span class="badge ${badgeClass}">${gasto.tipoGasto}</span></td>
-                <td>${gasto.conceptoGasto}</td>
-                <td>${gasto.establecimiento}</td>
-                <td>${gasto.nombreProducto}</td>
-                <td>${gasto.imagenNombre ? 
-                    `<a href="#" onclick="mostrarImagen('${gasto.imagenBase64}')">${gasto.imagenNombre}</a>` : 
-                    'Sin imagen'}</td>
-                <td>${gasto.unidades}</td>
-                <td>${gasto.medidaUnidad}</td>
-                <td>$${parseFloat(gasto.precioUnidad).toFixed(2)}</td>
-                <td>$${parseFloat(gasto.montoTotal).toFixed(2)}</td>
-                <td>${gasto.fecha}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarFila('${gasto.id}', this)">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            `;
-            tabla.appendChild(fila);
+// Función para reiniciar la tabla y el LocalStorage
+function reiniciarTabla() {
+    localStorage.removeItem("gastos");
+    document.getElementById("tablaGastos").innerHTML = "";
+    gastos = [];
+    actualizarResumen();
+}
+
+// Función para enviar la tabla (simulado con una alerta)
+function enviarTabla() {
+    if (gastos.length === 0) {
+        mostrarError("No hay datos en la tabla para enviar");
+        return;
+    }
+    
+    // Aquí iría la lógica para enviar los datos al servidor
+    console.log("Datos a enviar:", gastos);
+    
+    // Simulación de envío exitoso
+    setTimeout(() => {
+        mostrarExito("Gastos guardados correctamente en el sistema");
+    }, 1000);
+}
+
+// Función para exportar a CSV
+function exportarCSV() {
+    if (gastos.length === 0) {
+        mostrarError("No hay datos para exportar");
+        return;
+    }
+    
+    // Encabezados CSV
+    let csv = "Tipo Gasto, Concepto Gasto, Establecimiento, Nombre Producto, Unidades, Medida, Precio Unitario, Monto Total, Fecha\n";
+    
+    // Agregar datos
+    gastos.forEach(gasto => {
+        csv += `"${gasto.tipoGasto}","${gasto.conceptoGasto}","${gasto.establecimiento}","${gasto.nombreProducto}",${gasto.unidades},"${gasto.medidaUnidad}",${gasto.precioUnidad},${gasto.montoTotal},"${gasto.fecha}"\n`;
+    });
+    
+    // Crear archivo y descargar
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `gastos_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    mostrarExito("Archivo CSV exportado correctamente");
+}
+
+// Función para actualizar el resumen de gastos
+function actualizarResumen() {
+    let total = 0;
+    let fijos = 0;
+    let variables = 0;
+    let deudas = 0;
+    
+    gastos.forEach(gasto => {
+        const monto = parseFloat(gasto.montoTotal);
+        total += monto;
+        
+        if (gasto.tipoGasto.includes('fijo')) fijos += monto;
+        else if (gasto.tipoGasto.includes('variable')) variables += monto;
+        else if (gasto.tipoGasto === 'deuda') deudas += monto;
+    });
+    
+    // Actualizar totales
+    document.getElementById('totalGastado').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('totalFijos').textContent = `$${fijos.toFixed(2)}`;
+    document.getElementById('totalVariables').textContent = `$${variables.toFixed(2)}`;
+    document.getElementById('totalDeudas').textContent = `$${deudas.toFixed(2)}`;
+    
+    // Actualizar barra de progreso
+    const porcentaje = Math.min((total / presupuestoMensual) * 100, 100);
+    document.getElementById('progressBar').style.width = `${porcentaje}%`;
+    document.getElementById('gastadoPresupuesto').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('disponiblePresupuesto').textContent = `$${Math.max(presupuestoMensual - total, 0).toFixed(2)}`;
+    
+    // Cambiar color de la barra según el porcentaje
+    const progressBar = document.getElementById('progressBar');
+    progressBar.classList.remove('bg-success', 'bg-warning', 'bg-danger');
+    
+    if (porcentaje < 50) {
+        progressBar.classList.add('bg-success');
+    } else if (porcentaje < 80) {
+        progressBar.classList.add('bg-warning');
+    } else {
+        progressBar.classList.add('bg-danger');
+    }
+}
+
+// Función para filtrar la tabla
+function filtrarTabla() {
+    const filtro = document.getElementById('buscarGasto').value.toLowerCase();
+    const tipoFiltro = document.getElementById('filtroTipo').value;
+    
+    const filas = document.querySelectorAll('#tablaGastos tr');
+    
+    filas.forEach(fila => {
+        const nombre = fila.cells[3].textContent.toLowerCase();
+        const establecimiento = fila.cells[2].textContent.toLowerCase();
+        const tipo = fila.cells[0].textContent.toLowerCase();
+        
+        const coincideTexto = nombre.includes(filtro) || establecimiento.includes(filtro);
+        const coincideTipo = !tipoFiltro || tipo.includes(tipoFiltro.toLowerCase());
+        
+        fila.style.display = (coincideTexto && coincideTipo) ? '' : 'none';
+    });
+}
+
+// Función para ordenar la tabla
+function ordenarTabla() {
+    const criterio = document.getElementById('ordenarPor').value;
+    
+    switch(criterio) {
+        case 'fecha':
+            gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            break;
+        case 'monto-asc':
+            gastos.sort((a, b) => parseFloat(a.montoTotal) - parseFloat(b.montoTotal));
+            break;
+        case 'monto-desc':
+            gastos.sort((a, b) => parseFloat(b.montoTotal) - parseFloat(a.montoTotal));
+            break;
+        case 'nombre':
+            gastos.sort((a, b) => a.nombreProducto.localeCompare(b.nombreProducto));
+            break;
+    }
+    
+    // Reconstruir tabla
+    const tabla = document.getElementById("tablaGastos");
+    tabla.innerHTML = '';
+    
+    gastos.forEach((gasto) => {
+        agregarFilaATabla(gasto);
+    });
+}
+
+// Función para cambiar entre tema claro/oscuro
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
+    
+    // Cambiar icono
+    const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+    themeIcon.classList.toggle('bi-moon-stars');
+    themeIcon.classList.toggle('bi-sun');
+    
+    // Guardar preferencia
+    localStorage.setItem('theme', newTheme);
+}
+
+// Función para mostrar errores con SweetAlert2
+function mostrarError(mensaje) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: mensaje,
+        background: 'var(--card-bg)'
+    });
+}
+
+// Función para mostrar éxitos con SweetAlert2
+function mostrarExito(mensaje) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: mensaje,
+        showConfirmButton: false,
+        timer: 1500,
+        background: 'var(--card-bg)'
+    });
+}
+
+// Funciones para manejar tickets
+function cargarTickets() {
+    ticketsGuardados = JSON.parse(localStorage.getItem('ticketsGuardados')) || [];
+    const ticketsPreview = document.getElementById('ticketsPreview');
+    ticketsPreview.innerHTML = '';
+    
+    ticketsGuardados.forEach((ticket) => {
+        agregarTicketATabla(ticket);
+    });
+}
+
+function guardarTicket() {
+    try {
+        console.log("[DEBUG] Iniciando guardarTicket");
+        
+        // Obtener elementos con verificación
+        const imagenInput = document.getElementById('imagenTicketInput');
+        const conceptoSelect = document.getElementById('conceptoGastoImagen');
+        const tipoSelect = document.getElementById('tipoGastoImagen');
+        const establecimientoInput = document.getElementById('establecimientoImagen');
+        const fechaInput = document.getElementById('fechaGastoImagen');
+        
+        // Validar que todos los elementos existen
+        if (!imagenInput || !conceptoSelect || !tipoSelect || !establecimientoInput || !fechaInput) {
+            throw new Error("Algunos elementos del formulario no fueron encontrados");
         }
-
-        // Función para mostrar imagen en modal
-        function mostrarImagen(base64) {
-            Swal.fire({
-                imageUrl: base64,
-                imageAlt: 'Imagen del producto',
-                showConfirmButton: false,
-                background: 'var(--card-bg)',
-                backdrop: `
-                    rgba(0,0,0,0.7)
-                    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E")
-                `
-            });
-        }
-
-        // Función para cargar los datos de la tabla desde el LocalStorage
-        function cargarDatos() {
-            cargarCampos();
-            gastos = obtenerDatosLocalStorage();
-            
-            const tabla = document.getElementById("tablaGastos");
-            tabla.innerHTML = '';
-            
-            gastos.forEach((gasto) => {
-                agregarFilaATabla(gasto);
-            });
-            
-            // Ordenar por fecha más reciente por defecto
-            ordenarTabla();
-        }
-
-        // Función para obtener los datos del LocalStorage
-        function obtenerDatosLocalStorage() {
-            return JSON.parse(localStorage.getItem("gastos")) || [];
-        }
-
-        // Función para guardar los datos en el LocalStorage
-        function guardarDatosLocalStorage(datos) {
-            localStorage.setItem("gastos", JSON.stringify(datos));
-        }
-
-        // Función para eliminar una fila de la tabla y del LocalStorage
-        function eliminarFila(id, boton) {
-            Swal.fire({
-                title: '¿Eliminar gasto?',
-                text: "Esta acción no se puede deshacer",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                background: 'var(--card-bg)'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    gastos = gastos.filter(gasto => gasto.id !== id);
-                    guardarDatosLocalStorage(gastos);
-                    boton.closest("tr").remove();
-                    actualizarResumen();
-                    mostrarExito("Gasto eliminado correctamente");
-                }
-            });
-        }
-
-        // Función para reiniciar el formulario
-        function reiniciarFormulario() {
-            document.getElementById("nombreProducto").value = "";
-            document.getElementById("unidades").value = "1";
-            document.getElementById("medidaUnidad").value = "";
-            document.getElementById("precioUnidad").value = "";
-            document.getElementById("montoTotal").value = "";
-            document.getElementById("imagenProducto").value = "";
-            document.getElementById("imagePreview").style.display = "none";
-            document.getElementById("nombreProducto").focus();
-        }
-
-        // Función para confirmar y reiniciar la tabla y el formulario
-        function confirmarReinicioTabla() {
-            Swal.fire({
-                title: '¿Reiniciar tabla?',
-                text: "Se eliminarán todos los gastos registrados",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, reiniciar',
-                cancelButtonText: 'Cancelar',
-                background: 'var(--card-bg)'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    reiniciarTabla();
-                    reiniciarFormulario();
-                    mostrarExito("Tabla reiniciada correctamente");
-                }
-            });
-        }
-
-        // Función para reiniciar la tabla y el LocalStorage
-        function reiniciarTabla() {
-            localStorage.removeItem("gastos");
-            document.getElementById("tablaGastos").innerHTML = "";
-            gastos = [];
-            actualizarResumen();
-        }
-
-        // Función para enviar la tabla (simulado con una alerta)
-        function enviarTabla() {
-            if (gastos.length === 0) {
-                mostrarError("No hay datos en la tabla para enviar");
-                return;
-            }
-            
-            // Aquí iría la lógica para enviar los datos al servidor
-            console.log("Datos a enviar:", gastos);
-            
-            // Simulación de envío exitoso
-            setTimeout(() => {
-                mostrarExito("Gastos guardados correctamente en el sistema");
-            }, 1000);
-        }
-
-        // Función para exportar a CSV
-        function exportarCSV() {
-            if (gastos.length === 0) {
-                mostrarError("No hay datos para exportar");
-                return;
-            }
-            
-            // Encabezados CSV
-            let csv = "Tipo Gasto, Concepto Gasto, Establecimiento, Nombre Producto, Unidades, Medida, Precio Unitario, Monto Total, Fecha\n";
-            
-            // Agregar datos
-            gastos.forEach(gasto => {
-                csv += `"${gasto.tipoGasto}","${gasto.conceptoGasto}","${gasto.establecimiento}","${gasto.nombreProducto}",${gasto.unidades},"${gasto.medidaUnidad}",${gasto.precioUnidad},${gasto.montoTotal},"${gasto.fecha}"\n`;
-            });
-            
-            // Crear archivo y descargar
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', `gastos_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            mostrarExito("Archivo CSV exportado correctamente");
-        }
-
-        // Función para actualizar el resumen de gastos
-        function actualizarResumen() {
-            let total = 0;
-            let fijos = 0;
-            let variables = 0;
-            let deudas = 0;
-            
-            gastos.forEach(gasto => {
-                const monto = parseFloat(gasto.montoTotal);
-                total += monto;
-                
-                if (gasto.tipoGasto.includes('fijo')) fijos += monto;
-                else if (gasto.tipoGasto.includes('variable')) variables += monto;
-                else if (gasto.tipoGasto === 'deuda') deudas += monto;
-            });
-            
-            // Actualizar totales
-            document.getElementById('totalGastado').textContent = `$${total.toFixed(2)}`;
-            document.getElementById('totalFijos').textContent = `$${fijos.toFixed(2)}`;
-            document.getElementById('totalVariables').textContent = `$${variables.toFixed(2)}`;
-            document.getElementById('totalDeudas').textContent = `$${deudas.toFixed(2)}`;
-            
-            // Actualizar barra de progreso
-            const porcentaje = Math.min((total / presupuestoMensual) * 100, 100);
-            document.getElementById('progressBar').style.width = `${porcentaje}%`;
-            document.getElementById('gastadoPresupuesto').textContent = `$${total.toFixed(2)}`;
-            document.getElementById('disponiblePresupuesto').textContent = `$${Math.max(presupuestoMensual - total, 0).toFixed(2)}`;
-            
-            // Cambiar color de la barra según el porcentaje
-            const progressBar = document.getElementById('progressBar');
-            progressBar.classList.remove('bg-success', 'bg-warning', 'bg-danger');
-            
-            if (porcentaje < 50) {
-                progressBar.classList.add('bg-success');
-            } else if (porcentaje < 80) {
-                progressBar.classList.add('bg-warning');
-            } else {
-                progressBar.classList.add('bg-danger');
-            }
-        }
-
-        // Función para filtrar la tabla
-        function filtrarTabla() {
-            const filtro = document.getElementById('buscarGasto').value.toLowerCase();
-            const tipoFiltro = document.getElementById('filtroTipo').value;
-            
-            const filas = document.querySelectorAll('#tablaGastos tr');
-            
-            filas.forEach(fila => {
-                const nombre = fila.cells[3].textContent.toLowerCase();
-                const establecimiento = fila.cells[2].textContent.toLowerCase();
-                const tipo = fila.cells[0].textContent.toLowerCase();
-                
-                const coincideTexto = nombre.includes(filtro) || establecimiento.includes(filtro);
-                const coincideTipo = !tipoFiltro || tipo.includes(tipoFiltro.toLowerCase());
-                
-                fila.style.display = (coincideTexto && coincideTipo) ? '' : 'none';
-            });
-        }
-
-        // Función para ordenar la tabla
-        function ordenarTabla() {
-            const criterio = document.getElementById('ordenarPor').value;
-            
-            switch(criterio) {
-                case 'fecha':
-                    gastos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-                    break;
-                case 'monto-asc':
-                    gastos.sort((a, b) => parseFloat(a.montoTotal) - parseFloat(b.montoTotal));
-                    break;
-                case 'monto-desc':
-                    gastos.sort((a, b) => parseFloat(b.montoTotal) - parseFloat(a.montoTotal));
-                    break;
-                case 'nombre':
-                    gastos.sort((a, b) => a.nombreProducto.localeCompare(b.nombreProducto));
-                    break;
-            }
-            
-            // Reconstruir tabla
-            const tabla = document.getElementById("tablaGastos");
-            tabla.innerHTML = '';
-            
-            gastos.forEach((gasto) => {
-                agregarFilaATabla(gasto);
-            });
-        }
-
-        // Función para cambiar entre tema claro/oscuro
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-bs-theme', newTheme);
-            
-            // Cambiar icono
-            const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
-            themeIcon.classList.toggle('bi-moon-stars');
-            themeIcon.classList.toggle('bi-sun');
-            
-            // Guardar preferencia
-            localStorage.setItem('theme', newTheme);
-        }
-
-        // Función para mostrar errores con SweetAlert2
-        function mostrarError(mensaje) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: mensaje,
-                background: 'var(--card-bg)'
-            });
-        }
-
-        // Función para mostrar éxitos con SweetAlert2
-        function mostrarExito(mensaje) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: mensaje,
-                showConfirmButton: false,
-                timer: 1500,
-                background: 'var(--card-bg)'
-            });
-        }
-
-        // Cargar los datos cuando la página se carga
-        document.addEventListener("DOMContentLoaded", function() {
-            // Cargar tema guardado
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-bs-theme', savedTheme);
-            
-            // Ajustar icono del tema
-            const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
-            if (savedTheme === 'dark') {
-                themeIcon.classList.remove('bi-moon-stars');
-                themeIcon.classList.add('bi-sun');
-            }
-            
-            inicializarPagina();
+        
+        // Obtener valores
+        const tipoGasto = tipoSelect.value;
+        const conceptoGasto = conceptoSelect.value;
+        const establecimiento = establecimientoInput.value.trim();
+        const fecha = fechaInput.value;
+        const archivoImagen = imagenInput.files[0];
+        
+        console.log("[DEBUG] Valores obtenidos:", {
+            tipoGasto, 
+            conceptoGasto, 
+            establecimiento, 
+            fecha,
+            archivoImagen: archivoImagen ? archivoImagen.name : "Ninguno"
         });
-        document.addEventListener("DOMContentLoaded", function() {
-            // Cargar tickets guardados
-            cargarTickets();
-            
-            // Configurar evento para el botón de guardar ticket
-            document.getElementById('btnGuardarTicket').addEventListener('click', guardarTicket);
-            
-            // Establecer fecha actual por defecto
-            document.getElementById('fechaGastoImagen').valueAsDate = new Date();
-        });
-
-        function cargarTickets() {
-            const storedTickets = JSON.parse(localStorage.getItem('ticketsGuardados')) || [];
-            const ticketsPreview = document.getElementById('ticketsPreview');
-            ticketsPreview.innerHTML = '';
-            
-            storedTickets.forEach((ticket) => {
-                agregarTicketATabla(ticket);
-            });
+        
+        // Validaciones
+        if (!archivoImagen) {
+            throw new Error("Por favor selecciona una imagen del ticket.");
         }
-
-        function guardarTicket() {
-            const imagenInput = document.getElementById('imagenTicketInput');
-            const tipoGasto = document.getElementById('tipoGastoImagen').value;
-            const conceptoGasto = document.getElementById('conceptoGastoImagen').value;
-            const establecimiento = document.getElementById('establecimientoImagen').value;
-            const fecha = document.getElementById('fechaGastoImagen').value;
-            
-            // Validaciones
-            if (!imagenInput.files || !imagenInput.files[0]) {
-                mostrarError('Por favor selecciona una imagen del ticket.');
-                return;
-            }
-            
-            if (!conceptoGasto) {
-                mostrarError('Por favor selecciona un concepto de gasto.');
-                return;
-            }
-            
-            if (!establecimiento.trim()) {
-                mostrarError('Por favor ingresa un establecimiento.');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageData = e.target.result;
+        
+        if (!conceptoGasto || conceptoGasto === "Seleccione...") {
+            throw new Error("Por favor selecciona un concepto de gasto válido.");
+        }
+        
+        if (!establecimiento) {
+            throw new Error("Por favor ingresa un establecimiento.");
+        }
+        
+        // Leer imagen
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            try {
+                console.log("[DEBUG] Imagen leída correctamente");
                 
-                // crear ticket:
                 const ticket = {
                     id: Date.now().toString(),
                     tipo: tipoGasto,
                     concepto: conceptoGasto,
                     establecimiento: establecimiento,
                     fecha: fecha || new Date().toISOString().split('T')[0],
-                    imagen: imageData  // Esto viene del FileReader
+                    imagen: e.target.result
                 };
-
-                // Agregar a la tabla
-                agregarTicketATabla(ticket);
-
-                // Guardar en localStorage
-                const storedTickets = JSON.parse(localStorage.getItem('ticketsGuardados')) || [];
-                storedTickets.push(ticket);
-                localStorage.setItem('ticketsGuardados', JSON.stringify(storedTickets));
                 
+                console.log("[DEBUG] Ticket a guardar:", ticket);
+                
+                // Agregar a la lista y guardar
+                ticketsGuardados.push(ticket);
+                localStorage.setItem('ticketsGuardados', JSON.stringify(ticketsGuardados));
+                
+                // Actualizar UI
+                agregarTicketATabla(ticket);
                 mostrarExito("Ticket guardado correctamente");
                 
-                // Limpiar campos (excepto tipo de gasto y fecha)
-                document.getElementById('conceptoGastoImagen').value = '';
-                document.getElementById('establecimientoImagen').value = '';
+                // Limpiar formulario
+                conceptoSelect.value = '';
+                establecimientoInput.value = '';
                 imagenInput.value = '';
-            };
-            
-            reader.readAsDataURL(imagenInput.files[0]);
-        }
-
-        function agregarTicketATabla(ticket) {
-            const ticketsPreview = document.getElementById('ticketsPreview');
-            const newRow = document.createElement('tr');
-            
-            // Columnas de datos
-            newRow.innerHTML = `
-                <td>${ticket.tipo}</td>
-                <td>${ticket.concepto}</td>
-                <td>${ticket.establecimiento}</td>
-                <td>${ticket.fecha}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm btn-ver-ticket" 
-                            data-imagen="${ticket.imagen}"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalTicket">
-                        <i class="bi bi-eye"></i> Ver Ticket
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarTicket('${ticket.id}')">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            `;
-            
-            ticketsPreview.appendChild(newRow);
-        }
-
-        function eliminarTicket(id) {
-            Swal.fire({
-                title: '¿Eliminar ticket?',
-                text: "Esta acción no se puede deshacer",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                background: 'var(--card-bg)'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const storedTickets = JSON.parse(localStorage.getItem('ticketsGuardados')) || [];
-                    const updatedTickets = storedTickets.filter(ticket => ticket.id !== id);
-                    localStorage.setItem('ticketsGuardados', JSON.stringify(updatedTickets));
-                    cargarTickets();
-                    mostrarExito("Ticket eliminado correctamente");
-                }
-            });
-        }
-        // Evento para mostrar la imagen en el modal
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-ver-ticket')) {
-                const imagenSrc = e.target.getAttribute('data-imagen');
-                document.getElementById('imagenModal').src = imagenSrc;
+                
+            } catch (error) {
+                console.error("[ERROR] En onload:", error);
+                mostrarError("Error al procesar el ticket: " + error.message);
             }
-        });    
-    </script>
+        };
+        
+        reader.onerror = function() {
+            throw new Error("Error al leer la imagen. Por favor intenta con otra.");
+        };
+        
+        reader.readAsDataURL(archivoImagen);
+        
+    } catch (error) {
+        console.error("[ERROR] En guardarTicket:", error);
+        mostrarError(error.message);
+    }
+}
+
+function agregarTicketATabla(ticket) {
+    const ticketsPreview = document.getElementById('ticketsPreview');
+    const newRow = document.createElement('tr');
+    
+    // Columnas de datos
+    newRow.innerHTML = `
+        <td>${ticket.tipo}</td>
+        <td>${ticket.concepto}</td>
+        <td>${ticket.establecimiento}</td>
+        <td>${ticket.fecha}</td>
+        <td>
+            <button class="btn btn-primary btn-sm btn-ver-ticket" 
+                    data-imagen="${ticket.imagen}"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#modalTicket">
+                <i class="bi bi-eye"></i> Ver Ticket
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-danger btn-sm" onclick="eliminarTicket('${ticket.id}')">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+    `;
+    
+    ticketsPreview.appendChild(newRow);
+}
+
+function eliminarTicket(id) {
+    Swal.fire({
+        title: '¿Eliminar ticket?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        background: 'var(--card-bg)'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            ticketsGuardados = ticketsGuardados.filter(ticket => ticket.id !== id);
+            localStorage.setItem('ticketsGuardados', JSON.stringify(ticketsGuardados));
+            cargarTickets();
+            mostrarExito("Ticket eliminado correctamente");
+        }
+    });
+}
+
+// Evento para mostrar la imagen en el modal
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn-ver-ticket')) {
+        const imagenSrc = e.target.getAttribute('data-imagen');
+        document.getElementById('imagenModal').src = imagenSrc;
+    }
+});
+
+// Cargar los datos cuando la página se carga
+document.addEventListener("DOMContentLoaded", function() {
+    // Cargar tema guardado
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    
+    // Ajustar icono del tema
+    const themeIcon = document.querySelector('[onclick="toggleTheme()"] i');
+    if (savedTheme === 'dark') {
+        themeIcon.classList.remove('bi-moon-stars');
+        themeIcon.classList.add('bi-sun');
+    }
+    
+    inicializarPagina();
+});
+        </script>
+    </div>
 </body>
 </html>
