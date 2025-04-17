@@ -179,9 +179,74 @@
                 margin-top: 15px;
             }
             .table-container {
-                margin-top: 30px;
-                width: max-content;
+                overflow-x: auto;
+                margin-top: 20px; /* Add some space above the table */
             }
+
+            /* Basic table styles for better readability */
+            table#tablaTickets {
+                width: 100%;
+                border-collapse: collapse;
+                border-spacing: 0;
+                font-size: 16px;
+                margin-bottom: 1rem;
+            }
+
+            table#tablaTickets th,
+            table#tablaTickets td {
+                text-align: left;
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            table#tablaTickets th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            /* Responsive adjustments for smaller screens */
+            @media (max-width: 768px) {
+                table#tablaTickets {
+                    font-size: 14px; /* Reduce font size */
+                }
+
+                /* Hide thead and make table rows block */
+                table#tablaTickets thead {
+                    display: none;
+                }
+
+                table#tablaTickets tr {
+                    display: block;
+                    margin-bottom: 1rem;
+                    border: 1px solid #ddd; /* Add border for block view */
+                }
+
+                table#tablaTickets td {
+                    display: block;
+                    text-align: left;
+                    padding-left: 50%;
+                    position: relative;
+                    border-bottom: none; /* Remove border-bottom in block view */
+                }
+
+                /* Add data-label before each td */
+                table#tablaTickets td::before {
+                    position: absolute;
+                    left: 10px;
+                    width: 40%;
+                    padding-right: 10px;
+                    white-space: nowrap;
+                    content: attr(data-label); /* Use the data-label attribute */
+                    font-weight: bold;
+                }
+
+                .form-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem; /* Add spacing between form elements */
+                }
+            }
+            
             img {
                 max-width: 100px;
                 height: auto;
@@ -201,6 +266,11 @@
 
             .btn-ver-ticket {
                 white-space: nowrap;
+            }
+            .card-body {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
     </style>
 </head>
@@ -457,7 +527,7 @@
                 </button>
                 
                 <!-- Tabla simplificada -->
-                <div class="table-container">
+                <div class="table-container" style="width: max-content;">
                     <table class="table table-bordered" id="tablaTickets">
                         <thead>
                             <tr>
@@ -494,7 +564,7 @@
             </div>
             </div>
         </div>
-    <!-- Botón para cambiar tema (dark/light) -->
+     
     <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
         <i class="bi bi-moon-stars"></i>
     </button>
@@ -1079,7 +1149,7 @@
                 const imagenSrc = e.target.getAttribute('data-imagen');
                 document.getElementById('imagenModal').src = imagenSrc;
             }
-        });
+        });    
     </script>
 </body>
 </html>

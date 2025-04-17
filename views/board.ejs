@@ -221,144 +221,56 @@
         </div>
       </div>
     </div>
-
-    <!-- Sección de Recetas -->
-    <div class="row mb-4">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header bg-primary text-white">
-            <h4 class="mb-0"><i class="bi bi-book"></i> Estadísticas de Recetas</h4>
+     <!-- Gráfico de tickets -->
+     <div class="row mb-4">
+      <div class="col-xl-6 mb-4 animated-card">
+        <div class="card h-100">
+          <div class="card-header">
+            <h5 class="card-title">Distribución de Tickets</h5>
           </div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card stat-card entradas h-100">
-                  <div class="card-body text-center">
-                    <h5>Entradas</h5>
-                    <h3 id="entradasCount">0</h3>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card stat-card platos h-100">
-                  <div class="card-body text-center">
-                    <h5>Platos Fuertes</h5>
-                    <h3 id="platosCount">0</h3>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card stat-card postres h-100">
-                  <div class="card-body text-center">
-                    <h5>Postres</h5>
-                    <h3 id="postresCount">0</h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <div class="chart-container">
-                  <canvas id="typeDistributionChart"></canvas>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="chart-container">
-                  <canvas id="topIngredientsChart"></canvas>
-                </div>
-              </div>
-            </div>
+            <div class="chart-container"><canvas id="ticketsDistributionChart"></canvas></div>
           </div>
         </div>
       </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const data = {
+            labels: ['Total', 'Pagados', 'No Pagados'],
+            datasets: [{
+              label: 'Monto de Tickets',
+              data: [1000, 600, 400], // Replace with actual data from your application
+              backgroundColor: [
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(255, 99, 132, 0.8)'
+              ],
+              borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)'
+              ],
+              borderWidth: 1
+            }]
+          };
+
+          const config = {
+            type: 'bar',
+            data: data,
+            options: {
+              scales: { y: { beginAtZero: true } }
+            },
+          };
+
+          new Chart(document.getElementById('ticketsDistributionChart'), config);
+        });
+      </script>
     </div>
 
-    <!-- Sección de Insumos -->
-    <div class="row mb-4">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header bg-success text-white">
-            <h4 class="mb-0"><i class="bi bi-basket"></i> Estadísticas de Insumos</h4>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="chart-container">
-                  <canvas id="categoriasInsumosChart"></canvas>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <h5>Insumos más utilizados</h5>
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Insumo</th>
-                        <th>Categoría</th>
-                        <th>Recetas que lo usan</th>
-                      </tr>
-                    </thead>
-                    <tbody id="topInsumosTable">
-                      <!-- Datos se cargarán aquí -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sección de Gastos -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0"><i class="bi bi-cash-stack"></i> Estadísticas de Gastos</h4>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="chart-container">
-                  <canvas id="gastosPorTipoChart"></canvas>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="chart-container">
-                  <canvas id="gastosPorMesChart"></canvas>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row mt-4">
-              <div class="col-12">
-                <h5>Últimos Gastos Registrados</h5>
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Fecha</th>
-                        <th>Concepto</th>
-                        <th>Establecimiento</th>
-                        <th>Monto</th>
-                      </tr>
-                    </thead>
-                    <tbody id="ultimosGastosTable">
-                      <!-- Datos se cargarán aquí -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
-  <!-- Botón para cambiar tema (dark/light) -->
+   
   <button class="btn btn-sm btn-outline-secondary position-fixed bottom-0 end-0 m-3" onclick="toggleTheme()" data-bs-toggle="tooltip" title="Cambiar tema">
     <i class="bi bi-moon-stars"></i>
   </button>
@@ -797,6 +709,106 @@
       // Cargar todos los datos
       loadAllData();
     });
+
+    const storedTickets = localStorage.getItem('tickets');
+  const tickets = storedTickets ? JSON.parse(storedTickets) : [];
+  const rows = Array.from(document.querySelectorAll('main.main-content .row.mb-4'));
+
+  const updateDashboard = () => {
+    const counts = {
+      total: 0,
+      payed: 0,
+      unpayed: 0
+    };
+
+    tickets.forEach(ticket => {
+      counts.total += ticket.amount;
+      if (ticket.payed) {
+        counts.payed += ticket.amount;
+      } else {
+        counts.unpayed += ticket.amount;
+      }
+    });
+    
+      const elements = {
+          total: rows[0],
+          payed: rows[1],
+          unpayed: rows[2],
+      }
+    if(elements.total){
+          if(!elements.total.querySelector('.card')){
+              const card = document.createElement('div');
+              card.classList.add('card');
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+              const cardTitle = document.createElement('h5');
+              cardTitle.classList.add('card-title');
+              cardTitle.textContent = 'Total';
+              const cardAmount = document.createElement('h3');
+              cardAmount.textContent = counts.total;
+              cardBody.appendChild(cardTitle);
+              cardBody.appendChild(cardAmount);
+              card.appendChild(cardBody);
+              elements.total.appendChild(card);
+          } else {
+              const amountElement = elements.total.querySelector('h3')
+              if(amountElement){
+                  amountElement.textContent = counts.total;
+              }
+          }
+      }
+
+      if(elements.payed){
+          if(!elements.payed.querySelector('.card')){
+              const card = document.createElement('div');
+              card.classList.add('card');
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+              const cardTitle = document.createElement('h5');
+              cardTitle.classList.add('card-title');
+              cardTitle.textContent = 'Payed';
+              const cardAmount = document.createElement('h3');
+              cardAmount.textContent = counts.payed;
+              cardBody.appendChild(cardTitle);
+              cardBody.appendChild(cardAmount);
+              card.appendChild(cardBody);
+              elements.payed.appendChild(card);
+          } else {
+              const amountElement = elements.payed.querySelector('h3')
+              if(amountElement){
+                  amountElement.textContent = counts.payed;
+              }
+          }
+      }
+      if(elements.unpayed){
+          if(!elements.unpayed.querySelector('.card')){
+              const card = document.createElement('div');
+              card.classList.add('card');
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+              const cardTitle = document.createElement('h5');
+              cardTitle.classList.add('card-title');
+              cardTitle.textContent = 'Unpayed';
+              const cardAmount = document.createElement('h3');
+              cardAmount.textContent = counts.unpayed;
+              cardBody.appendChild(cardTitle);
+              cardBody.appendChild(cardAmount);
+              card.appendChild(cardBody);
+              elements.unpayed.appendChild(card);
+          } else {
+              const amountElement = elements.unpayed.querySelector('h3')
+              if(amountElement){
+                  amountElement.textContent = counts.unpayed;
+              }
+          }
+      }
+
+  };
+  updateDashboard();
+
+  window.addEventListener('storage', () => {
+      updateDashboard();
+  });
   </script>
 </body>
 </html>
