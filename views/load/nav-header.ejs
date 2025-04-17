@@ -85,118 +85,6 @@
   </ul>
 </nav>
 
-<!-- Navbar para móviles -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light d-block d-md-none">
-  <div class="container-fluid">
-    <!-- Icono de usuario para móviles -->
-    <div class="user-icon dropdown" style="display: none;">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-person-circle"> user</i>
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMobile">
-        <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
-        <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
-        <li><hr class="dropdown-divider" /></li>
-        <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Navbar para pantallas grandes (arriba del contenido) -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-md-block id-1-0" style="position: fixed;  left: 250px;  z-index: 1000;">
-  <div class="container-fluid justify-content-end">
-    <!-- Icono de usuario para desktop -->
-    <div class="user-icon dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-person-circle"> user</i>
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
-        <li><button class="dropdown-item edit-profile-btn">Editar Perfil</button></li>
-        <li><button class="dropdown-item delete-profile-btn">Eliminar Perfil</button></li>
-        <li><hr class="dropdown-divider" /></li>
-        <li><button class="dropdown-item logout-btn">Cerrar Sesión</button></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Modales -->
-<!-- Modal de Log-in -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="loginForm">
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="loginEmail" required />
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="loginPassword" required />
-          </div>
-          <div class="error-message login-error" style="display: none;">Correo o contraseña incorrectos.</div>
-          <button type="submit" class="btn btn-success">Iniciar Sesión</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de Registro -->
-<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="registerModalLabel">Registrarse</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="registerForm">
-          <div class="mb-3">
-            <label for="registerName" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="registerName" required />
-          </div>
-          <div class="mb-3">
-            <label for="registerEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="registerEmail" required />
-          </div>
-          <div class="mb-3">
-            <label for="registerPassword" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="registerPassword" required />
-          </div>
-          <div class="error-message register-error" style="display: none;">El correo ya está registrado.</div>
-          <button type="submit" class="btn btn-success">Registrarse</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de Perfil -->
-<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="profileModalLabel">Perfil de Usuario</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Nombre:</strong> <span class="profile-name"></span></p>
-        <p><strong>Email:</strong> <span class="profile-email"></span></p>
-        <button class="btn btn-primary edit-profile-btn">Editar Perfil</button>
-        <button class="btn btn-danger delete-profile-btn">Borrar Perfil</button>
-        <button class="btn btn-warning logout-btn">Cerrar Sesión</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Estilos personalizados -->
 <style>
   .main-content {
@@ -207,7 +95,7 @@
   .sidebar {
     transition: transform 0.3s ease;
   }
-  @media (max-width: 767.98px) {
+  @media (max-width: 850px) {
     .main-content {
       margin-left: 0;
     }
