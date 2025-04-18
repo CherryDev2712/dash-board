@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "init": "npm i && npm run dev"
+    "init": "npm i && npm run dev",
+    "say": "npm i && say 'hola cherryDev, esta pendejada esta ejecutando' && npm run dev"
   },
   "type": "module",
   "author": "cherryDev",
