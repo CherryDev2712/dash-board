@@ -154,7 +154,7 @@
       <!-- Formulario de Insumos -->
       <div class="col-lg-5">
         <div class="card">
-          <div class="card-header bg-primary text-white">
+          <div class="card-header bg-dark text-white">
             <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Agregar Insumo</h4>
           </div>
           <div class="card-body">
@@ -193,7 +193,7 @@
                   <option value="desechables">Desechables</option>
                 </select>
               </div>
-              <button class="btn btn-primary w-100" type="submit">
+              <button class="btn btn-secondary w-100" type="submit">
                 <i class="bi bi-save"></i> Guardar Insumo
               </button>
             </form>
@@ -202,7 +202,7 @@
 
         <!-- Gráfico de Categorías -->
         <div class="card mt-4">
-          <div class="card-header bg-info text-white">
+          <div class="card-header bg-dark text-white">
             <h4 class="mb-0"><i class="bi bi-pie-chart"></i> Distribución por Categoría</h4>
           </div>
           <div class="card-body">
@@ -220,7 +220,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="mb-0"><i class="bi bi-list-check"></i> Insumos Registrados</h4>
               <div class="input-group" style="width: 200px;">
-                <input type="text" id="filterInsumos" class="form-control" placeholder="Filtrar...">
+                <input type="text" id="filterInsumos" class="form-control" placeholder="Buscar insumos...">
                 <button class="btn btn-outline-light" type="button" id="clearFilter">
                   <i class="bi bi-x"></i>
                 </button>
@@ -234,17 +234,7 @@
           </div>
         </div>
 
-        <!-- Gráfico de Insumos Recientes -->
-        <div class="card mt-4">
-          <div class="card-header bg-warning text-dark">
-            <h4 class="mb-0"><i class="bi bi-bar-chart"></i> Insumos Agregados Recientemente</h4>
-          </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <canvas id="recentInsumosChart"></canvas>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </main>
